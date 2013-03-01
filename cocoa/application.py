@@ -8,7 +8,6 @@
 """
 from flask import Flask, request, jsonify, render_template, g
 from flask.ext.babel import gettext as _
-from flask.ext.themes import setup_themes
 
 from .config import DefaultConfig
 from .extensions import db, sijax, login_manager, cache, babel
@@ -98,7 +97,6 @@ def configure_extensions(app):
     db.init_app(app)
     sijax.init_app(app)
     login_manager.init_app(app)
-    setup_themes(app)
 
     configure_i18n(app)
 
