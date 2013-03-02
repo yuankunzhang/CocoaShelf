@@ -49,4 +49,4 @@ class TestConfig(object):
     TESTING = True
     CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/cocoa.db'
-    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = False
