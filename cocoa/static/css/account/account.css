@@ -1,0 +1,11 @@
+.page-header #go-to-signin {
+    float: right;
+    font-size: 12px;
+    margin-top: -16px;
+    margin-right: 60px;
+}
+
+form #location label {
+    width: 50px;
+    float: left;
+}

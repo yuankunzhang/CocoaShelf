@@ -1,0 +1,69 @@
+{% extends 'layout/single_column.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/account/account.css">
+<link rel="stylesheet" href="/static/css/account/cityselect.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>创建一个帐号</small></h1>
+
+    <div id="go-to-signin">
+        有帐号？从<a href="#">这里</a>登入
+    </div>
+</div>
+
+<div id="signup-form">
+    <form method="post" class="form-horizontal" action="{{ url_for('account.signup') }}">
+        {{ form.csrf_token }}
+
+        <div class="control-group{% if form.email.errors %} error{% endif %}">
+            <div class="controls input-prepend">
+                <span class="add-on"><i class="icon-envelope"></i></span>
+                {{ form.email(placeholder=_('Email')) }}
+            </div>
+            <span class="help-inline">{{ ' '.join(form.email.errors) }}</span>
+        </div>
+
+        <div class="control-group{% if form.password.errors %} error{% endif %}">
+            <div class="controls input-prepend">
+                <span class="add-on"><i class="icon-key"></i></span>
+                {{ form.password(placeholder=_('password')) }}
+            </div>
+            <span class="help-inline">{{ ' '.join(form.password.errors) }}</span>
+        </div>
+
+        <div class="control-group{% if form.confirm.errors %} error{% endif %}">
+            <div class="controls input-prepend">
+                <span class="add-on"><i class="icon-retweet"></i></span>
+                {{ form.confirm(placeholder=_('confirm password')) }}
+            </div>
+            <span class="help-inline">{{ ' '.join(form.confirm.errors) }}</span>
+        </div>
+
+        <div class="control-group">
+            <div id="location" class="controls">
+                <label>城市</label>
+                {{ form.city_id }}
+                {% include 'account/cityselect.html' %}
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <button class="btn btn-primary" type="submit">{{ _('Sign Up') }}</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+$('document').ready(function() {
+    $('#signup-form').cityselect();
+});
+</script>
+
+{% endblock %}

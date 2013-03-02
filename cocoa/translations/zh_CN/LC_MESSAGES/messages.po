@@ -1,20 +1,127 @@
-# Chinese (China) translations for PROJECT.
+# Chinese (China) translations for Cocoa Version.
 # Copyright (C) 2013 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
+# This file is distributed under the same license as the Cocoa Version
+# project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-03-02 01:05+0800\n"
-"PO-Revision-Date: 2013-03-02 01:06+0800\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Project-Id-Version: Cocoa Version 0.4\n"
+"Report-Msgid-Bugs-To: feber007@gmail.com\n"
+"POT-Creation-Date: 2013-03-03 00:56+0800\n"
+"PO-Revision-Date: 2013-03-03 01:43+0800\n"
+"Last-Translator: Vincent Zhang <feber007@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
+
+#: application.py:75
+msgid "404 page not found"
+msgstr ""
+
+#: application.py:81
+msgid "403 forbidden"
+msgstr ""
+
+#: application.py:87
+msgid "500 server error"
+msgstr ""
+
+#: application.py:93
+msgid "401 unauthorized"
+msgstr ""
+
+#: helpers/common.py:13
+msgid "just now"
+msgstr "刚刚"
+
+#: modules/account/consts.py:7
+msgid "member"
+msgstr "成员"
+
+#: modules/account/consts.py:8
+msgid "moderator"
+msgstr "编辑者"
+
+#: modules/account/consts.py:9
+msgid "admin"
+msgstr "管理员"
+
+#: modules/account/consts.py:13
+msgid "secret"
+msgstr "秘密"
+
+#: modules/account/consts.py:14
+msgid "male"
+msgstr "男"
+
+#: modules/account/consts.py:15
+msgid "female"
+msgstr "女"
+
+#: modules/account/forms.py:14 modules/account/forms.py:41
+#: templates/account/signup.html:26
+msgid "Email"
+msgstr "邮箱"
+
+#: modules/account/forms.py:15 modules/account/forms.py:20
+#: modules/account/forms.py:42 modules/account/forms.py:48
+#: modules/account/forms.py:53
+msgid "Required"
+msgstr "必填"
+
+#: modules/account/forms.py:16 modules/account/forms.py:43
+msgid "Invalid email address"
+msgstr "错误的邮箱地址"
+
+#: modules/account/forms.py:19 modules/account/forms.py:47
+msgid "Password"
+msgstr "密码"
+
+#: modules/account/forms.py:23
+msgid "Remember me"
+msgstr "记住我"
+
+#: modules/account/forms.py:29
+msgid "This email address has been signed up."
+msgstr ""
+
+#: modules/account/forms.py:52
+msgid "Confirm Password"
+msgstr "确认密码"
+
+#: modules/account/forms.py:54
+msgid "Doesn't match to your password"
+msgstr ""
+
+#: modules/account/models.py:64
+msgid "This email has been signed up."
+msgstr ""
+
+#: modules/account/models.py:79
+msgid "Wrong previous password."
+msgstr ""
+
+#: modules/account/views.py:42
+msgid "Successfully signed in."
+msgstr ""
+
+#: modules/location/models.py:59
+msgid "Not a valid IP address."
+msgstr ""
+
+#: templates/account/signup.html:34
+msgid "password"
+msgstr "密码"
+
+#: templates/account/signup.html:42
+msgid "confirm password"
+msgstr "确认密码"
+
+#: templates/account/signup.html:57
+msgid "Sign Up"
+msgstr "注册"
 

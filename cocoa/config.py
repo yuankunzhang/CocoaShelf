@@ -30,7 +30,8 @@ class DefaultConfig(object):
     SIJAX_STATIC_PATH = os.path.join(_basedir, 'static/js/sijax')
     SIJAX_JSON_URI = os.path.join(_basedir, 'static/js/sijax/json2.js')
 
-    ACCEPT_LANGUAGES = ['en', 'zh']
+    ACCEPT_LANGUAGES = ['en', 'zh_CN']
+    BABEL_DEFAULT_LOCALE = 'zh_CN'
 
     THEME = 'cocoa'
 

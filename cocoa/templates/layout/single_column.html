@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
-{% block page_css %}
+{% block css %}
+{{ super() }}
 <link rel="stylesheet" href="/static/css/layout/single_column.css">
+{% endblock %}
+
+{% block content %}
 {% endblock %}

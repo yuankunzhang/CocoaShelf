@@ -88,13 +88,15 @@ def province_short_name(name):
 
 def provinces():
     data = db.session.query(Province.province_id, Province.name).all()
-    provinces = [{'province_id': x, 'name': province_short_name(y)} \
+    results = [{'province_id': x, 'name': province_short_name(y)} \
         for x, y in data]
+
+    return json.dumps(results)
 
 
 def cities(province_id):
     data = db.session.query(City.city_id, City.name) \
              .filter(City.province_id==province_id).all()
-    cities = [{'city_id': x, 'name': y} for x, y in cities]
+    results = [{'city_id': x, 'name': y} for x, y in data]
 
-    return json.dumps(cities)
+    return json.dumps(results)

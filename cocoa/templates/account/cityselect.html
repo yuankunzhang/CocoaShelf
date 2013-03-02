@@ -1,0 +1,25 @@
+<!-- template for selecting city. -->
+
+<div id="cityselect">
+    <span id="cityselect-target"></span>
+    <a href="#cityselect-modal" role="button" data-toggle="modal">请选择您的所在地</a>
+    <div id="cityselect-modal" class="modal hide fade" tabindex="-1" role="dialog" data-backdrop="false"  aria-labelledby="cityselect-modal-label" aria-hidden="true">
+        <div class="modal-header clearfix">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+            <h2><small>请选择</small></h2>
+            <ul id="province-list" class="nav nav-pills">
+            </ul>
+        </div>
+
+        <div class="modal-body">
+            <ul id="city-list" class="nav nav-pills">
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <a class="btn" data-dismiss="modal" aria-hidden="true">取消</a>
+            <a data-content="请选择一个城市" data-placement="top" data-trigger="manual" rel="popover" tabindex="0" class="btn btn-primary">确定</a>
+        </div>
+    </div>
+</div><!-- end #cityselect -->
+
+<script src="/static/js/account/cityselect.js"></script>

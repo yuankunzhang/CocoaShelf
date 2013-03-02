@@ -1,0 +1,11 @@
+#cityselect ul#province-list {
+    margin: 0;
+}
+
+#cityselect ul#province-list li a {
+    font-size: 12px;
+    padding: 1px 0;
+    width: 36px;
+    text-align: center;
+}
+

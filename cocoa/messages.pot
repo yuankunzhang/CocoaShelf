@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-03-02 01:05+0800\n"
+"POT-Creation-Date: 2013-03-03 01:43+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,4 +16,111 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
+
+#: application.py:75
+msgid "404 page not found"
+msgstr ""
+
+#: application.py:81
+msgid "403 forbidden"
+msgstr ""
+
+#: application.py:87
+msgid "500 server error"
+msgstr ""
+
+#: application.py:93
+msgid "401 unauthorized"
+msgstr ""
+
+#: helpers/common.py:13
+msgid "just now"
+msgstr ""
+
+#: modules/account/consts.py:7
+msgid "member"
+msgstr ""
+
+#: modules/account/consts.py:8
+msgid "moderator"
+msgstr ""
+
+#: modules/account/consts.py:9
+msgid "admin"
+msgstr ""
+
+#: modules/account/consts.py:13
+msgid "secret"
+msgstr ""
+
+#: modules/account/consts.py:14
+msgid "male"
+msgstr ""
+
+#: modules/account/consts.py:15
+msgid "female"
+msgstr ""
+
+#: modules/account/forms.py:14 modules/account/forms.py:41
+#: templates/account/signup.html:26
+msgid "Email"
+msgstr ""
+
+#: modules/account/forms.py:15 modules/account/forms.py:20
+#: modules/account/forms.py:42 modules/account/forms.py:48
+#: modules/account/forms.py:53
+msgid "Required"
+msgstr ""
+
+#: modules/account/forms.py:16 modules/account/forms.py:43
+msgid "Invalid email address"
+msgstr ""
+
+#: modules/account/forms.py:19 modules/account/forms.py:47
+msgid "Password"
+msgstr ""
+
+#: modules/account/forms.py:23
+msgid "Remember me"
+msgstr ""
+
+#: modules/account/forms.py:29
+msgid "This email address has been signed up."
+msgstr ""
+
+#: modules/account/forms.py:52
+msgid "Confirm Password"
+msgstr ""
+
+#: modules/account/forms.py:54
+msgid "Doesn't match to your password"
+msgstr ""
+
+#: modules/account/models.py:64
+msgid "This email has been signed up."
+msgstr ""
+
+#: modules/account/models.py:79
+msgid "Wrong previous password."
+msgstr ""
+
+#: modules/account/views.py:42
+msgid "Successfully signed in."
+msgstr ""
+
+#: modules/location/models.py:59
+msgid "Not a valid IP address."
+msgstr ""
+
+#: templates/account/signup.html:34
+msgid "password"
+msgstr ""
+
+#: templates/account/signup.html:42
+msgid "confirm password"
+msgstr ""
+
+#: templates/account/signup.html:57
+msgid "Sign Up"
+msgstr ""
 

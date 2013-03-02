@@ -20,11 +20,11 @@ class User(db.Model):
     username = db.Column(db.String(100), unique=True)  # 用户名
     penname = db.Column(db.String(100))                # 笔名
     intro = db.Column(db.Text)
-    gender = db.Column(db.SmallInteger, default=C.gender['SECRET'])
+    gender = db.Column(db.SmallInteger, default=C.gender['SECRET'][0])
     avatar = db.Column(db.String(100))
     thumbnail_box = db.Column(db.String(100))
     city_id = db.Column(db.String(20), db.ForeignKey('geo_city.city_id'))
-    role = db.Column(db.SmallInteger, default=C.role['MEMBER'])
+    role = db.Column(db.SmallInteger, default=C.role['MEMBER'][0])
     active = db.Column(db.Boolean, default=False)
     timestamp = db.Column(db.Integer, default=int(time()))
 
@@ -127,6 +127,7 @@ class User(db.Model):
             slices = self.avatar.split('.')
             return slices[0] + '_t.' + slices[1]
     
+    @staticmethod
     def get_by_email(email):
         return User.query.filter_by(email=email).first()
 

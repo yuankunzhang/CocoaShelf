@@ -1,0 +1,37 @@
+{% macro render_field(field, placeholder) %}
+    <div class="control-group">
+        {{ field.label(class="control-label") }}
+
+        <div class="controls">
+        {% if placeholder %}
+            {{ field(placeholder=placeholder) }}
+        {% else %}
+            {{ field }}
+        {% endif %}
+
+        {% if field.errors %}
+            <span class="help-inline">{{ ' '.join(field.errors) }}</span>
+        {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro render_checkbox(field) %}
+    <div class="control-group">
+        <div class="controls">
+            <label for="{{ field.id }}">{{ field }} {{ field.label.text }}</label>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro render_hidden(name, value) %}
+    <input type="hidden" name="{{ name }}" value="{{ value }}">
+{% endmacro %}
+
+{% macro render_submit(label) %}
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn">{{ label }}</button>
+        </div>
+    </div>
+{% endmacro %}

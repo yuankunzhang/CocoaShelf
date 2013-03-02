@@ -108,12 +108,6 @@ def configure_i18n(app):
 
     babel.init_app(app)
 
-    @babel.localeselector
-    def get_locale():
-        accept_languages = app.configure.get('ACCEPT_LANGUAGES',
-                                            ['zh_CN'])
-        return request.accept_languages.best_match(accept_languages)
-
 
 def configure_logging(app):
 
