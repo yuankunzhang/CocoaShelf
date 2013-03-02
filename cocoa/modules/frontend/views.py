@@ -6,4 +6,4 @@ mod = Blueprint('frontend', __name__)
 @mod.route('/')
 def home():
 
-    return 'index page.'
+    return render_template('index.html')

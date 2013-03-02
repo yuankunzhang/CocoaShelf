@@ -1,0 +1,41 @@
+#header {
+    background: white;
+    border-bottom: 2px solid #ddd;
+}
+
+#header .divider {
+    border-bottom: 1px dashed #ccc;
+}
+
+#header #top-bar .logo {
+    line-height: 30px;
+    margin-top: 5px;
+    font-size: 1.5em;
+    float: left;
+}
+
+#header #top-bar .search-box {
+    margin-left: 30px;
+    float: left;
+}
+
+#header #top-bar .search-box form {
+    margin-top: 4px;
+}
+
+#header #top-bar .search-box form input {
+    height: 14px;
+    font-size: 12px;
+}
+
+#header #top-bar .search-box form button {
+    height: 24px;
+    line-height: 14px;
+    font-size: 12px;
+}
+
+#header #account-nav {
+    float: right;
+    margin-bottom: 0;
+    font-size: 12px;
+}

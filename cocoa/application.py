@@ -11,7 +11,7 @@ from flask.ext.babel import gettext as _
 
 from .config import DefaultConfig
 from .extensions import db, sijax, login_manager, cache, babel
-from .modules import frontend
+from .modules import frontend, location
 
 __all__ = ['create_app']
 
@@ -19,6 +19,7 @@ DEFAULT_APP_NAME = 'cocoa'
 
 DEFAULT_MODULES = (
     (frontend.mod, ''),
+    (location.mod, ''),
 )
 
 def create_app(config=None, app_name=None, modules=None):
