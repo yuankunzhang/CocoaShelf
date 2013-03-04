@@ -6,8 +6,7 @@ from flask.ext.wtf import TextField, TextAreaField, \
     RadioField, Required, Email, EqualTo, Regexp, Length, \
     ValidationError
 
-from cocoa.helpers.form import Form
-from .consts import UserConst as C
+from cocoa.helpers.wtf import Form
 from .models import User
 
 class SigninForm(Form):

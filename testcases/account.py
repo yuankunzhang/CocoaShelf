@@ -34,5 +34,18 @@ class TestAccount(TestCase):
             password='1',
             confirm='1',
         ))
-
         assert User.get_by_email('abc@gmail.com') is not None
+
+        self.client.post('/u/signup/', data=dict(
+            email='abcd@gmail.com',
+            password='1',
+            confirm='2',
+        ))
+        assert User.get_by_email('abcd@gmail.com') is None
+
+        self.client.post('/u/signup/', data=dict(
+            email='abcd.com',
+            password='1',
+            confirm='1',
+        ))
+        assert User.get_by_email('abcd.com') is None

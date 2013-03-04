@@ -19,7 +19,7 @@
 {% macro render_checkbox(field) %}
     <div class="control-group">
         <div class="controls">
-            <label for="{{ field.id }}">{{ field }} {{ field.label.text }}</label>
+            <label for="{{ field.id }}">{{ field }} {{ _(field.label.text) }}</label>
         </div>
     </div>
 {% endmacro %}

@@ -8,7 +8,7 @@ from werkzeug import generate_password_hash, check_password_hash
 from flask.ext.babel import gettext as _
 
 from cocoa.extensions import db, login_manager
-from .consts import UserConst as C
+from .consts import Role, Gender
 
 class User(db.Model):
 
@@ -20,11 +20,11 @@ class User(db.Model):
     username = db.Column(db.String(100), unique=True)  # 用户名
     penname = db.Column(db.String(100))                # 笔名
     intro = db.Column(db.Text)
-    gender = db.Column(db.SmallInteger, default=C.gender['SECRET'][0])
+    gender = db.Column(db.SmallInteger, default=Gender.SECRET.value())
     avatar = db.Column(db.String(100))
     thumbnail_box = db.Column(db.String(100))
     city_id = db.Column(db.String(20), db.ForeignKey('geo_city.city_id'))
-    role = db.Column(db.SmallInteger, default=C.role['MEMBER'][0])
+    role = db.Column(db.SmallInteger, default=Role.MEMBER.value())
     active = db.Column(db.Boolean, default=False)
     timestamp = db.Column(db.Integer, default=int(time()))
 
@@ -72,6 +72,8 @@ class User(db.Model):
         db.session.commit()
 
     def check_password(self, password):
+        if self.password is None:
+            return False
         return check_password_hash(self.password, password)
 
     def update_password(self, old, new):

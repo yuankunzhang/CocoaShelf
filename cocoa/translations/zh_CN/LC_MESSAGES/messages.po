@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Cocoa Version 0.4\n"
 "Report-Msgid-Bugs-To: feber007@gmail.com\n"
 "POT-Creation-Date: 2013-03-03 00:56+0800\n"
-"PO-Revision-Date: 2013-03-03 01:43+0800\n"
+"PO-Revision-Date: 2013-03-03 10:41+0800\n"
 "Last-Translator: Vincent Zhang <feber007@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=0\n"
@@ -62,38 +62,38 @@ msgstr "男"
 msgid "female"
 msgstr "女"
 
-#: modules/account/forms.py:14 modules/account/forms.py:41
-#: templates/account/signup.html:26
+#: modules/account/forms.py:15 modules/account/forms.py:42
+#: templates/account/signin.html:26 templates/account/signup.html:26
 msgid "Email"
 msgstr "邮箱"
 
-#: modules/account/forms.py:15 modules/account/forms.py:20
-#: modules/account/forms.py:42 modules/account/forms.py:48
-#: modules/account/forms.py:53
+#: modules/account/forms.py:16 modules/account/forms.py:21
+#: modules/account/forms.py:43 modules/account/forms.py:49
+#: modules/account/forms.py:54
 msgid "Required"
 msgstr "必填"
 
-#: modules/account/forms.py:16 modules/account/forms.py:43
+#: modules/account/forms.py:17 modules/account/forms.py:44
 msgid "Invalid email address"
 msgstr "错误的邮箱地址"
 
-#: modules/account/forms.py:19 modules/account/forms.py:47
+#: modules/account/forms.py:20 modules/account/forms.py:48
 msgid "Password"
 msgstr "密码"
 
-#: modules/account/forms.py:23
+#: modules/account/forms.py:24
 msgid "Remember me"
 msgstr "记住我"
 
-#: modules/account/forms.py:29
+#: modules/account/forms.py:30
 msgid "This email address has been signed up."
-msgstr ""
+msgstr "该邮箱已被注册"
 
-#: modules/account/forms.py:52
+#: modules/account/forms.py:53
 msgid "Confirm Password"
 msgstr "确认密码"
 
-#: modules/account/forms.py:54
+#: modules/account/forms.py:55
 msgid "Doesn't match to your password"
 msgstr ""
 
@@ -105,23 +105,35 @@ msgstr ""
 msgid "Wrong previous password."
 msgstr ""
 
-#: modules/account/views.py:42
+#: modules/account/views.py:40
+msgid "Successfully signed up."
+msgstr "注册成功"
+
+#: modules/account/views.py:60
 msgid "Successfully signed in."
-msgstr ""
+msgstr "登入成功"
 
 #: modules/location/models.py:59
 msgid "Not a valid IP address."
 msgstr ""
 
-#: templates/account/signup.html:34
+#: templates/account/signin.html:11
+msgid "Sign In"
+msgstr "登入"
+
+#: templates/account/signin.html:34 templates/account/signup.html:34
 msgid "password"
 msgstr "密码"
+
+#: templates/account/signin.html:43 templates/account/signup.html:57
+msgid "Sign Up"
+msgstr "注册"
+
+#: templates/account/signin.html:44
+msgid "Forgot your password?"
+msgstr "忘记密码了？"
 
 #: templates/account/signup.html:42
 msgid "confirm password"
 msgstr "确认密码"
-
-#: templates/account/signup.html:57
-msgid "Sign Up"
-msgstr "注册"
 
