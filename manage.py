@@ -6,6 +6,10 @@ from cocoa import create_app
 from cocoa.extensions import db
 from cocoa.modules.location.models import IpSection, City, Province
 from cocoa.modules.account.models import User
+from cocoa.modules.book.models import Book, Category, BookCategory, \
+    Tag, BookTags, BookExtra
+from cocoa.modules.library.models import ShelfHave, ShelfRead, \
+    ShelfReading, ShelfWish, ShelfLike, Library
 
 manager = Manager(create_app())
 

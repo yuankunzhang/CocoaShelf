@@ -7,7 +7,7 @@ from flask.ext.babel import gettext as _
 from flask.ext.login import current_user
 
 from cocoa.extensions import db
-from cocoa.helpers.sqlalchemy import JSONEncodedDict
+from cocoa.helpers.sql import JSONEncodedDict
 from cocoa.helpers.html import safe_html
 from .consts import Currency, Binding, Language
 from .helpers import isbn10_to_13, isbn13_to_10
@@ -78,7 +78,8 @@ class BookExtra(db.Model):
     author_intro = db.Column(db.Text)
 
     book = db.relationship('Book',
-        backref=db.backref('extra', cascade='all, delete-orphan'))
+        backref=db.backref('extra', cascade='all, delete-orphan',
+        uselist=False))
 
     def __init__(self, summary=None, author_intro=None, book=None):
         self.summary = safe_html(summary)
@@ -123,15 +124,15 @@ class BookCategory(db.Model):
 
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
         primary_key=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('category_id'),
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'),
         primary_key=True)
 
     book = db.relationship('Book',
         backref=db.backref('book_category',
-        cascade='all, delete-orphan' uselist=False))
+        cascade='all, delete-orphan', uselist=False))
     category = db.relationship('Category')
 
-    def __init__(self, category, book=None);
+    def __init__(self, category, book=None):
         self.category = category
         self.book = book
     
@@ -168,7 +169,7 @@ class Book(db.Model):
 
     def __init__(self, isbn, title, authors, publisher, price,
                  subtitle=None, orititle=None, translators=None,
-                 size=None, pubdate=None, currency=None
+                 size=None, pubdate=None, currency=None,
                  pages=None, binding=None, language=None):
         if len(isbn) == 10:
             self.isbn10 = isbn
@@ -205,7 +206,7 @@ class Book(db.Model):
         book = Book.query.filter_by(isbn13=self.isbn13).first()
         if book is not None:
             raise ValueError(_(u'We\'ve already have this book'
-                               u'in our database')
+                               u'in our database'))
         else:
             db.session.add(self)
             db.session.commit()

@@ -17,6 +17,9 @@ class EnumInteger(object):
     def name(self):
         return self._name
 
+    def set_name(self, name):
+        self._name = name
+
     def __str__(self):
         return _(self._name.lower())
 
