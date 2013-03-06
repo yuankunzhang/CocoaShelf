@@ -3,12 +3,12 @@
     对SQLAlchemy的扩展
     2013.03.04
 """
-from sqlalchemy.types import TypeDecorator, Text
+from sqlalchemy.types import TypeDecorator, VARCHAR
 import json
 
 class JSONEncodedDict(TypeDecorator):
 
-    impl = Text
+    impl = VARCHAR
 
     def process_bind_param(self, value, dialect):
         if value is not None:

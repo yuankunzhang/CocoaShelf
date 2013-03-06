@@ -10,6 +10,7 @@ from cocoa.modules.book.models import Book, Category, BookCategory, \
     Tag, BookTags, BookExtra
 from cocoa.modules.library.models import ShelfHave, ShelfRead, \
     ShelfReading, ShelfWish, ShelfLike, Library
+from cocoa.scripts.openisbn import grab
 
 manager = Manager(create_app())
 
@@ -28,10 +29,18 @@ def db_drop_all():
         db.drop_all()
 
 
+@manager.command
+def grab_from_openisbn():
+
+    grab()
+
+
 @manager.shell
 def make_shell_context():
     return dict(app=current_app,
-                db=db,)
+                db=db,
+                Book=Book,
+                User=User,)
 
 if __name__ == '__main__':
     manager.run()

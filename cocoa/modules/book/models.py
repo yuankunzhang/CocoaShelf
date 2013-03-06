@@ -76,14 +76,17 @@ class BookExtra(db.Model):
         primary_key=True)
     summary = db.Column(db.Text)
     author_intro = db.Column(db.Text)
+    catalog = db.Column(db.Text)
 
     book = db.relationship('Book',
         backref=db.backref('extra', cascade='all, delete-orphan',
         uselist=False))
 
-    def __init__(self, summary=None, author_intro=None, book=None):
+    def __init__(self, summary=None, author_intro=None, \
+                 catalog=None, book=None):
         self.summary = safe_html(summary)
         self.author_intro = safe_html(author_intro)
+        self.catalog = safe_html(catalog)
         self.book = book
 
 
@@ -145,30 +148,30 @@ class Book(db.Model):
     isbn10 = db.Column(db.String(30), unique=True)
     isbn13 = db.Column(db.String(30), unique=True)
 
-    title = db.Column(db.String(100))
-    subtitle = db.Column(db.String(100))
-    orititle = db.Column(db.String(100))
+    title = db.Column(db.String(255))
+    subtitle = db.Column(db.String(255))
+    orititle = db.Column(db.String(255))
 
     size = db.Column(db.SmallInteger)
     cover = db.Column(db.String(255))
-    authors = db.Column(JSONEncodedDict)
-    translators = db.Column(JSONEncodedDict)
+    author = db.Column(JSONEncodedDict)
+    translator = db.Column(JSONEncodedDict)
     publisher = db.Column(db.String(100))
     pubdate = db.Column(db.Date)
 
-    price = db.Column(db.Integer)
+    price = db.Column(db.Float)
     currency = db.Column(db.SmallInteger, default=Currency.CNY.value())
     pages = db.Column(db.Integer)
     binding = db.Column(db.SmallInteger, default=Binding.PAPERBACK.value())
-    language = db.Column(db.SmallInteger, default=Language.CHINESE.value())
+    language = db.Column(JSONEncodedDict, default=Language.CHINESE.value())
 
     timestamp = db.Column(db.Integer, default=int(time()))
     creator = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     tags = association_proxy('book_tags', 'tag')
 
-    def __init__(self, isbn, title, authors, publisher, price,
-                 subtitle=None, orititle=None, translators=None,
+    def __init__(self, isbn, title, author, publisher, price,
+                 subtitle=None, orititle=None, translator=None,
                  size=None, pubdate=None, currency=None,
                  pages=None, binding=None, language=None):
         if len(isbn) == 10:
@@ -176,7 +179,7 @@ class Book(db.Model):
             self.isbn13 = isbn
         elif len(isbn) == 13:
             self.isbn13 = isbn
-            self.isbn10 = isbn13_to10(isbn)
+            self.isbn10 = isbn13_to_10(isbn)
         else:
             raise ValueError(_(u'Invalid isbn number'))
 
@@ -184,8 +187,8 @@ class Book(db.Model):
         self.subtitle = subtitle
         self.orititle = orititle
 
-        self.authors = authors
-        self.translators = translators
+        self.author = author
+        self.translator = translator
 
         self.publisher = publisher
         self.pubdate = pubdate
@@ -197,7 +200,7 @@ class Book(db.Model):
         self.binding = binding
         self.language = language
 
-        self.creator = current_user.id
+        #self.creator = current_user.id
 
     def __repr__(self):
         return '<Book %r>' % self.title

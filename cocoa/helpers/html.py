@@ -10,15 +10,15 @@ class HTMLStripper(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         if tag in self.safe_tags:
-            self.fed.append(u'<%r>') % tag
+            self.fed.append('<' + tag + '>')
 
     def handle_endtag(self, tag):
         if tag in self.safe_tags:
-            self.fed.append(u'</%r>') % tag
+            self.fed.append('<' + tag + '>')
 
     def handle_startendtag(self, tag, attrs):
         if tag in self.safe_tags:
-            self.fed.append(u'<%r>') % tag
+            self.fed.append('<' + tag + '>')
 
     def handle_data(self, data):
         self.fed.append(data)
@@ -41,5 +41,8 @@ def nl2br(content):
 
 def safe_html(content, safe_tags=None):
 
+    if content == None:
+        return ''
+
     safe_tags = safe_tags or ('b', 'i', 'u', 'a')
-    return strip_tags(content, safe_tags)
+    return strip_tags(content, safe_tags).strip()

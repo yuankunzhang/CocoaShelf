@@ -4,9 +4,9 @@ from flask.ext.babel import gettext as _
 class EnumInteger(object):
     """在枚举类型中使用的整型"""
 
-    def __init__(self, val=0, name=None):
-        self._val = int(val)
+    def __init__(self, name, val=0):
         self._name = name
+        self._val = int(val)
 
     def __index__(self):
         return self._val
@@ -17,16 +17,28 @@ class EnumInteger(object):
     def name(self):
         return self._name
 
-    def set_name(self, name):
-        self._name = name
+    def text(self):
+        return self._text
 
-    def __str__(self):
-        return _(self._name.lower())
+    def set_text(self, text):
+        self._text = text
+
+
+class EnumBase(object):
+
+    @classmethod
+    def from_int(cls, value):
+        for k in cls.items.keys():
+            if cls.items[k] == value:
+                return EnumInteger(k, value)
+
+        return ValueError(_(u'Wrong value'))
 
 
 def Enum(*sequential, **named):
     """伪枚举类型"""
 
     data = dict(zip(sequential, range(len(sequential))), **named)
-    enums = dict((k, EnumInteger(v, k)) for (k, v) in data.iteritems())
-    return type('Enum', (), enums)
+    enums = dict((k, EnumInteger(k, v)) for (k, v) in data.iteritems())
+    enums['items'] = data
+    return type('Enum', (EnumBase,), enums)

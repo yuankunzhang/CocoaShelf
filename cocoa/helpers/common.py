@@ -38,3 +38,24 @@ def timesince(dt, default=None):
         return ngettext(singular, plural, num=period)
 
     return default
+
+
+def str2list(valuelist, seperator=',', remove_duplicates=True):
+
+    data = []
+
+    if valuelist:
+        data = [x.strip() for x in valuelist.split(seperator)]
+
+    if remove_duplicates:
+        data = list(_remove_duplicates(data))
+
+    return data
+
+def _remove_duplicates(seq):
+
+    d = {}
+    for item in seq:
+        if item.lower() not in d:
+            d[item.lower()] = True
+            yield item
