@@ -5,7 +5,15 @@
     margin-right: 60px;
 }
 
-form #location label {
+#signup-form #location label {
     width: 50px;
     float: left;
+}
+
+#settings-form #avatar .controls {
+    margin-top: 5px;
+}
+
+#settings-form #location {
+    margin-top: 5px;
 }

@@ -6,11 +6,11 @@ from cocoa import create_app
 from cocoa.extensions import db
 from cocoa.modules.location.models import IpSection, City, Province
 from cocoa.modules.account.models import User
-from cocoa.modules.book.models import Book, Category, BookCategory, \
-    Tag, BookTags, BookExtra
+from cocoa.modules.book.models import Book, BookExtra
+from cocoa.modules.category.models import Category, BookCategory
+from cocoa.modules.tag.models import Tag, BookTags
 from cocoa.modules.library.models import ShelfHave, ShelfRead, \
     ShelfReading, ShelfWish, ShelfLike, Library
-from cocoa.scripts.openisbn import grab
 
 manager = Manager(create_app())
 
@@ -27,12 +27,6 @@ def db_drop_all():
 
     if prompt_book("Are you sure? You will lose all your data!"):
         db.drop_all()
-
-
-@manager.command
-def grab_from_openisbn():
-
-    grab()
 
 
 @manager.shell

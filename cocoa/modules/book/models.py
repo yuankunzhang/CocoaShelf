@@ -1,71 +1,22 @@
 # -*- coding: utf-8 -*-
+import os
+import re
 from time import time
+from datetime import datetime
+from PIL import Image
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
+from flask import current_app
 from flask.ext.babel import gettext as _
 from flask.ext.login import current_user
 
 from cocoa.extensions import db
 from cocoa.helpers.sql import JSONEncodedDict
 from cocoa.helpers.html import safe_html
+from cocoa.helpers.upload import mkdir
 from .consts import Currency, Binding, Language
 from .helpers import isbn10_to_13, isbn13_to_10
-
-class Tag(db.Model):
-
-    __tablename__ = 'tag'
-
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(50), unique=True)
-    count = db.Column(db.Integer, default=1)
-    disabled = db.Column(db.Boolean, default=False)
-
-    def __init__(self, name):
-        self.name = name.lower()
-
-    def __repr__(self):
-        return '<Tag %r(%d total)>' % (self.name, self.count)
-
-    @staticmethod
-    def create_or_increase(name):
-        tag = Tag.query.filter_by(name=name).first()
-        if tag is None:
-            tag = Tag(name)
-            db.session.add(tag)
-            db.session.commit()
-        else:
-            tag.increase()
-
-        return tag
-
-    def increase(self):
-        self.count += 1
-        db.session.commit()
-
-
-class BookTags(db.Model):
-
-    __tablename__ = 'm_book_tags'
-
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
-        primary_key=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'),
-        primary_key=True)
-    count = db.Column(db.Integer, default=1)
-
-    book = db.relationship('Book',
-        backref=db.backref('book_tags', cascade='all, delete-orphan'))
-    tag = db.relationship('Tag')
-
-    def __init__(self, tag=None, book=None):
-        self.tag = tag
-        self.book = book
-
-    def increase(self):
-        self.count += 1
-        db.session.commit()
-
 
 class BookExtra(db.Model):
     """内容简介，作者简介"""
@@ -89,56 +40,6 @@ class BookExtra(db.Model):
         self.catalog = safe_html(catalog)
         self.book = book
 
-
-class Category(db.Model):
-
-    __tablename__ = 'category'
-
-    id = db.Column(db.Integer, primary_key=True)
-    parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    name = db.Column(db.String(100))
-
-    sub_categories = db.relationship('Category',
-        backref=db.backref('parent_category', remote_side=id))
-
-    def __init__(self, name, parent_id=None):
-        self.name = name
-        self.parent_id = parent_id
-
-    def __repr__(self):
-        return '<Category %r>' % self.name
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-
-def categories(parent_id=None):
-
-    if parent_id is not None:   # second or third level
-        return Category.query.filter_by(parent_id=parent_id).all()
-    else:                       # first level
-        return Category.query.filter_by(parent_id=None).all()
-
-
-class BookCategory(db.Model):
-
-    __tablename__ = 'm_book_category'
-
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
-        primary_key=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'),
-        primary_key=True)
-
-    book = db.relationship('Book',
-        backref=db.backref('book_category',
-        cascade='all, delete-orphan', uselist=False))
-    category = db.relationship('Category')
-
-    def __init__(self, category, book=None):
-        self.category = category
-        self.book = book
-    
 
 class Book(db.Model):
 
@@ -170,7 +71,7 @@ class Book(db.Model):
 
     tags = association_proxy('book_tags', 'tag')
 
-    def __init__(self, isbn, title, author, publisher, price,
+    def __init__(self, isbn, title, author, publisher, price=None,
                  subtitle=None, orititle=None, translator=None,
                  size=None, pubdate=None, currency=None,
                  pages=None, binding=None, language=None):
@@ -191,13 +92,13 @@ class Book(db.Model):
         self.translator = translator
 
         self.publisher = publisher
-        self.pubdate = pubdate
         self.size = size
+        self.set_pubdate(pubdate)
         
-        self.price = price
+        self.set_price(price)
         self.currency = currency
-        self.pages = pages
-        self.binding = binding
+        self.set_pages(pages)
+        self.set_binding(binding)
         self.language = language
 
         #self.creator = current_user.id
@@ -211,6 +112,7 @@ class Book(db.Model):
             raise ValueError(_(u'We\'ve already have this book'
                                u'in our database'))
         else:
+            self.timestamp = int(time())
             db.session.add(self)
             db.session.commit()
 
@@ -225,5 +127,79 @@ class Book(db.Model):
                 self.tags.append(tag)
                 db.session.commit()
 
+    def set_pubdate(self, pubdate):
+        if pubdate is None or pubdate == '': return
+
+        if isinstance(pubdate, datetime):
+            self.pubdate = pubdate
+            return
+        
+        patterns = {
+            '%Y-%m-%d': '^(\d{4}-\d{1,2}-\d{1,2})',     # 年月日
+            '%Y-%m':    '^(\d{4}-\d{1,2})',            # 年月
+            '%Y':       '^(\d{4})',                    # 年
+        }
+
+        for k in patterns.keys():
+            m = re.match(patterns[k], pubdate)
+            if m is not None:
+                self.pubdate = datetime.strptime(m.group(1), k)
+                return
+
     def get_pubdate(self):
         return self.pubdate.strftime('%Y-%m')
+
+    def set_price(self, price):
+        if price is None or price == '': return
+
+        if isinstance(price, (int, long, float)):
+            self.price = price
+            return
+
+        re_price = '^(\d+(\.?\d{0,2})?)'
+        m = re.match(re_price, price)
+        if m is not None:
+            self.price = float(m.group(1))
+
+    def set_binding(self, binding):
+        if binding is None or binding == '': return
+
+        try:
+            self.binding = Binding.from_text(binding)
+        except ValueError:
+            return
+
+    def set_pages(self, pages):
+        if pages is None or pages == '': return
+
+        if isinstance(pages, (int, long)):
+            self.pages = pages
+            return
+
+        re_pages = '^(\d+)'
+        m = re.match(re_pages, pages)
+        if m is not None:
+            self.pages = m.group(1)
+
+    def save_cover(self, cover_img):
+        FORMAT = 'JPEG'
+        EXTENSION = '.jpeg'
+
+        basedir = current_app.config['COVER_BASE_DIR']
+        folder = mkdir(basedir)
+
+        cover_name = 'b' + str(self.id) + '_' + \
+                     str(int(time())) + EXTENSION
+        cover_path = os.path.join(folder, cover_name)
+
+        cover_img.save(os.path.join(basedir, cover_path),
+                       FORMAT, quality=100)
+        
+        # delete old
+        if self.cover is not None:
+            old = os.path.join(basedir, self.cover)
+            if os.path.isfile(old):
+                os.remove(old)
+
+        self.cover = cover_path
+        db.session.commit()

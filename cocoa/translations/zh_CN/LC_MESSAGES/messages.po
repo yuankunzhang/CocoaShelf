@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Cocoa Version 0.4\n"
 "Report-Msgid-Bugs-To: feber007@gmail.com\n"
 "POT-Creation-Date: 2013-03-03 00:56+0800\n"
-"PO-Revision-Date: 2013-03-03 10:41+0800\n"
+"PO-Revision-Date: 2013-03-07 21:25+0800\n"
 "Last-Translator: Vincent Zhang <feber007@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=0\n"
@@ -18,48 +18,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: application.py:75
+#: application.py:79
 msgid "404 page not found"
-msgstr ""
+msgstr "404 未找到页面"
 
-#: application.py:81
+#: application.py:85
 msgid "403 forbidden"
-msgstr ""
+msgstr "403 访问禁止"
 
-#: application.py:87
+#: application.py:91
 msgid "500 server error"
-msgstr ""
+msgstr "500 服务器错误"
 
-#: application.py:93
+#: application.py:97
 msgid "401 unauthorized"
-msgstr ""
+msgstr "401 未授权"
 
 #: helpers/common.py:13
 msgid "just now"
 msgstr "刚刚"
 
-#: modules/account/consts.py:7
-msgid "member"
-msgstr "成员"
+#: helpers/enum.py:35
+msgid "Wrong value"
+msgstr ""
 
-#: modules/account/consts.py:8
-msgid "moderator"
-msgstr "编辑者"
+#: helpers/enum.py:43
+msgid "Wrong text"
+msgstr ""
 
 #: modules/account/consts.py:9
-msgid "admin"
-msgstr "管理员"
-
-#: modules/account/consts.py:13
-msgid "secret"
+msgid "Secret"
 msgstr "秘密"
 
-#: modules/account/consts.py:14
-msgid "male"
+#: modules/account/consts.py:10
+msgid "Male"
 msgstr "男"
 
-#: modules/account/consts.py:15
-msgid "female"
+#: modules/account/consts.py:11
+msgid "Female"
 msgstr "女"
 
 #: modules/account/forms.py:15 modules/account/forms.py:42
@@ -69,7 +65,7 @@ msgstr "邮箱"
 
 #: modules/account/forms.py:16 modules/account/forms.py:21
 #: modules/account/forms.py:43 modules/account/forms.py:49
-#: modules/account/forms.py:54
+#: modules/account/forms.py:54 modules/account/forms.py:64
 msgid "Required"
 msgstr "必填"
 
@@ -97,11 +93,23 @@ msgstr "确认密码"
 msgid "Doesn't match to your password"
 msgstr ""
 
+#: modules/account/forms.py:63
+msgid "Pen name"
+msgstr "笔名"
+
+#: modules/account/forms.py:69
+msgid "Introduction"
+msgstr "介绍"
+
+#: modules/account/forms.py:72
+msgid "Gender"
+msgstr "性别"
+
 #: modules/account/models.py:64
 msgid "This email has been signed up."
 msgstr ""
 
-#: modules/account/models.py:79
+#: modules/account/models.py:81
 msgid "Wrong previous password."
 msgstr ""
 
@@ -113,8 +121,28 @@ msgstr "注册成功"
 msgid "Successfully signed in."
 msgstr "登入成功"
 
+#: modules/account/views.py:88
+msgid "Settings updated"
+msgstr "更新帐号设置成功"
+
+#: modules/book/models.py:85
+msgid "Invalid isbn number"
+msgstr ""
+
+#: modules/book/models.py:112
+msgid "We've already have this bookin our database"
+msgstr ""
+
 #: modules/location/models.py:59
 msgid "Not a valid IP address."
+msgstr ""
+
+#: templates/account/settings.html:12
+msgid "Settings"
+msgstr "设置"
+
+#: templates/account/settings.html:45
+msgid "确定"
 msgstr ""
 
 #: templates/account/signin.html:11

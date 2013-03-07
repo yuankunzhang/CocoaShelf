@@ -1,0 +1,74 @@
+{% extends 'layout/single_column.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/account/account.css">
+<link rel="stylesheet" href="/static/css/account/upload_avatar.css">
+<link rel="stylesheet" href="/static/css/imgareaselect-default.css">
+{% endblock %}
+
+{% block js %}
+{{ super() }}
+<script type="text/javascript" src="/static/js/jquery/jquery.imgareaselect.pack.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>{{ _('Upload avatar') }}</small></h1>
+</div>
+
+<div id="upload-avatar-form">
+    {% from 'macros/form.html' import render_hidden %}
+    <form method="post" enctype="multipart/form-data" action="{{ url_for('account.upload_avatar') }}">
+        {{ form.csrf_token }}
+        <div class="input-append">
+            {{ form.avatar(id='avatar-upload') }}
+            <button class="btn" type="submit">上传</button>
+        </div>
+    </form>
+</div>
+
+{% if current_user.avatar %}
+<div id="avatar">
+    <img src="/static/upload/avatar/{{ current_user.avatar }}">
+</div>
+{% endif %}
+
+<div id="edit-thumbnail">
+    <form id="edit-thumbnail-form" method="post" action="{{ url_for('account.edit_thumbnail') }}">
+        {% if current_user.avatar %}
+        <div class="alert alert-info">
+            拖曳或缩放左侧的矩形区域
+        </div>
+
+        <div id="avatar-preview">
+            <div class="box">
+                <img src="/static/upload/avatar/{{ current_user.avatar }}">
+            </div>
+        </div>
+        <button type="submit" class="btn">确定</button>
+
+        <div id="thumbnail-values">
+            {{ render_hidden('x1', '0') }}
+            {{ render_hidden('y1', '0') }}
+            {{ render_hidden('x2', '0') }}
+            {{ render_hidden('y2', '0') }}
+        </div>
+
+        {% endif %}
+    </form>
+</div>
+
+<script src="/static/js/account/upload_avatar.js"></script>
+<script>
+var thumbnail_box = false;
+{% if current_user.thumbnail_box %}
+thumbnail_box = {{ current_user.thumbnail_box|tojson|safe }};
+console.debug(thumbnail_box);
+{% endif %}
+
+initThumbnail(thumbnail_box);
+</script>
+
+{% endblock %}

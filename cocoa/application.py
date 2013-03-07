@@ -58,6 +58,10 @@ def configure_modules(app, modules):
     for module, url_prefix in modules:
         app.register_blueprint(module, url_prefix=url_prefix)
 
+    if app.debug:
+        from cocoa.utils.book import mod as bookutils
+        app.register_blueprint(bookutils, url_prefix='/bookutils')
+
 
 def configure_template_filters(app):
 

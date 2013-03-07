@@ -1,0 +1,11 @@
+{% macro flash_messages() %}
+    {% with msg = get_flashed_messages() %}
+        {% if msg %}
+        <div class="alert alert-success">
+            {% for m in msg %}
+            {{ m|safe }}
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+{% endmacro %}

@@ -10,7 +10,9 @@ from flask.ext.login import login_required, login_user, \
 from flask.ext.babel import gettext as _
 
 from .models import User
-from .forms import SigninForm, SignupForm
+from .forms import SigninForm, SignupForm, SettingsForm, \
+    AvatarUploadForm
+from .helpers import save_avatar, update_thumbnail
 
 mod = Blueprint('account', __name__)
 
@@ -69,3 +71,50 @@ def signout():
 
     logout_user()
     return redirect(url_for('frontend.home'))
+
+
+@mod.route('/settings/', methods=['GET', 'POST'])
+@login_required
+def settings():
+
+    form = SettingsForm(request.form, current_user)
+
+    if form.validate_on_submit():
+        current_user.update(form.penname.data,
+                            form.intro.data,
+                            form.gender.data,
+                            form.city_id.data)
+
+        flash(_(u'Settings updated'))
+        return redirect(url_for('account.settings'))
+
+    return render_template('account/settings.html', form=form)
+
+
+@mod.route('/upload_avatar/', methods=['GET', 'POST'])
+@login_required
+def upload_avatar():
+
+    form = AvatarUploadForm(request.form)
+
+    if form.validate_on_submit():
+        save_avatar(Image.open(request.files['avatar']))
+        flash(_(u'Avatar uploaded successfully.'))
+
+    return render_template('account/upload_avatar.html', form=form)
+
+
+@mod.route('/edit_thumbnail/', methods=['POST'])
+@login_required
+def edit_thumbnail():
+
+    x1 = int(request.form['x1'])
+    y1 = int(request.form['y1'])
+    x2 = int(request.form['x2'])
+    y2 = int(request.form['y2'])
+
+    box = (x1, y1, x2, y2)
+    update_thumbnail(box)
+
+    flash(_(u'Thumbnail updated.'))
+    return redirect(url_for('account.settings'))

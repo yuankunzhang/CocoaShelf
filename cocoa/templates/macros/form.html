@@ -19,7 +19,20 @@
 {% macro render_checkbox(field) %}
     <div class="control-group">
         <div class="controls">
-            <label for="{{ field.id }}">{{ field }} {{ _(field.label.text) }}</label>
+            <label for="{{ field.id }}">{{ field }} {{ field.label.text }}</label>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro render_radio(field) %}
+    <div class="control-group">
+        {{ field.label(class="control-label") }}
+        <div class="controls">
+            <ul class="inline">
+            {% for subfield in field %}
+                <li><label for="{{ subfield.id }}">{{ subfield }} {{ subfield.label.text }}</label></li>
+            {% endfor %}
+            </ul>
         </div>
     </div>
 {% endmacro %}

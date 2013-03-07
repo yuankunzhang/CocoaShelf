@@ -22,7 +22,7 @@ class DefaultConfig(object):
     SECRET_KEY = 'set_a_secret_key_here'
     
     SQLALCHEMY_DATABASE_URI = 'mysql://root:900307@localhost/cocoa_dev_3'
-    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = False
 
     CSRF_ENABLED = True
     CSRF_SESSION_KEY = 'set_a_session_key_here'
@@ -41,7 +41,7 @@ class DefaultConfig(object):
     # 路径设置
     AVATAR_BASE_DIR = os.path.join(_basedir, 'static/upload/avatar')
     COVER_BASE_DIR = os.path.join(_basedir, 'static/upload/cover')
-    IMAGES_PER_DIR = 1000
+    FILES_PER_DIR = 1000
     MAX_CONTENT_LENGTH = 8 * 1024 * 1024
 
 

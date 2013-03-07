@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-03-03 10:41+0800\n"
+"POT-Creation-Date: 2013-03-07 21:25+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: application.py:75
+#: application.py:79
 msgid "404 page not found"
 msgstr ""
 
-#: application.py:81
+#: application.py:85
 msgid "403 forbidden"
 msgstr ""
 
-#: application.py:87
+#: application.py:91
 msgid "500 server error"
 msgstr ""
 
-#: application.py:93
+#: application.py:97
 msgid "401 unauthorized"
 msgstr ""
 
@@ -37,28 +37,24 @@ msgstr ""
 msgid "just now"
 msgstr ""
 
-#: modules/account/consts.py:7
-msgid "member"
+#: helpers/enum.py:35
+msgid "Wrong value"
 msgstr ""
 
-#: modules/account/consts.py:8
-msgid "moderator"
+#: helpers/enum.py:43
+msgid "Wrong text"
 msgstr ""
 
 #: modules/account/consts.py:9
-msgid "admin"
+msgid "Secret"
 msgstr ""
 
-#: modules/account/consts.py:13
-msgid "secret"
+#: modules/account/consts.py:10
+msgid "Male"
 msgstr ""
 
-#: modules/account/consts.py:14
-msgid "male"
-msgstr ""
-
-#: modules/account/consts.py:15
-msgid "female"
+#: modules/account/consts.py:11
+msgid "Female"
 msgstr ""
 
 #: modules/account/forms.py:15 modules/account/forms.py:42
@@ -68,7 +64,7 @@ msgstr ""
 
 #: modules/account/forms.py:16 modules/account/forms.py:21
 #: modules/account/forms.py:43 modules/account/forms.py:49
-#: modules/account/forms.py:54
+#: modules/account/forms.py:54 modules/account/forms.py:64
 msgid "Required"
 msgstr ""
 
@@ -96,11 +92,23 @@ msgstr ""
 msgid "Doesn't match to your password"
 msgstr ""
 
+#: modules/account/forms.py:63
+msgid "Pen name"
+msgstr ""
+
+#: modules/account/forms.py:69
+msgid "Introduction"
+msgstr ""
+
+#: modules/account/forms.py:72
+msgid "Gender"
+msgstr ""
+
 #: modules/account/models.py:64
 msgid "This email has been signed up."
 msgstr ""
 
-#: modules/account/models.py:79
+#: modules/account/models.py:81
 msgid "Wrong previous password."
 msgstr ""
 
@@ -112,8 +120,28 @@ msgstr ""
 msgid "Successfully signed in."
 msgstr ""
 
+#: modules/account/views.py:88
+msgid "Settings updated"
+msgstr ""
+
+#: modules/book/models.py:85
+msgid "Invalid isbn number"
+msgstr ""
+
+#: modules/book/models.py:112
+msgid "We've already have this bookin our database"
+msgstr ""
+
 #: modules/location/models.py:59
 msgid "Not a valid IP address."
+msgstr ""
+
+#: templates/account/settings.html:12
+msgid "Settings"
+msgstr ""
+
+#: templates/account/settings.html:45
+msgid "确定"
 msgstr ""
 
 #: templates/account/signin.html:11

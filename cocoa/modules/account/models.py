@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
+import os
 import re
-import json
 from time import time
+from PIL import Image
 
 from werkzeug import generate_password_hash, check_password_hash
 
+from flask import current_app
 from flask.ext.babel import gettext as _
 
 from cocoa.extensions import db, login_manager
+from cocoa.helpers.sql import JSONEncodedDict
+from cocoa.helpers.upload import mkdir
 from .consts import Role, Gender
 
 class User(db.Model):
@@ -22,7 +26,7 @@ class User(db.Model):
     intro = db.Column(db.Text)
     gender = db.Column(db.SmallInteger, default=Gender.SECRET.value())
     avatar = db.Column(db.String(100))
-    thumbnail_box = db.Column(db.String(100))
+    thumbnail_box = db.Column(JSONEncodedDict)
     city_id = db.Column(db.String(20), db.ForeignKey('geo_city.city_id'))
     role = db.Column(db.SmallInteger, default=Role.MEMBER.value())
     active = db.Column(db.Boolean, default=False)
@@ -109,18 +113,25 @@ class User(db.Model):
     # end
 
     def get_location(self):
-        """获取用户所在地，格式： '江苏 无锡市'"""
+        location = {
+            'city_id': None,
+            'province_id': None,
+            'text': None,
+        }
 
         if self.city is None:
-            return None
+            return location
 
+        location['city_id'] = self.city.city_id
+        location['province_id'] = self.city.province.province_id
         province_name = self.city.province.get_short_name()
         city_name = self.city.name
-        return u'%r %r' % (province_name, city_name)
+        location['text'] = province_name + ' ' + city_name
+
+        return location
 
     def set_thumbnail_box(self, box):
-        box = dict(zip(('x1', 'y1', 'x2', 'y2'), box))
-        self.thumbnail_box = json.dumps(box)
+        self.thumbnail_box = dict(zip(('x1', 'y1', 'x2', 'y2'), box))
 
     def get_thumbnail(self):
         if self.avatar is None:

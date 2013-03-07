@@ -1,0 +1,69 @@
+{% extends 'layout/single_column.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/account/account.css">
+<link rel="stylesheet" href="/static/css/account/cityselect.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>{{ _('Settings') }}</small></h1>
+</div>
+
+{% from 'macros/flash.html' import flash_messages %}
+{{ flash_messages() }}
+
+<div id="settings-form">
+    {% from 'macros/form.html' import render_field, render_radio, render_submit %}
+    <form method="post" class="form-horizontal" action="{{ url_for('account.settings') }}">
+        {{ form.csrf_token }}
+        <div id="avatar" class="control-group">
+            <div class="control-label">
+                <label>头像</label>
+            </div>
+            <div class="controls">
+                {% if current_user.avatar %}
+                <img src="/static/upload/avatar/{{ current_user.get_thumbnail() }}">
+                <a href="{{ url_for('account.upload_avatar') }}">更新头像</a>
+                {% else %}
+                <a href="{{ url_for('account.upload_avatar') }}">上传头像</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {{ render_field(form.penname) }}
+        {{ render_field(form.intro) }}
+        {{ render_radio(form.gender) }}
+
+        <div class="control-group">
+            <label class="control-label">城市</label>
+            <div id="location" class="controls">
+                {{ form.city_id }}
+                {% include 'account/cityselect.html' %}
+            </div>
+        </div>
+
+        {{ render_submit(_('确定')) }}
+    </form>
+</div>
+
+<script type="text/javascript">
+$('document').ready(function() {
+    var geo = null;
+
+    {% if current_user.is_authenticated() %}
+    {% set geo = current_user.get_location() %}
+    geo = {
+        city_id: '{{ geo.city_id }}',
+        province_id: '{{ geo.province_id }}',
+        locate_str: '{{ geo.text }}'
+    };
+    {% endif %}
+
+    $('#signup-form').cityselect(geo);
+});
+</script>
+
+{% endblock %}

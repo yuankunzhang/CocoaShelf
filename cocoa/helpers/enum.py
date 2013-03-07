@@ -32,7 +32,15 @@ class EnumBase(object):
             if cls.items[k] == value:
                 return EnumInteger(k, value)
 
-        return ValueError(_(u'Wrong value'))
+        raise ValueError(_(u'Wrong value'))
+
+    @classmethod
+    def from_text(cls, text):
+        for k in cls.items.keys():
+            if k == text:
+                return EnumInteger(k, cls.items[k])
+
+        raise ValueError(_(u'Wrong text'))
 
 
 def Enum(*sequential, **named):
