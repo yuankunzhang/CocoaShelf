@@ -9,8 +9,8 @@ from cocoa.modules.account.models import User
 from cocoa.modules.book.models import Book, BookExtra
 from cocoa.modules.category.models import Category, BookCategory
 from cocoa.modules.tag.models import Tag, BookTags
-from cocoa.modules.library.models import ShelfHave, ShelfRead, \
-    ShelfReading, ShelfWish, ShelfLike, Library
+from cocoa.modules.shelf.models import IHave, IRead, \
+    IReading, IWish, ILike, Shelf
 from cocoa.modules.event.models import EventRecord
 
 manager = Manager(create_app())

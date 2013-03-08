@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/shelf/shelf.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="row-fluid">
+    <div class="span3">
+        {% block sidebar %}
+        {% endblock %}
+    </div>
+
+    <div class="span9">
+        {% block main %}
+        {% endblock %}
+    </div><!-- end .span9 -->
+</div>
+
+{% endblock %}

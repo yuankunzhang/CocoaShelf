@@ -1,0 +1,29 @@
+{% set user=shelf.user %}
+{% include 'account/badge.html' %}
+
+<div id="sidebar">
+	<ul class="nav nav-list nav-pills nav-stacked">
+        <li id="home-page"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">全部</a></li>
+        <li id="i-have"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">我有</a></li>
+        <li id="i-read"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">我读</a></li>
+        <li id="i-like"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">喜欢</a></li>
+
+        <li class="divider"></li>
+        <li class="divider"></li>
+
+        <li id="colists"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">书单</a></li>
+        <li id="tags"><a href="#">标签</a></li>
+
+        <li class="divider"></li>
+        <li class="divider"></li>
+
+        <li id="reading-track"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">阅读计划</a></li>
+	</ul>
+</div>
+
+<script>
+{% if active %}
+$('#sidebar ul li').removeClass('active');
+$('#sidebar ul li#{{ active }}').addClass('active');
+{% endif %}
+</script>

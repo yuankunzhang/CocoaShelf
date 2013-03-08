@@ -14,7 +14,7 @@ from flask.ext.babel import gettext as _
 
 from .config import DefaultConfig
 from .extensions import db, sijax, login_manager, cache, babel
-from .modules import frontend, location, account, book, library
+from .modules import frontend, location, account, book, shelf
 
 __all__ = ['create_app']
 
@@ -25,7 +25,7 @@ DEFAULT_MODULES = (
     (location.mod, '/location'),
     (account.mod, '/u'),
     (book.mod, '/book'),
-    (library.mod, '/shelf'),
+    (shelf.mod, '/shelf'),
 )
 
 def create_app(config=None, app_name=None, modules=None):

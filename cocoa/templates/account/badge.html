@@ -1,0 +1,14 @@
+<link rel="stylesheet" type="text/css" href="/static/css/account/badge.css">
+
+<div class="user-badge well">
+    <div class="media">
+        <a class="pull-left" href="#">
+            <img width=60 height=60 src="/static/upload/avatar/{{ user.get_thumbnail() }}">
+        </a>
+
+        <ul class="unstyled">
+            <li>{{ user.penname }}</li>
+            <li>{{ user.get_location()['text'] }}</li>
+        </ul>
+    </div>
+</div>
