@@ -13,6 +13,7 @@ from cocoa.extensions import db, login_manager
 from cocoa.helpers.sql import JSONEncodedDict
 from cocoa.helpers.upload import mkdir
 from .consts import Role, Gender
+from ..event.models import SignUpEvent
 
 class User(db.Model):
 
@@ -26,7 +27,7 @@ class User(db.Model):
     intro = db.Column(db.Text)
     gender = db.Column(db.SmallInteger, default=Gender.SECRET.value())
     avatar = db.Column(db.String(100))
-    thumbnail_box = db.Column(JSONEncodedDict)
+    thumbnail_box = db.Column(JSONEncodedDict(255))
     city_id = db.Column(db.String(20), db.ForeignKey('geo_city.city_id'))
     role = db.Column(db.SmallInteger, default=Role.MEMBER.value())
     active = db.Column(db.Boolean, default=False)
@@ -64,6 +65,9 @@ class User(db.Model):
         if u is None:
             db.session.add(self)
             db.session.commit()
+
+            e = SignUpEvent(self.id)
+            e.save()
         else:
             raise ValueError(_('This email has been signed up.'))
     

@@ -24,29 +24,24 @@ class EnumInteger(object):
         self._text = text
 
 
-class EnumBase(object):
+class Enum(object):
 
-    @classmethod
-    def from_int(cls, value):
-        for k in cls.items.keys():
-            if cls.items[k] == value:
-                return EnumInteger(k, value)
+    def __init__(self, *seq, **named):
+        self._items = dict(zip(seq, range(len(seq))), **named).items()
+        d = dict((k, EnumInteger(k, v)) for (k, v) in self._items)
+        self.__dict__.update(d)
 
+    def from_int(self, value):
+        for k, v in self._items:
+            if v == value:
+                return self.__dict__[k]
         raise ValueError(_(u'Wrong value'))
 
-    @classmethod
-    def from_text(cls, text):
-        for k in cls.items.keys():
-            if k == text:
-                return EnumInteger(k, cls.items[k])
+    def from_name(self, name):
+        for k, v in self._items:
+            if k == name:
+                return self.__dict__[k]
+        raise ValueError(_(u'Wrong key'))
 
-        raise ValueError(_(u'Wrong text'))
-
-
-def Enum(*sequential, **named):
-    """伪枚举类型"""
-
-    data = dict(zip(sequential, range(len(sequential))), **named)
-    enums = dict((k, EnumInteger(k, v)) for (k, v) in data.iteritems())
-    enums['items'] = data
-    return type('Enum', (EnumBase,), enums)
+    def items(self):
+        return self._items

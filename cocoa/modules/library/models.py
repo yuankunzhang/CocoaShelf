@@ -6,12 +6,12 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from cocoa.extensions import db
 from cocoa.helpers.common import timesince
-from .consts import Shelf_type
+from .consts import ShelfType
 
 class ShelfHave(db.Model):
     """我有"""
 
-    __tablename__ = Shelf_type.HAVE.text()
+    __tablename__ = ShelfType.HAVE.text()
 
     library_id = db.Column(db.Integer, db.ForeignKey('library.id'),
         primary_key=True)
@@ -31,7 +31,7 @@ class ShelfHave(db.Model):
 class ShelfRead(db.Model):
     """读过"""
 
-    __tablename__ = Shelf_type.READ.text()
+    __tablename__ = ShelfType.READ.text()
 
     library_id = db.Column(db.Integer, db.ForeignKey('library.id'),
         primary_key=True)
@@ -51,7 +51,7 @@ class ShelfRead(db.Model):
 class ShelfReading(db.Model):
     """在读"""
 
-    __tablename__ = Shelf_type.READING.text()
+    __tablename__ = ShelfType.READING.text()
 
     library_id = db.Column(db.Integer, db.ForeignKey('library.id'),
         primary_key=True)
@@ -71,7 +71,7 @@ class ShelfReading(db.Model):
 class ShelfWish(db.Model):
     """想读"""
 
-    __tablename__ = Shelf_type.WISH.text()
+    __tablename__ = ShelfType.WISH.text()
 
     library_id = db.Column(db.Integer, db.ForeignKey('library.id'),
         primary_key=True)
@@ -91,7 +91,7 @@ class ShelfWish(db.Model):
 class ShelfLike(db.Model):
     """喜欢"""
 
-    __tablename__ = Shelf_type.LIKE.text()
+    __tablename__ = ShelfType.LIKE.text()
 
     library_id = db.Column(db.Integer, db.ForeignKey('library.id'),
         primary_key=True)
@@ -115,11 +115,11 @@ class Library(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    have_books = association_proxy(Shelf_type.HAVE.text(), 'book')
-    read_books = association_proxy(Shelf_type.READ.text(), 'book')
-    reading_books = association_proxy(Shelf_type.READING.text(), 'book')
-    wish_books = association_proxy(Shelf_type.WISH.text(), 'book')
-    like_books = association_proxy(Shelf_type.LIKE.text(), 'book')
+    have_books = association_proxy(ShelfType.HAVE.text(), 'book')
+    read_books = association_proxy(ShelfType.READ.text(), 'book')
+    reading_books = association_proxy(ShelfType.READING.text(), 'book')
+    wish_books = association_proxy(ShelfType.WISH.text(), 'book')
+    like_books = association_proxy(ShelfType.LIKE.text(), 'book')
 
     def __init__(self, user=None):
         self.user = user

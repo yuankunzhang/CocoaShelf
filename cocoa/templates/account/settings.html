@@ -45,6 +45,13 @@
             </div>
         </div>
 
+        <div class="control-group">
+            <label class="control-label">密码</label>
+            <div id="password" class="controls">
+                <a href="{{ url_for('account.change_password') }}">修改密码</a>
+            </div>
+        </div>
+
         {{ render_submit(_('确定')) }}
     </form>
 </div>

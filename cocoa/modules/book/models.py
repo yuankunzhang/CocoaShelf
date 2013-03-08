@@ -55,8 +55,8 @@ class Book(db.Model):
 
     size = db.Column(db.SmallInteger)
     cover = db.Column(db.String(255))
-    author = db.Column(JSONEncodedDict)
-    translator = db.Column(JSONEncodedDict)
+    author = db.Column(JSONEncodedDict(255))
+    translator = db.Column(JSONEncodedDict(255))
     publisher = db.Column(db.String(100))
     pubdate = db.Column(db.Date)
 
@@ -64,7 +64,8 @@ class Book(db.Model):
     currency = db.Column(db.SmallInteger, default=Currency.CNY.value())
     pages = db.Column(db.Integer)
     binding = db.Column(db.SmallInteger, default=Binding.PAPERBACK.value())
-    language = db.Column(JSONEncodedDict, default=Language.CHINESE.value())
+    language = db.Column(JSONEncodedDict(255),
+        default=Language.CHINESE.value())
 
     timestamp = db.Column(db.Integer, default=int(time()))
     creator = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -146,8 +147,10 @@ class Book(db.Model):
                 self.pubdate = datetime.strptime(m.group(1), k)
                 return
 
-    def get_pubdate(self):
-        return self.pubdate.strftime('%Y-%m')
+    def get_price(self):
+        if self.price is None:
+            return None
+        return str(self.price) + u'元'
 
     def set_price(self, price):
         if price is None or price == '': return

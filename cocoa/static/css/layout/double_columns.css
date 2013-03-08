@@ -1,0 +1,16 @@
+body > .container {
+    width: 900px;
+    margin-top: 20px;
+    background: #fff;
+    padding: 30px;
+    border: 1px solid #c8dcbe;
+
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
+body .left-col {
+    border-right: 1px solid #eee;
+    padding-right: 10px;
+}

@@ -87,3 +87,35 @@ class AvatarUploadForm(Form):
         # TODO
         # safty check
     ], id=u'avatar')
+
+
+def old_password_ok():
+
+    message = _(u'Wrong password')
+
+    def _check(form, field):
+        if not current_user.check_password(field.data):
+            raise ValidationError(message)
+
+    return _check
+
+
+class PasswordChangeForm(Form):
+
+    old = PasswordField(_(u'Old password'), [
+        Required(message=_(u'Required')),
+        # TODO
+        #Length(min=6, message=u'长度最少6位'),
+        old_password_ok()
+    ], id=u'old-password')
+
+    new = PasswordField(_(u'New password'), [
+        Required(message=_(u'Required')),
+        # TODO
+        #Length(min=5, messsage=u'长度最少6位'),
+    ], id=u'new-password')
+
+    confirm = PasswordField(_(u'Confirm'), [
+        Required(message=_(u'Required')),
+        EqualTo(u'new', message=_(u'Not match')),
+    ], id=u'confirm')

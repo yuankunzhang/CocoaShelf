@@ -1,0 +1,170 @@
+{% extends 'layout/double_columns.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/static/css/book/book.css">
+{% endblock %}
+
+{% block left_col %}
+<div class="page-header">
+    <h2><small>{{ book.title }}</small></h2>
+</div>
+
+<div id="book-thumb" class="box clearfix">
+    <div class="box-content">
+        <div class="span3 book-cover">
+            <img width=100 src="/static/upload/cover/{{ book.cover }}">
+        </div>
+        <div class="span4 book-meta">
+            <dl>
+                <dt>书名：</dt>
+                <dd>{{ book.title }}</dd>
+
+                <dt>ISBN：</dt>
+                <dd>{{ book.isbn13 }}</dd>
+
+                {% if book.subtitle %}
+                <dt>副标题：</dt>
+                <dd>{{ book.subtitle }}</dd>
+                {% endif %}
+
+                {% if book.orititle %}
+                <dt>原作名：</dt>
+                <dd>{{ book.orititle }}</dd>
+                {% endif %}
+
+                <dt>作者：</dt>
+                <dd>{{ ', '.join(book.author) }}</dd>
+
+                {% if book.translator %}
+                <dt>译者：</dt>
+                <dd>{{ ', '.join(book.translator) }}</dd>
+                {% endif %}
+
+                <dt>页数：</dt>
+                <dd>{{ book.pages }}</dd>
+
+                <dt>定价：</dt>
+                <dd>{{ book.get_price() }}</dd>
+
+                <dt>出版社：</dt>
+                <dd>{{ book.publisher }}</dd>
+
+                <dt>出版日期：</dt>
+                <dd>{{ book.pubdate }}</dd>
+            </dl>
+        </div><!-- end .book-meta -->
+
+        <div class="span4 offset1">
+            <div class="star-rating">
+                <div class="clearfix">
+                    <div id="star"></div>
+                    <div id="hint"></div>
+                </div>
+
+                <div id="rate-count">(<span>0</span>人评价)</div>
+                <div id="my-score"></div>
+            </div>
+        </div>
+    </div><!-- end .box-content -->
+</div><!-- end #book-thumb -->
+
+<script type="text/javascript" src="/static/js/jquery/jquery.raty.min.js"></script>
+<script type="text/javascript">
+$('#star').raty({
+    readOnly : false,
+    score    : 0,
+    path     : "/static/img/raty",
+    click    : null,
+    mouseover: null
+});
+</script>
+
+<div id="book-tags" class="box clearfix">
+    <div class="box-content">
+        <div class="category">
+            <dl>
+                <dt>所属分类：</dt>
+                <dd>文学</dd>
+            </dl>
+        </div>
+
+        <hr>
+
+        <div class="tags">
+            <dl>
+                <dt>这本书的标签：</dt>
+                {% for book_tag in book.book_tags %}
+                <dd><a href="#">{{ book_tag.tag.name }}({{ book_tag.count }})</a></dd>
+                {% endfor %}
+            </dl>
+        </div>
+
+        <div class="my-tags">
+            <dl>
+                <dt>我的标签：</dt>
+                {% for book_tag in book.book_tags %}
+                <dd><a href="#">{{ book_tag.tag.name }}({{ book_tag.count }})</a></dd>
+                {% endfor %}
+        </div>
+    </div>
+</div><!-- end #book-tags -->
+
+<div id="book-summary" class="box clearfix">
+    <div class="box-header">
+        <h2><small>内容简介</small></h2>
+    </div>
+
+    <div class="box-content">
+        {{ book.extra.summary|nl2br }}
+    </div>
+</div><!-- end #book-summary -->
+
+<hr>
+
+<div id="author-intro" class="box clearfix">
+    <div class="box-header">
+        <h2><small>作者简介</small></h2>
+    </div>
+
+    <div class="box-content">
+        {{ book.extra.author_intro|nl2br }}
+    </div>
+</div>
+
+<hr>
+
+{% if book.extra.catalog %}
+<div id="catalog" class="box clearfix">
+    <div class="box-header">
+        <h2><small>目录</small></h2>
+    </div>
+
+    <div class="box-content">
+        {{ book.extra.catalog|nl2br }}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block right_col %}
+<div id="book-for-me">
+</div>
+
+<hr>
+
+<div id="operations">
+    <div>
+        <a href="#">写书评&rarr;</a>
+    </div>
+
+    <div>
+        <a href="#">添加到书单&rarr;</a>
+    </div>
+
+    <div>
+        <a href="#">添加到书架&rarr;</a>
+    </div>
+</div>
+{% endblock %}

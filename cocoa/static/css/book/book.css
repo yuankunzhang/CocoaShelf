@@ -1,0 +1,25 @@
+#book-thumb dl,
+#book-tags dl {
+    margin: 0;
+}
+
+#book-thumb dl dt,
+#book-tags dl dt {
+    float: left;
+    font-weight: normal;
+}
+
+#book-tags {
+    border: 2px dashed #ddd;
+    margin: 10px;
+    padding: 10px;
+
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+#operations div {
+    font-size: 14px;
+    margin-bottom: 10px;
+}

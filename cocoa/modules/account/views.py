@@ -11,7 +11,7 @@ from flask.ext.babel import gettext as _
 
 from .models import User
 from .forms import SigninForm, SignupForm, SettingsForm, \
-    AvatarUploadForm
+    AvatarUploadForm, PasswordChangeForm
 from .helpers import save_avatar, update_thumbnail
 
 mod = Blueprint('account', __name__)
@@ -118,3 +118,18 @@ def edit_thumbnail():
 
     flash(_(u'Thumbnail updated.'))
     return redirect(url_for('account.settings'))
+
+
+@mod.route('/change_password/', methods=['GET', 'POST'])
+@login_required
+def change_password():
+
+    form = PasswordChangeForm(request.form)
+
+    if form.validate_on_submit():
+        current_user.update_password(form.old.data, form.new.data)
+
+        flash(_(u'Password changed'))
+        return redirect(url_for('account.settings'))
+
+    return render_template('account/change_password.html', form=form)

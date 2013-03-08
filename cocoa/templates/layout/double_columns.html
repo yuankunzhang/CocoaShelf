@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/layout/double_columns.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="row-fluid">
+    <div class="left-col span8">
+    {% block left_col %}
+    {% endblock %}
+    </div>
+
+    <div class="right-col span4">
+    {% block right_col %}
+    {% endblock %}
+    </div>
+</div>
+
+{% endblock %}

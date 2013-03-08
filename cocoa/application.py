@@ -6,12 +6,15 @@
     初始化脚本
     2013.03.01
 """
+import re
+
+from jinja2 import evalcontextfilter, Markup, escape
 from flask import Flask, request, jsonify, render_template, g
 from flask.ext.babel import gettext as _
 
 from .config import DefaultConfig
 from .extensions import db, sijax, login_manager, cache, babel
-from .modules import frontend, location, account
+from .modules import frontend, location, account, book, library
 
 __all__ = ['create_app']
 
@@ -21,6 +24,8 @@ DEFAULT_MODULES = (
     (frontend.mod, ''),
     (location.mod, '/location'),
     (account.mod, '/u'),
+    (book.mod, '/book'),
+    (library.mod, '/shelf'),
 )
 
 def create_app(config=None, app_name=None, modules=None):
@@ -65,7 +70,16 @@ def configure_modules(app, modules):
 
 def configure_template_filters(app):
 
-    pass
+    _paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
+
+    @app.template_filter()
+    @evalcontextfilter
+    def nl2br(eval_ctx, value):
+        result = u'\n\n'.join(u'<p>%s</p>' % p.replace('\n', \
+            Markup('<br>\n')) for p in _paragraph_re.split(value))
+        if eval_ctx.autoescape:
+            result = Markup(result)
+        return result
 
 
 def configure_errorhandlers(app):

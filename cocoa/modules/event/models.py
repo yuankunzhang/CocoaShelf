@@ -3,7 +3,8 @@ import json
 from time import time
 
 from cocoa.extensions import db
-from .consts import Event_type
+from cocoa.helpers.sql import JSONEncodedDict
+from .consts import EventType
 
 class EventRecord(db.Model):
 
@@ -11,12 +12,14 @@ class EventRecord(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.SmallInteger)
-    what = db.Column(db.Text)
+    who = db.Column(db.Integer, db.ForeignKey('user.id'))
+    what = db.Column(JSONEncodedDict(255))
     timestamp = db.Column(db.Integer, default=int(time()))
 
     def __init__(self, type, event, timestamp=None):
         self.type = type
-        self.what = event.to_json()
+        self.who = event.who
+        self.what = event.__dict__
         self.timestamp = timestamp
 
     def save(self):
@@ -24,43 +27,36 @@ class EventRecord(db.Model):
         db.session.commit()
 
     def get_event(self):
-        return Event.from_json(self.type, self.what)
+        return Event.get(self.type, self.what)
 
 
 class Event(object):
 
-    def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__)
-
     @staticmethod
-    def from_json(type, json_str):
-        return json.loads(json_str, object_hook=_object_decoder(type))
+    def get(type, attrs):
+        if type == EventType.NEW_SHELF.value():
+            return NewShelfEvent(attrs['user_id'])
+
+    def save(self):
+        type = self.__type__.value()
+        EventRecord(type, self).save()
 
 
-def  _object_decoder(type):
+class SignUpEvent(Event):
 
-    def _decoder(obj):
-        if type == Event_type.NEW_SHELF.value():
-            return NewShelfEvent(obj['shelf_id'])
-        elif type == Event_type.ADD_BOOK_TO_SHELF.value():
-            return AddBookToShelfEvent(
-                obj['shelf_id'],
-                obj['shelf_type'],
-                obj['book_id']
-            )
+    __type__ = EventType.SIGN_UP
 
-    return _decoder
-
-
-class NewShelfEvent(Event):
-
-    def __init__(self, shelf_id):
-        self.shelf_id = shelf_id
+    def __init__(self, user_id):
+        self.user_id = user_id
+        self.who = user_id
 
 
 class AddBookToShelfEvent(Event):
 
-    def __init__(self, shelf_id, shelf_type, book_id):
-        self.shelf_id = shelf_id
+    __type__ = EventType.ADD_BOOK_TO_SHELF
+
+    def __init__(self, user_id, shelf_type, book_id):
+        self.user_id = user_id
+        self.who = user_id
         self.shelf_type = shelf_type
         self.book_id = book_id

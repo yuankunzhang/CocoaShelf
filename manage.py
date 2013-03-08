@@ -11,6 +11,7 @@ from cocoa.modules.category.models import Category, BookCategory
 from cocoa.modules.tag.models import Tag, BookTags
 from cocoa.modules.library.models import ShelfHave, ShelfRead, \
     ShelfReading, ShelfWish, ShelfLike, Library
+from cocoa.modules.event.models import EventRecord
 
 manager = Manager(create_app())
 
