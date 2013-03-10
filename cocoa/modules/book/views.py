@@ -26,6 +26,10 @@ def item(book_id):
         return g.sijax.process_request()
 
     book = Book.query.get_or_404(book_id)
+
+    if book.rate:
+        book.score = book.rate.total / book.rate.count
+
     book.shelf_status = {}
     if current_user.is_authenticated():
         book.shelf_status = current_user.shelf.get_book_status(book)

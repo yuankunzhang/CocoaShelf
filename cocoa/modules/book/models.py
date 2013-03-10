@@ -18,6 +18,7 @@ from cocoa.helpers.upload import mkdir
 from .consts import Currency, Binding, Language
 from .helpers import isbn10_to_13, isbn13_to_10
 from ..tag.models import Tag, BookTags
+from ..bookrate.models import BookRate, BookRateDetail
 
 class BookExtra(db.Model):
     """内容简介，作者简介"""
@@ -221,3 +222,23 @@ class Book(db.Model):
     def set_category(self, category):
         self.category = category
         db.session.commit()
+
+    def rate_me(self, score):
+        my_rate = BookRateDetail.query.filter_by(book_id=self.id,
+            user_id=current_user.id).first()
+
+        if my_rate is not None:
+            return
+        else:
+            rate_detail = BookRateDetail(int(score), current_user, self)
+            rate_detail.save()
+
+        return self.rate.total, self.rate.count
+
+    def my_rate(self):
+        mine = BookRateDetail.query.filter_by(book_id=self.id,
+            user_id=current_user.id).first()
+        return mine
+
+    def get_rate_count(self):
+        return BookRateDetail.query.filter_by(book_id=self.id).count()

@@ -79,12 +79,39 @@
 
 <script type="text/javascript" src="/static/js/jquery/jquery.raty.min.js"></script>
 <script type="text/javascript">
+var readOnly = false;
+var score = null;
+var hints = [null, '差劲', '一般', '还行', '喜欢', '力荐'];
+
+{% if book.score %}
+{% if book.my_rate() %}
+readOnly = true;
+$('#my-score').html('我的评分：{{ book.my_rate().score }}分');
+{% endif %}
+
+score = {{ book.score }}
+$('#hint').html(hints[score]);
+$('#rate-count span').html('{{ book.get_rate_count() }}');
+{% endif %}
+
 $('#star').raty({
-    readOnly : false,
-    score    : 0,
+    readOnly : readOnly,
+    score    : score,
     path     : "/static/img/raty",
-    click    : null,
-    mouseover: null
+    click    : function(score, evt) {
+        {% if current_user.is_authenticated() %}
+        Sijax.request('rate', [{{ book.id }}, score]);
+        {% endif %}
+    },
+    mouseover: function(score, evt) {
+        var target = $('#hint');
+
+        if (score && score >= 1 && score <= 5) {
+            target.html(hints[score]);
+        } else {
+            target.empty();
+        }
+    }
 });
 </script>
 
@@ -97,7 +124,7 @@ $('#star').raty({
                 <dd>{{ book.category.as_tree()|safe }}</dd>
                 {% endif %}
                 {% if current_user.is_authenticated %}
-                <dd><a href="{{ url_for('category.change_category', book_id=book.id) }}">修改</dd>
+                <dd><a href="{{ url_for('category.change_category', book_id=book.id) }}">修改</a></dd>
                 {% endif %}
             </dl>
         </div>
