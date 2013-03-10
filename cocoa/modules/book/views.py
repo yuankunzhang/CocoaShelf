@@ -5,7 +5,9 @@ from flask import Blueprint, request, render_template, g, \
 from flask.ext.login import current_user, login_required
 
 from .models import Book
+from .ajax import AjaxActions
 from ..tag.models import BookTags
+from ..shelf.consts import ColumnType
 
 mod = Blueprint('book', __name__)
 
@@ -19,6 +21,14 @@ def home():
 @flask_sijax.route(mod, '/<book_id>/')
 def item(book_id):
 
+    if g.sijax.is_sijax_request:
+        g.sijax.register_object(AjaxActions)
+        return g.sijax.process_request()
+
     book = Book.query.get_or_404(book_id)
-    print book.extra.summary.__repr__()
-    return render_template('book/item.html', book=book)
+    book.shelf_status = {}
+    if current_user.is_authenticated():
+        book.shelf_status = current_user.shelf.get_book_status(book)
+
+    return render_template('book/item.html', book=book,
+                           column_type=ColumnType)

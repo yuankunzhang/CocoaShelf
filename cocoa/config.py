@@ -22,7 +22,7 @@ class DefaultConfig(object):
     SECRET_KEY = 'set_a_secret_key_here'
     
     SQLALCHEMY_DATABASE_URI = 'mysql://root:900307@localhost/cocoa_dev_3'
-    SQLALCHEMY_ECHO = False
+    SQLALCHEMY_ECHO = True
 
     CSRF_ENABLED = True
     CSRF_SESSION_KEY = 'set_a_session_key_here'

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from cocoa.extensions import db
 
 class Category(db.Model):
@@ -12,7 +11,7 @@ class Category(db.Model):
 
     sub_categories = db.relationship('Category',
         backref=db.backref('parent_category', remote_side=id))
-
+    
     def __init__(self, name, parent_id=None):
         self.name = name
         self.parent_id = parent_id
@@ -23,6 +22,24 @@ class Category(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+    def as_tree(self):
+        tree_str = self.name
+        node = self
+        while node.parent_id is not None:
+            node = node.parent_category
+            tree_str = node.name + ' &gt; ' + tree_str
+        return tree_str
+
+    @staticmethod
+    def as_list(parent_id=None):
+
+        data = db.session.query(Category.id, Category.name,
+               Category.parent_id).filter_by(parent_id=parent_id).all()
+
+        results = [{'id': x.id, 'name': x.name, 'parent_id': x.parent_id} \
+                  for x in data]
+        return results
 
 
 class BookCategory(db.Model):
@@ -42,13 +59,3 @@ class BookCategory(db.Model):
     def __init__(self, category, book=None):
         self.category = category
         self.book = book
-
-
-def categories(parent_id=None):
-
-    if parent_id is not None:   # second or third level
-        return Category.query.filter_by(parent_id=parent_id).all()
-    else:                       # first level
-        return Category.query.filter_by(parent_id=None).all()
-
-

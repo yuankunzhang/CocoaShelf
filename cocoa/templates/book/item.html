@@ -5,6 +5,14 @@
 <link rel="stylesheet" type="text/css" href="/static/css/book/book.css">
 {% endblock %}
 
+{% block js %}
+{{ super() }}
+<script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
+<script type="text/javascript">
+    {{ g.sijax.get_js()|safe }}
+</script>
+{% endblock %}
+
 {% block left_col %}
 <div class="page-header">
     <h2><small>{{ book.title }}</small></h2>
@@ -82,16 +90,21 @@ $('#star').raty({
 
 <div id="book-tags" class="box clearfix">
     <div class="box-content">
-        <div class="category">
+        <div class="category clearfix">
             <dl>
                 <dt>所属分类：</dt>
-                <dd>文学</dd>
+                {% if book.category %}
+                <dd>{{ book.category.as_tree()|safe }}</dd>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                <dd><a href="{{ url_for('category.change_category', book_id=book.id) }}">修改</dd>
+                {% endif %}
             </dl>
         </div>
 
         <hr>
 
-        <div class="tags">
+        <div class="tags clearfix">
             <dl>
                 <dt>这本书的标签：</dt>
                 {% for book_tag in book.book_tags %}
@@ -100,7 +113,7 @@ $('#star').raty({
             </dl>
         </div>
 
-        <div class="my-tags">
+        <div class="my-tags clearfix">
             <dl>
                 <dt>我的标签：</dt>
                 {% for book_tag in book.book_tags %}
@@ -148,8 +161,32 @@ $('#star').raty({
 
 {% endblock %}
 
+
 {% block right_col %}
+
+{% if current_user.is_authenticated() %}
 <div id="book-for-me">
+    <ul class="unstyled">
+        {% if book.shelf_status['have'] %}
+        <li>我有这本书</li>
+        {% endif %}
+
+        {% if book.shelf_status['read'] %}
+        <li>我读过这本书</li>
+        {% endif %}
+
+        {% if book.shelf_status['reading'] %}
+        <li>我在读这本书</li>
+        {% endif %}
+
+        {% if book.shelf_status['wish'] %}
+        <li>我想读这本书</li>
+        {% endif %}
+
+        {% if book.shelf_status['like'] %}
+        <li>我喜欢这本书</li>
+        {% endif %}
+    </ul>
 </div>
 
 <hr>
@@ -163,8 +200,85 @@ $('#star').raty({
         <a href="#">添加到书单&rarr;</a>
     </div>
 
+    {% if not book.shelf_status['whole'] %}
     <div>
-        <a href="#">添加到书架&rarr;</a>
+        <a href="#add-to-shelf-modal" role="button" data-toggle="modal">添加到书架&rarr;</a>
+        <div id="add-to-shelf-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-header">
+                <h1><small>添加到我的书架</small></h1>
+            </div>
+
+            <div class="modal-body">
+                <div id="shelf-column">
+                    <label>请选择书架：（可选多项）</label>
+                    <ul class="nav nav-pills">
+                        {% if not book.shelf_status['have'] %}
+                        <li><a href="#" value="{{ column_type.HAVE.value() }}">我有</a></li>
+                        {% endif %}
+
+                        {% if not book.shelf_status['reading'] %}
+                        <li><a href="#" value="{{ column_type.READING.value() }}">在读</a></li>
+                        {% endif %}
+
+                        {% if not book.shelf_status['read'] %}
+                        <li><a href="#" value="{{ column_type.READ.value() }}">读过</a></li>
+                        {% endif %}
+
+                        {% if not book.shelf_status['wish'] %}
+                        <li><a href="#" value="{{ column_type.WISH.value() }}">想读</a></li>
+                        {% endif %}
+
+                        {% if not book.shelf_status['like'] %}
+                        <li><a href="#" value="{{ column_type.LIKE.value() }}">喜欢</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <div>
+                    <label for="add-tags">打几个标签：</label>
+                    <input type="text" id="add-tags" name="tags">
+                </div>
+            </div><!-- end .modal-body -->
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                <button class="btn btn-primary">确定</button>
+            </div>
+        </div><!-- end modal -->
     </div>
-</div>
+    {% endif %}
+
+<script type="text/javascript">
+$(function() {
+    var book_id = {{ book.id }};
+
+    // add to shelf
+    $('#shelf-column ul li').toggle(function() {
+        $(this).addClass('active');
+    }, function() {
+        $(this).removeClass('active')
+    });
+
+    $('#add-to-shelf-modal .btn-primary').click(function() {
+        columns = [];
+        $('#shelf-column ul li.active a').each(function() {
+            columns.push($(this).attr('value'));
+        });
+
+        tags = $('input:text[name=tags]').val();
+
+        if (columns.length == 0) {
+            alert('至少选择一个书架');
+            return false;
+        }
+
+        Sijax.request('add_to_shelf', [book_id, columns, tags]);
+        $('#add-to-shelf-modal').modal('hide');
+        return false;
+    });
+});
+</script>
+</div><!-- end #operations -->
+{% endif %}
+
 {% endblock %}

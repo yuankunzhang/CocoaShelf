@@ -8,7 +8,7 @@ from cocoa.modules.location.models import IpSection, City, Province
 from cocoa.modules.account.models import User
 from cocoa.modules.book.models import Book, BookExtra
 from cocoa.modules.category.models import Category, BookCategory
-from cocoa.modules.tag.models import Tag, BookTags
+from cocoa.modules.tag.models import Tag, BookTags, UserBookTags
 from cocoa.modules.shelf.models import IHave, IRead, \
     IReading, IWish, ILike, Shelf
 from cocoa.modules.event.models import EventRecord

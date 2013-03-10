@@ -1,0 +1,28 @@
+#category {
+    margin-bottom: 40px;
+}
+
+#category ul {
+    width: 120px;
+    float: left;
+}
+
+#category ul.divider {
+    width: 20px;
+    padding-top: 80px;
+    margin: 0 10px;
+    visibility: hidden;
+}
+
+#category #third-level {
+    font-size: 12px;
+    width: 160px;
+}
+
+#category #third-level li a {
+    padding: 6px; 10px;
+}
+
+.ok {
+    text-align: center;
+}

@@ -14,6 +14,7 @@ from cocoa.helpers.sql import JSONEncodedDict
 from cocoa.helpers.upload import mkdir
 from .consts import Role, Gender
 from ..event.models import SignUpEvent
+from ..tag.models import Tag, UserBookTags
 
 class User(db.Model):
 
@@ -147,6 +148,21 @@ class User(db.Model):
     @staticmethod
     def get_by_email(email):
         return User.query.filter_by(email=email).first()
+
+    def add_booktags(self, book, tag_names):
+        if tag_names is not None:
+            for name in tag_names:
+                book_tag = UserBookTags.query.outerjoin(Tag). \
+                           filter(Tag.name==name,
+                           UserBookTags.book_id==book.id,
+                           UserBookTags.user_id==self.id).first()
+
+                if book_tag is not None: return
+
+                tag = book.add_tag(name)
+                self.user_tags.append(UserBookTags(tag, book, self))
+
+            db.session.commit()
 
 
 @login_manager.user_loader

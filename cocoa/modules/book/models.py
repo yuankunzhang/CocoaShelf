@@ -17,6 +17,7 @@ from cocoa.helpers.html import safe_html
 from cocoa.helpers.upload import mkdir
 from .consts import Currency, Binding, Language
 from .helpers import isbn10_to_13, isbn13_to_10
+from ..tag.models import Tag, BookTags
 
 class BookExtra(db.Model):
     """内容简介，作者简介"""
@@ -70,6 +71,7 @@ class Book(db.Model):
     timestamp = db.Column(db.Integer, default=int(time()))
     creator = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    category = association_proxy('book_category', 'category')
     tags = association_proxy('book_tags', 'tag')
 
     def __init__(self, isbn, title, author, publisher, price=None,
@@ -205,4 +207,17 @@ class Book(db.Model):
                 os.remove(old)
 
         self.cover = cover_path
+        db.session.commit()
+
+    def add_tag(self, tag_name):
+        tag = Tag.create_or_increase(tag_name)
+        if tag not in self.tags:
+            self.tags.append(tag)
+        else:
+            BookTags.query.filter_by(book=self, tag=tag).first().increase()
+
+        return tag
+
+    def set_category(self, category):
+        self.category = category
         db.session.commit()

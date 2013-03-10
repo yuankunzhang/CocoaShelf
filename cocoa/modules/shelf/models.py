@@ -130,3 +130,44 @@ class Shelf(db.Model):
 
     def __repr__(self):
         return u'<Shelf (user: %r)>' % self.user.email
+
+    def get_column(self, column_type):
+        if column_type == ColumnType.HAVE.value():
+            return self.have_books
+        elif column_type == ColumnType.READ.value():
+            return self.read_books
+        elif column_type == ColumnType.READING.value():
+            return self.reading_books
+        elif column_type == ColumnType.WISH.value():
+            return self.wish_books
+        elif column_type == ColumnType.LIKE.value():
+            return self.like_books
+        else:
+            return None
+
+    def add_book_to_shelf(self, book, column_types):
+        for column_type in column_types:
+            column = self.get_column(int(column_type))
+            if column is not None and book not in column:
+                column.append(book)
+        db.session.commit()
+
+    def get_book_status(self, book):
+        have_flag = book in self.have_books
+        read_flag = book in self.read_books
+        reading_flag = book in self.reading_books
+        wish_flag = book in self.wish_books
+        like_flag = book in self.like_books
+
+        whole_flag = have_flag and read_flag and \
+                     reading_flag and wish_flag and \
+                     like_flag
+
+        return {
+            'have':     have_flag,
+            'read':     read_flag,
+            'reading':  reading_flag,
+            'wish':     wish_flag,
+            'like':     like_flag,
+            'whole':    whole_flag,
+        }

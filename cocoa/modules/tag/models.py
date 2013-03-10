@@ -54,3 +54,25 @@ class BookTags(db.Model):
     def increase(self):
         self.count += 1
         db.session.commit()
+
+
+class UserBookTags(db.Model):
+
+    __tablename__ = 'm_user_book_tags'
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
+        primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
+        primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'),
+        primary_key=True)
+
+    user = db.relationship('User',
+        backref=db.backref('user_tags', cascade='all, delete-orphan'))
+    book = db.relationship('Book')
+    tag = db.relationship('Tag')
+
+    def __init__(self, tag, book, user=None):
+        self.tag = tag
+        self.book = book
+        self.user = user

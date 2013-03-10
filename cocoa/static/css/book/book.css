@@ -9,6 +9,10 @@
     font-weight: normal;
 }
 
+#book-tags dl dd {
+    float: left;
+}
+
 #book-tags {
     border: 2px dashed #ddd;
     margin: 10px;
