@@ -42,6 +42,15 @@ class BookExtra(db.Model):
         self.catalog = safe_html(catalog)
         self.book = book
 
+    def get_short_summary(self):
+        """100 chinese chars"""
+        
+        if self.summary is not None:
+            if len(self.summary) > 100:
+                return self.summary[:100] + '......'
+
+        return self.summary
+
 
 class Book(db.Model):
 

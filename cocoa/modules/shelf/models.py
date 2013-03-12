@@ -4,6 +4,8 @@ from time import time
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
+from flask.ext.babel import gettext as _
+
 from cocoa.extensions import db
 from cocoa.helpers.common import timesince
 from .consts import ColumnType
@@ -171,3 +173,13 @@ class Shelf(db.Model):
             'like':     like_flag,
             'whole':    whole_flag,
         }
+
+    def finish_reading(self, book):
+        reading = IReading.query.filter_by(shelf=self, book=book).first()
+        if reading is not None:
+            reading.finish_timestamp = int(time())
+            if book not in self.read_books:
+                self.read_books.append(book)
+            db.session.commit()
+        else:
+            raise ValueError(_(u'You are not reading this book.'))

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, request, render_template, abort
+import flask_sijax
+from flask import Blueprint, request, render_template, abort, g
 from flask.ext.login import current_user, login_required
 
 from .models import Shelf
+from .ajax import AjaxActions
 
 mod = Blueprint('shelf', __name__)
 
@@ -16,11 +18,15 @@ def home():
 def item(shelf_id=None):
 
     shelf = _get_shelf(shelf_id)
-    return render_template('shelf/item.html', shelf=shelf)
+    return render_template('shelf/details.html', shelf=shelf)
 
 
-@mod.route('<int:shelf_id>/<string:column_type>/')
+@flask_sijax.route(mod, '/<int:shelf_id>/<string:column_type>/')
 def column(column_type, shelf_id=None):
+
+    if g.sijax.is_sijax_request:
+        g.sijax.register_object(AjaxActions)
+        return g.sijax.process_request()
 
     shelf = _get_shelf(shelf_id)
     if column_type not in ('have', 'read', 'reading', 'wish', 'like'):

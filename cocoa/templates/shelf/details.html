@@ -1,0 +1,24 @@
+{% extends 'layout/shelf.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/shelf/shelf.css">
+{% endblock %}
+
+{% block sidebar %}
+    {% set active='all' %}
+    {% include 'shelf/sidebar.html' %}
+{% endblock %}
+
+{% block main %}
+<ul class="breadcrumb">
+    <li>
+        <a href="#">{{ shelf.user.penname }}的书架</a>
+        <span class="divider">/</span>
+    </li>
+    <li class="active">书架详情</li>
+</ul>
+
+<div class="shelf-books">
+</div>
+{% endblock %}

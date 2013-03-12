@@ -3,10 +3,10 @@
 
 <div id="sidebar">
 	<ul class="nav nav-list nav-pills nav-stacked">
-        <li id="home-page"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">全部</a></li>
-        <li id="i-have"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">我有</a></li>
-        <li id="i-read"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">我读</a></li>
-        <li id="i-like"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">喜欢</a></li>
+        <li id="all"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">书架详情</a></li>
+        <li id="i-have"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_type='have') }}">我有</a></li>
+        <li id="i-read"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_type='read') }}">我读</a></li>
+        <li id="i-like"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_type='like') }}">喜欢</a></li>
 
         <li class="divider"></li>
         <li class="divider"></li>

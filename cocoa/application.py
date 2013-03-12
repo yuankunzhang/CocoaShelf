@@ -78,7 +78,7 @@ def configure_template_filters(app):
     @evalcontextfilter
     def nl2br(eval_ctx, value):
         result = u'\n\n'.join(u'<p>%s</p>' % p.replace('\n', \
-            Markup('<br>\n')) for p in _paragraph_re.split(value))
+            Markup('</p>\n</p>')) for p in _paragraph_re.split(value))
         if eval_ctx.autoescape:
             result = Markup(result)
         return result

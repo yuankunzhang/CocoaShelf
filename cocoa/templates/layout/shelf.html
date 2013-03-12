@@ -2,7 +2,17 @@
 
 {% block css %}
 {{ super() }}
-<link rel="stylesheet" href="/static/css/shelf/shelf.css">
+<link rel="stylesheet" type="text/css" href="/static/css/shelf/shelf.css">
+<link rel="stylesheet" type="text/css" href="/static/css/jquery.mCustomScrollbar.css">
+{% endblock %}
+
+{% block js %}
+{{ super() }}
+<script type="text/javascript" src="/static/js/jquery/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
+<script type="text/javascript">
+    {{ g.sijax.get_js()|safe }}
+</script>
 {% endblock %}
 
 {% block content %}
@@ -18,5 +28,70 @@
         {% endblock %}
     </div><!-- end .span9 -->
 </div>
+
+<script type="text/javascript">
+(function($) {
+    var timer;
+
+    function removePop() {
+        $('.pop').fadeOut();
+        $('.book-list img.active').removeClass('active');
+    }
+
+    $('.book-list img').hover(
+        function() {
+            clearTimeout(timer);
+            $('.book-list img.active').removeClass('active');
+            $(this).addClass('active');
+
+            var offset = $(this).offset();
+            $('.pop').remove();
+            $('body').append('<div class="pop"></div>');
+            $('.pop').html($(this).parent().next('.details').html());
+            $('.pop').offset({ top: offset.top, left: offset.left - 364 });
+
+            if ($('.pop a.finish-reading-btn').length) {
+                var value = $('.pop .book-title a').attr('value');
+                $('.pop a.finish-reading-btn').click(function() {
+                    Sijax.request('finish_reading', [value]);
+                });
+            }
+        },
+        function() {
+            timer = setTimeout(removePop, 300);
+        }
+    );
+
+    $(document).on({
+        mouseenter: function() {
+            clearTimeout(timer);
+        },
+        mouseleave: function() {
+            timer = setTimeout(removePop, 300);
+        }
+    }, '.pop');
+
+    $(window).load(function() {
+        $('.book-list').mCustomScrollbar({
+            autoDraggerLength: true,
+            scrollButtons: {
+                enable: true
+            },
+            theme: 'dark-thick',
+            callbacks: {
+                whileScrolling: function() {
+                    if ($('.pop')) {
+                        var offset = $('.book-list img.active').offset();
+
+                        if (offset) {
+                            $('.pop').offset({ top: offset.top });
+                        }
+                    }
+                }
+            }
+        });
+    });
+})(jQuery);
+</script>
 
 {% endblock %}

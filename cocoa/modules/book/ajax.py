@@ -13,9 +13,6 @@ class AjaxActions(object):
                      str_tags=None, comment=None):
         """添加图书到书架"""
 
-        if not current_user.is_authenticated():
-            return
-
         book = Book.query.get_or_404(book_id)
 
         current_user.shelf.add_book_to_shelf(book, shelf_columns) 

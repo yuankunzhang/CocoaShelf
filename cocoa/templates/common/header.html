@@ -32,11 +32,11 @@
         <div class="navbar nav-collapse">
             <ul class="nav">
                 <li class="divider-vertical"></li>
-                <li><a href="#">主页</a></li>
+                <li><a href="{{ url_for('frontend.home') }}">主页</a></li>
                 <li class="divider-vertical"></li>
-                <li><a href="#">书架</a></li>
+                <li><a href="{{ url_for('shelf.home') }}">书架</a></li>
                 <li class="divider-vertical"></li>
-                <li><a href="#">图书</a></li>
+                <li><a href="{{ url_for('book.home') }}">图书</a></li>
                 <li class="divider-vertical"></li>
                 <li><a href="#">小组</a></li>
                 <li class="divider-vertical"></li>

@@ -84,7 +84,7 @@ var score = null;
 var hints = [null, '差劲', '一般', '还行', '喜欢', '力荐'];
 
 {% if book.score %}
-{% if book.my_rate() %}
+{% if current_user.is_authenticated() and book.my_rate() %}
 readOnly = true;
 $('#my-score').html('我的评分：{{ book.my_rate().score }}分');
 {% endif %}

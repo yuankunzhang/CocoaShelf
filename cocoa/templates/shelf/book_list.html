@@ -1,0 +1,26 @@
+<div class="book-list">
+    <ul class="unstyled inline">
+    {% for book in books %}
+        <li>
+            <a target="_blank" href="{{ url_for('book.item', book_id=book.id) }}">
+                <img data-toggle="popover" data-content="some contents" width=100 height=140 src="/static/upload/cover/{{ book.cover }}">
+            </a>
+            <div class="details">
+                <div class="book-title"><a target="_blank" href="{{ url_for('book.item', book_id=book.id) }}" value="{{ book.id }}">{{ book.title }}</a></div><hr>
+                <div class="book-summary">{{ book.extra.get_short_summary()|nl2br }}</div><hr>
+                {% if current_user==shelf.user %}
+                <div class="operation">
+                    {% if process=='reading' %}
+                    <a class="btn finish-reading-btn" href="#">读完了</a>
+                    {% endif %}
+                    <a class="btn" href="#">写书评</a>
+                </div>
+                {% endif %}
+                <div class="arrow"></div>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+<hr>

@@ -75,3 +75,5 @@ class BookRate(db.Model):
 
         self.total += score
         self.count += 1
+
+        db.session.commit()
