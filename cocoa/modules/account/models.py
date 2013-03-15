@@ -15,6 +15,7 @@ from cocoa.helpers.upload import mkdir
 from .consts import Role, Gender
 from ..event.models import SignUpEvent
 from ..tag.models import Tag, UserBookTags
+from ..shelf.models import Shelf
 
 class User(db.Model):
 
@@ -64,6 +65,7 @@ class User(db.Model):
     def save(self):
         u = User.query.filter_by(email=self.email).first()
         if u is None:
+            self.shelf = Shelf()
             db.session.add(self)
             db.session.commit()
 
@@ -91,6 +93,12 @@ class User(db.Model):
         else:
             self.password = generate_password_hash(new)
             db.session.commit()
+
+    def get_display_name(self):
+        if self.penname is not None:
+            return self.penname
+        else:
+            return self.username
 
     @staticmethod
     def authenticate(email, password):

@@ -10,13 +10,30 @@ from .models import Shelf, ColumnReading
 from .consts import ColumnType
 from .ajax import AjaxActions
 from ..book.models import Book
+from ..event.models import EventRecord
+from ..event.consts import EventType
 
 mod = Blueprint('shelf', __name__)
 
 @mod.route('/')
 def home():
 
-    return 'Shelf index page.'
+    new_shelves_records = EventRecord.\
+        get_records(EventType.SIGN_UP.value())
+    new_shelves = [Shelf.get_by_uid(r.get_event().user_id) \
+                  for r in new_shelves_records]
+
+    add_book_records = EventRecord.\
+        get_records(EventType.ADD_BOOK_TO_SHELF.value())
+    add_book_events = [r.get_event() for r in add_book_records]
+    for e in add_book_events:
+        e.shelf = Shelf.get_by_uid(e.user_id) 
+        e.column = ColumnType.from_name(e.column_name)
+        e.book = Book.query.get(e.book_id)
+
+    return render_template('shelf/index.html',
+                            new_shelves=new_shelves,
+                            add_book_events=add_book_events)
 
 
 @mod.route('/<int:shelf_id>/')

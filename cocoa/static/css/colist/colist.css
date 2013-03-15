@@ -1,0 +1,11 @@
+#colist-new-form #colist-intro {
+    width: 300px;
+    height: 120px;
+}
+
+#add-books-btn {
+    float: right;
+    font-size: 12px;
+    margin-top: -16px;
+    margin-right: 60px;
+}

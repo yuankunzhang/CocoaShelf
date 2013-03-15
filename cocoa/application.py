@@ -16,7 +16,7 @@ from flask.ext.misaka import Misaka
 from .config import DefaultConfig
 from .extensions import db, sijax, login_manager, cache, babel
 from .modules import frontend, location, account, book, shelf, \
-    category, blog
+    category, blog, colist
 
 __all__ = ['create_app']
 
@@ -30,6 +30,7 @@ DEFAULT_MODULES = (
     (shelf.mod, '/shelf'),
     (category.mod, '/category'),
     (blog.mod, '/blog'),
+    (colist.mod, '/colist'),
 )
 
 def create_app(config=None, app_name=None, modules=None):

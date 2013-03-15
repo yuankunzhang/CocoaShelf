@@ -18,6 +18,12 @@ body > .container {
     margin-bottom: 30px;
 }
 
+.dashed-hr {
+    height: 0;
+    border: none;
+    border-top: 1px dashed #cdcdcd;
+}
+
 #header {
     background: white;
     border-bottom: 3px solid #ddd;

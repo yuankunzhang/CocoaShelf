@@ -1,0 +1,36 @@
+{% extends 'layout/single_column.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/static/css/colist/colist.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>书单：{{ colist.name }}</small></h1>
+    <a id="add-books-btn" href="{{ url_for('colist.add_books', colist_id=colist.id) }}">添加图书</a>
+</div>
+
+<div id="colist-books">
+    {% for book in colist.books %}
+    <div class="media clearfix">
+        <div class="book-cover pull-left">
+            <a href="{{ url_for('book.item', book_id=book.id) }}">
+                <img src="/static/upload/cover/{{ book.cover }}" width=71 height=100>
+            </a>
+        </div>
+
+        <div class="book-meta media-body">
+            <ul class="unstyled">
+                <li><a href="{{ url_for('book.item', book_id=book.id) }}">{{ book.title }}</a></li>
+                <li>作者：{{ ','.join(book.author) }}</li>
+                <li>出版社：{{ book.publisher }}</li>
+            </ul>
+        </div>
+    </div>
+    <hr class="dashed-hr">
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'layout/single_column.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="/static/css/colist/colist.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>建立新书单</small></h1>
+</div>
+
+<div id="colist-new-form">
+    {% from 'macros/form.html' import render_field, render_submit %}
+    <form method="post" class="form-horizontal" action="{{ url_for('colist.new') }}">
+        {{ form.csrf_token }}
+        {{ render_field(form.name) }}
+        {{ render_field(form.intro) }}
+
+        {{ render_submit() }}
+    </form>
+</div>
+
+{% endblock %}

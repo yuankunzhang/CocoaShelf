@@ -8,6 +8,7 @@ from cocoa.extensions import db
 from .consts import ColumnType
 from .query import ShelfQuery
 from ..book.models import Book, BookExtra
+from ..event.models import AddBookToShelfEvent
 
 class ColumnBase(object):
 
@@ -180,6 +181,11 @@ class Shelf(db.Model):
 
             if column is not None:
                 column.add_book(self, book)
+                event = AddBookToShelfEvent(
+                    self.user.id,
+                    column_name,
+                    book.id)
+                event.save()
 
     def finish_reading(self, book):
         reading_book = ColumnReading.query.filter_by(shelf=self,
@@ -188,6 +194,15 @@ class Shelf(db.Model):
             reading_book.finished_timestamp = int(time())
             ColumnRead.add_book(self, book)
             db.session.commit()
+
+    @staticmethod
+    def get_by_uid(user_id):
+        from ..account.models import User
+        u = User.query.get(user_id)
+        if u is None:
+            raise ValueError(_(u'No such user.'))
+        else:
+            return u.shelf
 
 
 def _get_column(column_name):

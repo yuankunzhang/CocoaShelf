@@ -29,13 +29,22 @@ class EventRecord(db.Model):
     def get_event(self):
         return Event.get(self.type, self.what)
 
+    @staticmethod
+    def get_records(type):
+        return EventRecord.query.filter_by(type=type).all()
+
 
 class Event(object):
 
     @staticmethod
     def get(type, attrs):
-        if type == EventType.NEW_SHELF.value():
-            return NewShelfEvent(attrs['user_id'])
+        if type == EventType.SIGN_UP.value():
+            return SignUpEvent(attrs['user_id'])
+        elif type == EventType.ADD_BOOK_TO_SHELF.value():
+            return AddBookToShelfEvent(
+                attrs['user_id'],
+                attrs['column_name'],
+                attrs['book_id'])
 
     def save(self):
         type = self.__type__.value()
@@ -55,8 +64,8 @@ class AddBookToShelfEvent(Event):
 
     __type__ = EventType.ADD_BOOK_TO_SHELF
 
-    def __init__(self, user_id, shelf_type, book_id):
+    def __init__(self, user_id, column_name, book_id):
         self.user_id = user_id
         self.who = user_id
-        self.shelf_type = shelf_type
+        self.column_name = column_name
         self.book_id = book_id

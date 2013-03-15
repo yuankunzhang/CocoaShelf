@@ -33,26 +33,14 @@
 
     {% from 'macros/form.html' import render_submit %}
     <form action="{{ url_for('shelf.add_books', shelf_id=shelf.id, column_name=column.name()) }}" class="form-horizontal" method="post">
+    {% for i in range(1, 4) %}
         <div class="control-group">
-            <label class="control-label">#1</label>
+            <label class="control-label">#{{ i }}</label>
             <div class="controls">
                 <input type="text" name="book_ids">
             </div>
         </div>
-
-        <div class="control-group">
-            <label class="control-label">#2</label>
-            <div class="controls">
-                <input type="text" name="book_ids">
-            </div>
-        </div>
-
-        <div class="control-group">
-            <label class="control-label">#3</label>
-            <div class="controls">
-                <input type="text" name="book_ids">
-            </div>
-        </div>
+    {% endfor %}
 
         {{ render_submit() }}
     </form>
