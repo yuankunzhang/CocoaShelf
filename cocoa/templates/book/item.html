@@ -208,7 +208,25 @@ $('#star').raty({
     </div>
 
     <div>
-        <a href="#">添加到书单&rarr;</a>
+        <a href="#add-to-colist-modal" rol="button" data-toggle="modal">添加到书单&rarr;</a>
+        <div id="add-to-colist-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-header">
+                <h1><small>添加到我的书单</small></h1>
+            </div>
+
+            <div class="modal-body">
+                <div id="select-colist">
+                    <label>请选择书单：</label>
+                    <select name="colist_id" multiple="multiple">
+                    {% for colist in current_user.colists %}
+                        <option value="{{ colist.id }}">
+                            {{ colist.name }}
+                        </option>
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
 
     {% if not book.not_in_columns|count == 0 %}

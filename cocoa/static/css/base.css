@@ -5,6 +5,7 @@ body {
 body > .container {
     width: 900px;
     margin-top: 20px;
+    margin-bottom: 20px;
     background: #fff;
     padding: 30px;
     border: 1px solid #c8dcbe;
@@ -27,6 +28,11 @@ body > .container {
 #header {
     background: white;
     border-bottom: 3px solid #ddd;
+}
+
+#footer {
+    background: white;
+    border-top: 1px solid #ddd;
 }
 
 #header .divider {
