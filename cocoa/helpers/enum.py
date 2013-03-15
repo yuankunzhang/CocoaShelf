@@ -15,7 +15,7 @@ class EnumInteger(object):
         return self._val
 
     def name(self):
-        return self._name
+        return self._name.lower()
 
     def text(self):
         return self._text
@@ -39,9 +39,14 @@ class Enum(object):
 
     def from_name(self, name):
         for k, v in self._items:
-            if k == name:
+            if k == name.upper():
                 return self.__dict__[k]
         raise ValueError(_(u'Wrong key'))
 
     def items(self):
         return self._items
+
+    def __iter__(self):
+        for k in self.__dict__:
+            if isinstance(self.__dict__[k], EnumInteger):
+                yield self.__dict__[k]

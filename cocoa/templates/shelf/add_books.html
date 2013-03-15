@@ -1,0 +1,60 @@
+{% extends 'layout/shelf.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/shelf/shelf.css">
+{% endblock %}
+
+{% block sidebar %}
+    {% include 'shelf/sidebar.html' %}
+{% endblock %}
+
+{% block main %}
+<ul class="breadcrumb">
+    <li>
+        <a href="#">{{ shelf.user.penname }}的书架</a>
+        <span class="divider">/</span>
+    </li>
+    <li>
+        <a href="#">{{ column.text() }}</a>
+        <span class="divider">/</span>
+    </li>
+    <li class="active">添加图书</li>
+</ul>
+
+<div id="add-books">
+    <div class="alert alert-success">
+        您可以通过图书的链接或者图书的ISBN号来添加，例如下面的格式：
+        <ol>
+            <li>9787544711630</li>
+            <li>xxx/book/23</li>
+        </ol>
+    </div>
+
+    {% from 'macros/form.html' import render_submit %}
+    <form action="{{ url_for('shelf.add_books', shelf_id=shelf.id, column_name=column.name()) }}" class="form-horizontal" method="post">
+        <div class="control-group">
+            <label class="control-label">#1</label>
+            <div class="controls">
+                <input type="text" name="book_ids">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">#2</label>
+            <div class="controls">
+                <input type="text" name="book_ids">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">#3</label>
+            <div class="controls">
+                <input type="text" name="book_ids">
+            </div>
+        </div>
+
+        {{ render_submit() }}
+    </form>
+</div>
+{% endblock %}

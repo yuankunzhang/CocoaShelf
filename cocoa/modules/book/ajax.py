@@ -9,13 +9,13 @@ class AjaxActions(object):
 
     @staticmethod
     @login_required
-    def add_to_shelf(obj_response, book_id, shelf_columns,
+    def add_to_shelf(obj_response, book_id, column_names,
                      str_tags=None, comment=None):
         """添加图书到书架"""
 
         book = Book.query.get_or_404(book_id)
 
-        current_user.shelf.add_book_to_shelf(book, shelf_columns) 
+        current_user.shelf.add_book(book, column_names) 
 
         if str_tags is not None:
             current_user.add_booktags(book, str2list(str_tags))

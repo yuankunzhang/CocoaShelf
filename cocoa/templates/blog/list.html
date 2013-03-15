@@ -1,0 +1,12 @@
+<div id="posts">
+    {% for post in posts %}
+    <div class="post-title">
+        <h4><a href="#">{{ post.title }}</a></h4>
+    </div>
+
+    <div class="post-content">
+        {{ post.content|markdown|nl2br }}
+    </div>
+    <hr>
+    {% endfor %}
+</div>

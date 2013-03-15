@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% set active='i-like' %}
+    {% set active='like' %}
     {% include 'shelf/sidebar.html' %}
 {% endblock %}
 
@@ -21,7 +21,6 @@
 
 <div class="shelf-books">
     <h2><small>喜欢 &gt;&gt;</small</h2>
-    {% set books=shelf.like_books %}
     {% include 'shelf/book_list.html' %}
 </div>
 {% endblock %}

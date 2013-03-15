@@ -1,0 +1,24 @@
+{% extends 'layout/single_column.html' %}
+
+{% block css %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><small>撰写新文章</small></h1>
+</div>
+
+<div id="post-new-form">
+    {% from 'macros/form.html' import render_field, render_submit %}
+    <form method="post" class="form-horizontal" action="{{ url_for('blog.new') }}">
+        {{ form.csrf_token }}
+        {{ render_field(form.title) }}
+        {{ render_field(form.type) }}
+        {{ render_field(form.ref_books) }}
+        {{ render_field(form.content) }}
+
+        {{ render_submit('确定') }}
+    </form>
+</div>
+{% endblock %}

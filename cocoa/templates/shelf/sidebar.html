@@ -3,10 +3,12 @@
 
 <div id="sidebar">
 	<ul class="nav nav-list nav-pills nav-stacked">
-        <li id="all"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">书架详情</a></li>
-        <li id="i-have"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_type='have') }}">我有</a></li>
-        <li id="i-read"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_type='read') }}">我读</a></li>
-        <li id="i-like"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_type='like') }}">喜欢</a></li>
+        <li id="details"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">书架详情</a></li>
+        <li id="have"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='have') }}">我有</a></li>
+        <li id="read"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='read') }}">读过</a></li>
+        <li id="reading"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='reading') }}">在读</a></li>
+        <li id="wish"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='wish') }}">想读</a></li>
+        <li id="like"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='like') }}">喜欢</a></li>
 
         <li class="divider"></li>
         <li class="divider"></li>
@@ -17,7 +19,7 @@
         <li class="divider"></li>
         <li class="divider"></li>
 
-        <li id="reading-track"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">阅读计划</a></li>
+        <li id="reading-track"><a href="{{ url_for('shelf.reading_plan', shelf_id=shelf.id) }}">阅读计划</a></li>
 	</ul>
 </div>
 

@@ -36,6 +36,7 @@ def strip_tags(content, safe_tags=None):
 
 def nl2br(content):
 
+    # TODO
     return '<br>'.join(content.split('\n'))
 
 

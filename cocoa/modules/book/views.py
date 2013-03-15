@@ -30,9 +30,7 @@ def item(book_id):
     if book.rate:
         book.score = book.rate.total / book.rate.count
 
-    book.shelf_status = {}
-    if current_user.is_authenticated():
-        book.shelf_status = current_user.shelf.get_book_status(book)
+    book.in_columns, book.not_in_columns = \
+        current_user.shelf.query.check_columns(book)
 
-    return render_template('book/item.html', book=book,
-                           column_type=ColumnType)
+    return render_template('book/item.html', book=book)

@@ -49,20 +49,23 @@ def signup(next=None):
 def signin(next=None):
 
     form = SigninForm(request.form)
-    next = next or url_for('account.home')
+    if request.args.has_key('next'):
+        next = request.args['next']
+    else:
+        next = url_for('account.home')
 
     if current_user.is_authenticated():
         return redirect(next)
 
     if form.validate_on_submit():
-        user, flag = User.authenticate(form.email.data, form.password.data)
+        user, ok = User.authenticate(form.email.data, form.password.data)
 
-        if flag:
+        if ok:
             login_user(user, form.remember.data)
             flash(_('Successfully signed in.'))
             return redirect(next)
 
-    return render_template('account/signin.html', form=form)
+    return render_template('account/signin.html', form=form, next=next)
 
 
 @mod.route('/signout/')

@@ -1,0 +1,37 @@
+{% extends 'layout/shelf.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/shelf/shelf.css">
+{% endblock %}
+
+{% block sidebar %}
+    {% set active='reading-track' %}
+    {% include 'shelf/sidebar.html' %}
+{% endblock %}
+
+{% block main %}
+<ul class="breadcrumb">
+    <li>
+        <a href="#">{{ shelf.user.penname }}的书架</a>
+        <span class="divider">/</span>
+    </li>
+    <li class="active">阅读计划</li>
+</ul>
+
+<div id="timeline-embed"></div>
+
+<script type="text/javascript">
+var timeline_config = {
+    width:      '100%',
+    height:     '500',
+    source:     '{{ url_for('shelf.reading_plan_data', shelf_id=shelf.id) }}',
+    embed_id:   'timeline-embed',
+    lang:       'zh-ch',
+    css:        '/static/css/timeline.css',
+    js:         '/static/js/timeline-min.js'
+};
+</script>
+<script type="text/javascript" src="/static/js/storyjs-embed.js"></script>
+
+{% endblock %}

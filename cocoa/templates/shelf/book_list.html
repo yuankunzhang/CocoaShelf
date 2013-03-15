@@ -10,7 +10,8 @@
                 <div class="book-summary">{{ book.extra.get_short_summary()|nl2br }}</div><hr>
                 {% if current_user==shelf.user %}
                 <div class="operation">
-                    {% if process=='reading' %}
+                    <a class="btn" href="#">管理</a>
+                    {% if progress=='reading' %}
                     <a class="btn finish-reading-btn" href="#">读完了</a>
                     {% endif %}
                     <a class="btn" href="#">写书评</a>
@@ -20,6 +21,11 @@
             </div>
         </li>
     {% endfor %}
+    {% if current_user.is_authenticated() %}
+        <li class="add-new">
+            <a href="{{ url_for('shelf.add_books', shelf_id=shelf.id, column_name=column.name()) }}"><img src="/static/img/add_new_book.png" width=100 height=140 title="添加图书到这里"></a>
+        </li>
+    {% endif %}
     </ul>
 </div>
 

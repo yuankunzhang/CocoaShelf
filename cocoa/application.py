@@ -11,11 +11,12 @@ import re
 from jinja2 import evalcontextfilter, Markup, escape
 from flask import Flask, request, jsonify, render_template, g
 from flask.ext.babel import gettext as _
+from flask.ext.misaka import Misaka
 
 from .config import DefaultConfig
 from .extensions import db, sijax, login_manager, cache, babel
 from .modules import frontend, location, account, book, shelf, \
-    category
+    category, blog
 
 __all__ = ['create_app']
 
@@ -28,6 +29,7 @@ DEFAULT_MODULES = (
     (book.mod, '/book'),
     (shelf.mod, '/shelf'),
     (category.mod, '/category'),
+    (blog.mod, '/blog'),
 )
 
 def create_app(config=None, app_name=None, modules=None):
@@ -120,6 +122,7 @@ def configure_extensions(app):
     sijax.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = 'account.signin'
+    Misaka(app)
 
     configure_i18n(app)
 

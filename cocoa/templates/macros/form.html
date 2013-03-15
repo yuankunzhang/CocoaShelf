@@ -44,7 +44,7 @@
 {% macro render_submit(label) %}
     <div class="control-group">
         <div class="controls">
-            <button type="submit" class="btn">{{ label }}</button>
+            <button type="submit" class="btn">{% if label %}{{ label }}{% else %}{{ _('确定') }}{% endif %}</button>
         </div>
     </div>
 {% endmacro %}

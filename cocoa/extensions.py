@@ -12,8 +12,7 @@ from flask.ext.login import LoginManager
 from flask.ext.cache import Cache
 from flask.ext.babel import Babel
 
-
-__all__ = ['db', 'sijax', 'login_manager', 'cache', 'babel']
+__all__ = ['db', 'sijax', 'login_manager', 'cache', 'babel', 'misaka']
 
 
 db = SQLAlchemy()

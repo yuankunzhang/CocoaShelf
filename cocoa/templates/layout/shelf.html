@@ -24,6 +24,9 @@
     </div>
 
     <div class="span9">
+        {% from 'macros/flash.html' import flash_messages %}
+        {{ flash_messages() }}
+
         {% block main %}
         {% endblock %}
     </div><!-- end .span9 -->
@@ -46,6 +49,12 @@
 
             var offset = $(this).offset();
             $('.pop').remove();
+
+            // 如果是封面是“添加图书到书架”，不要显示popover.
+            if ($(this).parent().next('.details').length == 0)  {
+                return;
+            }
+
             $('body').append('<div class="pop"></div>');
             $('.pop').html($(this).parent().next('.details').html());
             $('.pop').offset({ top: offset.top, left: offset.left - 364 });
@@ -54,6 +63,7 @@
                 var value = $('.pop .book-title a').attr('value');
                 $('.pop a.finish-reading-btn').click(function() {
                     Sijax.request('finish_reading', [value]);
+                    return false;
                 });
             }
         },

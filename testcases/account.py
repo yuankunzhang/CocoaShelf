@@ -33,19 +33,19 @@ class TestAccount(TestCase):
             email='abc@gmail.com',
             password='1',
             confirm='1',
-        ))
+        ), follow_redirects=True)
         assert User.get_by_email('abc@gmail.com') is not None
 
         self.client.post('/u/signup/', data=dict(
             email='abcd@gmail.com',
             password='1',
             confirm='2',
-        ))
+        ), follow_redirects=True)
         assert User.get_by_email('abcd@gmail.com') is None
 
         self.client.post('/u/signup/', data=dict(
             email='abcd.com',
             password='1',
             confirm='1',
-        ))
+        ), follow_redirects=True)
         assert User.get_by_email('abcd.com') is None

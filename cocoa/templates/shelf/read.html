@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% set active='i-read' %}
+    {% set active='read' %}
     {% include 'shelf/sidebar.html' %}
 {% endblock %}
 
@@ -16,22 +16,11 @@
         <a href="#">{{ shelf.user.penname }}的书架</a>
         <span class="divider">/</span>
     </li>
-    <li class="active">我读：读过，在读，想读</li>
+    <li class="active">读过</li>
 </ul>
 
 <div class="shelf-books">
     <h2><small>读过 &gt;&gt;</small></h2>
-    {% set books=shelf.read_books %}
-    {% include 'shelf/book_list.html' %}
-
-    <h2><small>在读 &gt;&gt;</small></h2>
-    {% set books=shelf.reading_books %}
-    {% set process='reading' %}
-    {% include 'shelf/book_list.html' %}
-
-    <h2><small>想读 &gt;&gt;</small></h2>
-    {% set books=shelf.wish_books %}
-    {% set process='wish' %}
     {% include 'shelf/book_list.html' %}
 </div>
 {% endblock %}

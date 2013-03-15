@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% set active='i-have' %}
+    {% set active='have' %}
     {% include 'shelf/sidebar.html' %}
 {% endblock %}
 
@@ -21,7 +21,6 @@
 
 <div class="shelf-books">
     <h2><small>我有 &gt;&gt;</small></h2>
-    {% set books=shelf.have_books %}
     {% include 'shelf/book_list.html' %}
 </div>
 

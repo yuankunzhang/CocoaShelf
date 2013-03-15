@@ -194,25 +194,9 @@ $('#star').raty({
 {% if current_user.is_authenticated() %}
 <div id="book-for-me">
     <ul class="unstyled">
-        {% if book.shelf_status['have'] %}
-        <li>我有这本书</li>
-        {% endif %}
-
-        {% if book.shelf_status['read'] %}
-        <li>我读过这本书</li>
-        {% endif %}
-
-        {% if book.shelf_status['reading'] %}
-        <li>我在读这本书</li>
-        {% endif %}
-
-        {% if book.shelf_status['wish'] %}
-        <li>我想读这本书</li>
-        {% endif %}
-
-        {% if book.shelf_status['like'] %}
-        <li>我喜欢这本书</li>
-        {% endif %}
+        {% for x in book.in_columns %}
+        <li>{{ x.text() }}</li>
+        {% endfor %}
     </ul>
 </div>
 
@@ -227,7 +211,7 @@ $('#star').raty({
         <a href="#">添加到书单&rarr;</a>
     </div>
 
-    {% if not book.shelf_status['whole'] %}
+    {% if not book.not_in_columns|count == 0 %}
     <div>
         <a href="#add-to-shelf-modal" role="button" data-toggle="modal">添加到书架&rarr;</a>
         <div id="add-to-shelf-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -239,25 +223,9 @@ $('#star').raty({
                 <div id="shelf-column">
                     <label>请选择书架：（可选多项）</label>
                     <ul class="nav nav-pills">
-                        {% if not book.shelf_status['have'] %}
-                        <li><a href="#" value="{{ column_type.HAVE.value() }}">我有</a></li>
-                        {% endif %}
-
-                        {% if not book.shelf_status['reading'] %}
-                        <li><a href="#" value="{{ column_type.READING.value() }}">在读</a></li>
-                        {% endif %}
-
-                        {% if not book.shelf_status['read'] %}
-                        <li><a href="#" value="{{ column_type.READ.value() }}">读过</a></li>
-                        {% endif %}
-
-                        {% if not book.shelf_status['wish'] %}
-                        <li><a href="#" value="{{ column_type.WISH.value() }}">想读</a></li>
-                        {% endif %}
-
-                        {% if not book.shelf_status['like'] %}
-                        <li><a href="#" value="{{ column_type.LIKE.value() }}">喜欢</a></li>
-                        {% endif %}
+                        {% for x in book.not_in_columns %}
+                        <li><a href="#" value="{{ x.name() }}">{{ x.text() }}</a></li>
+                        {% endfor %}
                     </ul>
                 </div>
 

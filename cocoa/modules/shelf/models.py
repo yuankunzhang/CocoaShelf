@@ -2,23 +2,52 @@
 from datetime import datetime
 from time import time
 
-from sqlalchemy.ext.associationproxy import association_proxy
-
 from flask.ext.babel import gettext as _
 
 from cocoa.extensions import db
-from cocoa.helpers.common import timesince
 from .consts import ColumnType
+from .query import ShelfQuery
+from ..book.models import Book, BookExtra
 
-class IHave(db.Model):
+class ColumnBase(object):
+
+    @classmethod
+    def get_books(cls, shelf):
+        query = cls.query.outerjoin(Book).\
+               filter(cls.shelf==shelf)
+        if cls == ColumnReading:
+            query = query.filter(cls.finished_timestamp==None)
+        rows = query.all()
+        return [r.book for r in rows]
+
+    @classmethod
+    def contains(cls, shelf, book):
+        query = cls.query.filter(cls.shelf==shelf).filter(cls.book==book)
+        if cls == ColumnReading:
+            query = query.filter(cls.finished_timestamp==None)
+
+        result = query.first()
+        if result is None:
+            return False
+        else:
+            return True
+
+    @classmethod
+    def add_book(cls, shelf, book):
+        if not cls.contains(shelf, book):
+            b = cls(book, shelf)
+            db.session.add(b)
+            db.session.commit()
+
+
+class ColumnHave(db.Model, ColumnBase):
     """我有"""
 
-    __tablename__ = 'i_have'
+    __tablename__ = 'column_have'
 
-    shelf_id = db.Column(db.Integer, db.ForeignKey('shelf.id'),
-        primary_key=True)
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
-        primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    shelf_id = db.Column(db.Integer, db.ForeignKey('shelf.id'))
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
     timestamp = db.Column(db.Integer, default=int(time()))
 
     shelf = db.relationship('Shelf',
@@ -30,15 +59,14 @@ class IHave(db.Model):
         self.shelf = shelf
 
 
-class IRead(db.Model):
+class ColumnRead(db.Model, ColumnBase):
     """读过"""
 
-    __tablename__ = 'i_read'
+    __tablename__ = 'column_read'
 
-    shelf_id = db.Column(db.Integer, db.ForeignKey('shelf.id'),
-        primary_key=True)
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
-        primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    shelf_id = db.Column(db.Integer, db.ForeignKey('shelf.id'))
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
     timestamp = db.Column(db.Integer, default=int(time()))
 
     shelf = db.relationship('Shelf',
@@ -50,17 +78,16 @@ class IRead(db.Model):
         self.shelf = shelf
 
 
-class IReading(db.Model):
+class ColumnReading(db.Model, ColumnBase):
     """在读"""
 
-    __tablename__ = 'i_reading'
+    __tablename__ = 'column_reading'
 
-    shelf_id = db.Column(db.Integer, db.ForeignKey('shelf.id'),
-        primary_key=True)
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
-        primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    shelf_id = db.Column(db.Integer, db.ForeignKey('shelf.id'))
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
     timestamp = db.Column(db.Integer, default=int(time()))
-    finish_timestamp = db.Column(db.Integer)
+    finished_timestamp = db.Column(db.Integer)
 
     shelf = db.relationship('Shelf',
         backref=db.backref(__tablename__, cascade='all, delete-orphan'))
@@ -70,16 +97,35 @@ class IReading(db.Model):
         self.book = book
         self.shelf = shelf
 
+    @classmethod
+    def get_finished_books(cls, shelf):
+        rows = db.session.query(
+                Book.title, Book.cover, BookExtra.summary,
+                cls.timestamp, cls.finished_timestamp).\
+               outerjoin(BookExtra).\
+               outerjoin(cls).\
+               filter(cls.finished_timestamp!=None).\
+               filter(cls.shelf==shelf).all()
 
-class IWish(db.Model):
+        books = [{
+            'title': r.title,
+            'cover': r.cover,
+            'summary': r.summary,
+            'timestamp': r.timestamp,
+            'finished_timestamp': r.finished_timestamp,
+        } for r in rows]
+
+        return books
+
+
+class ColumnWish(db.Model, ColumnBase):
     """想读"""
 
-    __tablename__ = 'i_wish'
+    __tablename__ = 'column_wish'
 
-    shelf_id = db.Column(db.Integer, db.ForeignKey('shelf.id'),
-        primary_key=True)
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
-        primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    shelf_id = db.Column(db.Integer, db.ForeignKey('shelf.id'))
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
     timestamp = db.Column(db.Integer, default=int(time()))
 
     shelf = db.relationship('Shelf',
@@ -91,15 +137,14 @@ class IWish(db.Model):
         self.shelf = shelf
 
 
-class ILike(db.Model):
+class ColumnLike(db.Model, ColumnBase):
     """喜欢"""
 
-    __tablename__ = 'i_like'
+    __tablename__ = 'column_like'
 
-    shelf_id = db.Column(db.Integer, db.ForeignKey('shelf.id'),
-        primary_key=True)
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
-        primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    shelf_id = db.Column(db.Integer, db.ForeignKey('shelf.id'))
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
     timestamp = db.Column(db.Integer, default=int(time()))
 
     shelf = db.relationship('Shelf',
@@ -115,14 +160,10 @@ class Shelf(db.Model):
 
     __tablename__ = 'shelf'
 
+    query_class = ShelfQuery
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    have_books = association_proxy('i_have', 'book')
-    read_books = association_proxy('i_read', 'book')
-    reading_books = association_proxy('i_reading', 'book')
-    wish_books = association_proxy('i_wish', 'book')
-    like_books = association_proxy('i_like', 'book')
 
     user = db.relationship('User',
         backref=db.backref('shelf', uselist=False))
@@ -131,55 +172,33 @@ class Shelf(db.Model):
         self.user = user
 
     def __repr__(self):
-        return u'<Shelf (user: %r)>' % self.user.email
+        return u'<Shelf for %r>' % self.user.email
 
-    def get_column(self, column_type):
-        if column_type == ColumnType.HAVE.value():
-            return self.have_books
-        elif column_type == ColumnType.READ.value():
-            return self.read_books
-        elif column_type == ColumnType.READING.value():
-            return self.reading_books
-        elif column_type == ColumnType.WISH.value():
-            return self.wish_books
-        elif column_type == ColumnType.LIKE.value():
-            return self.like_books
-        else:
-            return None
+    def add_book(self, book, column_names):
+        for column_name in column_names:
+            column = _get_column(column_name)
 
-    def add_book_to_shelf(self, book, column_types):
-        for column_type in column_types:
-            column = self.get_column(int(column_type))
-            if column is not None and book not in column:
-                column.append(book)
-        db.session.commit()
-
-    def get_book_status(self, book):
-        have_flag = book in self.have_books
-        read_flag = book in self.read_books
-        reading_flag = book in self.reading_books
-        wish_flag = book in self.wish_books
-        like_flag = book in self.like_books
-
-        whole_flag = have_flag and read_flag and \
-                     reading_flag and wish_flag and \
-                     like_flag
-
-        return {
-            'have':     have_flag,
-            'read':     read_flag,
-            'reading':  reading_flag,
-            'wish':     wish_flag,
-            'like':     like_flag,
-            'whole':    whole_flag,
-        }
+            if column is not None:
+                column.add_book(self, book)
 
     def finish_reading(self, book):
-        reading = IReading.query.filter_by(shelf=self, book=book).first()
-        if reading is not None:
-            reading.finish_timestamp = int(time())
-            if book not in self.read_books:
-                self.read_books.append(book)
+        reading_book = ColumnReading.query.filter_by(shelf=self,
+            book=book, finished_timestamp=None).first()
+        if reading_book is not None:
+            reading_book.finished_timestamp = int(time())
+            ColumnRead.add_book(self, book)
             db.session.commit()
-        else:
-            raise ValueError(_(u'You are not reading this book.'))
+
+
+def _get_column(column_name):
+    if column_name in ['have', 'read', 'reading', 'wish', 'like']:
+        return ColumnType.from_name(column_name).class_
+    else:
+        return None
+
+
+ColumnType.HAVE.class_ = ColumnHave
+ColumnType.READ.class_ = ColumnRead
+ColumnType.READING.class_ = ColumnReading
+ColumnType.WISH.class_ = ColumnWish
+ColumnType.LIKE.class_ = ColumnLike
