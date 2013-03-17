@@ -15,6 +15,7 @@ from cocoa.modules.event.models import EventRecord
 from cocoa.modules.bookrate.models import BookRateDetail, BookRate
 from cocoa.modules.blog.models import Post
 from cocoa.modules.colist.models import Colist, ColistBooks
+from cocoa.modules.mail.models import Mail, MailInbox
 
 manager = Manager(create_app())
 

@@ -47,6 +47,5 @@ class Enum(object):
         return self._items
 
     def __iter__(self):
-        for k in self.__dict__:
-            if isinstance(self.__dict__[k], EnumInteger):
-                yield self.__dict__[k]
+        for k, v in sorted(self._items, key=lambda o: o[1]):
+            yield self.__dict__[k]

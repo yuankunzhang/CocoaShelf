@@ -7,6 +7,7 @@
     2013.03.01
 """
 import re
+from datetime import datetime
 
 from jinja2 import evalcontextfilter, Markup, escape
 from flask import Flask, request, jsonify, render_template, g
@@ -15,6 +16,7 @@ from flask.ext.misaka import Misaka
 
 from .config import DefaultConfig
 from .extensions import db, sijax, login_manager, cache, babel
+from .helpers.common import timesince as _timesince
 from .modules import frontend, location, account, book, shelf, \
     category, blog, colist
 
@@ -85,6 +87,11 @@ def configure_template_filters(app):
         if eval_ctx.autoescape:
             result = Markup(result)
         return result
+
+    @app.template_filter()
+    def timesince(timestamp):
+        dt = datetime.fromtimestamp(timestamp)
+        return _timesince(dt)
 
 
 def configure_errorhandlers(app):

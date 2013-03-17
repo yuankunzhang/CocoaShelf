@@ -27,24 +27,26 @@ class EventRecord(db.Model):
         db.session.commit()
 
     def get_event(self):
-        return Event.get(self.type, self.what)
+        return Event.get(self.type, self.what, self.timestamp)
 
     @staticmethod
     def get_records(type):
-        return EventRecord.query.filter_by(type=type).all()
+        return EventRecord.query.filter_by(type=type).\
+               order_by(EventRecord.timestamp.desc()).all()
 
 
 class Event(object):
 
     @staticmethod
-    def get(type, attrs):
+    def get(type, attrs, timestamp):
         if type == EventType.SIGN_UP.value():
-            return SignUpEvent(attrs['user_id'])
+            return SignUpEvent(attrs['user_id'], timestamp)
         elif type == EventType.ADD_BOOK_TO_SHELF.value():
             return AddBookToShelfEvent(
                 attrs['user_id'],
                 attrs['column_name'],
-                attrs['book_id'])
+                attrs['book_id'],
+                timestamp)
 
     def save(self):
         type = self.__type__.value()
@@ -55,17 +57,19 @@ class SignUpEvent(Event):
 
     __type__ = EventType.SIGN_UP
 
-    def __init__(self, user_id):
+    def __init__(self, user_id, timestamp=None):
         self.user_id = user_id
         self.who = user_id
+        self.timestamp=timestamp
 
 
 class AddBookToShelfEvent(Event):
 
     __type__ = EventType.ADD_BOOK_TO_SHELF
 
-    def __init__(self, user_id, column_name, book_id):
+    def __init__(self, user_id, column_name, book_id, timestamp=None):
         self.user_id = user_id
         self.who = user_id
         self.column_name = column_name
         self.book_id = book_id
+        self.timestamp=timestamp

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-03-07 21:25+0800\n"
+"POT-Creation-Date: 2013-03-17 13:52+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: application.py:79
+#: application.py:98
 msgid "404 page not found"
 msgstr ""
 
-#: application.py:85
+#: application.py:104
 msgid "403 forbidden"
 msgstr ""
 
-#: application.py:91
+#: application.py:110
 msgid "500 server error"
 msgstr ""
 
-#: application.py:97
+#: application.py:116
 msgid "401 unauthorized"
 msgstr ""
 
@@ -37,12 +37,12 @@ msgstr ""
 msgid "just now"
 msgstr ""
 
-#: helpers/enum.py:35
+#: helpers/enum.py:38
 msgid "Wrong value"
 msgstr ""
 
-#: helpers/enum.py:43
-msgid "Wrong text"
+#: helpers/enum.py:44
+msgid "Wrong key"
 msgstr ""
 
 #: modules/account/consts.py:9
@@ -65,6 +65,9 @@ msgstr ""
 #: modules/account/forms.py:16 modules/account/forms.py:21
 #: modules/account/forms.py:43 modules/account/forms.py:49
 #: modules/account/forms.py:54 modules/account/forms.py:64
+#: modules/account/forms.py:106 modules/account/forms.py:113
+#: modules/account/forms.py:119 modules/blog/forms.py:12
+#: modules/colist/forms.py:10 modules/colist/forms.py:14
 msgid "Required"
 msgstr ""
 
@@ -104,56 +107,172 @@ msgstr ""
 msgid "Gender"
 msgstr ""
 
-#: modules/account/models.py:64
+#: modules/account/forms.py:86 templates/account/upload_avatar.html:18
+msgid "Upload avatar"
+msgstr ""
+
+#: modules/account/forms.py:94
+msgid "Wrong password"
+msgstr ""
+
+#: modules/account/forms.py:105
+msgid "Old password"
+msgstr ""
+
+#: modules/account/forms.py:112
+msgid "New password"
+msgstr ""
+
+#: modules/account/forms.py:118
+msgid "Confirm"
+msgstr ""
+
+#: modules/account/forms.py:120
+msgid "Not match"
+msgstr ""
+
+#: modules/account/models.py:75
 msgid "This email has been signed up."
 msgstr ""
 
-#: modules/account/models.py:81
+#: modules/account/models.py:92
 msgid "Wrong previous password."
 msgstr ""
 
-#: modules/account/views.py:40
+#: modules/account/views.py:42
 msgid "Successfully signed up."
 msgstr ""
 
-#: modules/account/views.py:60
+#: modules/account/views.py:65
 msgid "Successfully signed in."
 msgstr ""
 
-#: modules/account/views.py:88
+#: modules/account/views.py:91
 msgid "Settings updated"
 msgstr ""
 
-#: modules/book/models.py:85
+#: modules/account/views.py:105
+msgid "Avatar uploaded successfully."
+msgstr ""
+
+#: modules/account/views.py:122
+msgid "Thumbnail updated."
+msgstr ""
+
+#: modules/account/views.py:135
+msgid "Password changed"
+msgstr ""
+
+#: modules/blog/consts.py:7
+msgid "Article"
+msgstr ""
+
+#: modules/blog/consts.py:8
+msgid "Review"
+msgstr ""
+
+#: modules/blog/consts.py:9
+msgid "Note"
+msgstr ""
+
+#: modules/blog/forms.py:11
+msgid "Title"
+msgstr ""
+
+#: modules/blog/forms.py:15
+msgid "Content"
+msgstr ""
+
+#: modules/blog/forms.py:18
+msgid "Type"
+msgstr ""
+
+#: modules/blog/forms.py:24
+msgid "References"
+msgstr ""
+
+#: modules/blog/views.py:34
+msgid "Published new post."
+msgstr ""
+
+#: modules/book/ajax.py:27
+msgid "Added to your shelf!"
+msgstr ""
+
+#: modules/book/ajax.py:36
+msgid "Successfully added."
+msgstr ""
+
+#: modules/book/models.py:98
 msgid "Invalid isbn number"
 msgstr ""
 
-#: modules/book/models.py:112
+#: modules/book/models.py:125
 msgid "We've already have this bookin our database"
+msgstr ""
+
+#: modules/category/views.py:27
+msgid "Changed book category"
+msgstr ""
+
+#: modules/colist/forms.py:9
+msgid "Colist Name"
+msgstr ""
+
+#: modules/colist/forms.py:13
+msgid "Colist Introduction"
 msgstr ""
 
 #: modules/location/models.py:59
 msgid "Not a valid IP address."
 msgstr ""
 
+#: modules/shelf/ajax.py:17
+msgid "Finish reading a book."
+msgstr ""
+
+#: modules/shelf/consts.py:8
+msgid "我有"
+msgstr ""
+
+#: modules/shelf/consts.py:9
+msgid "读过"
+msgstr ""
+
+#: modules/shelf/consts.py:10
+msgid "在读"
+msgstr ""
+
+#: modules/shelf/consts.py:11
+msgid "想读"
+msgstr ""
+
+#: modules/shelf/consts.py:12
+msgid "喜欢"
+msgstr ""
+
+#: modules/shelf/models.py:216
+msgid "No such user."
+msgstr ""
+
+#: templates/account/change_password.html:11
+msgid "Change password"
+msgstr ""
+
 #: templates/account/settings.html:12
 msgid "Settings"
 msgstr ""
 
-#: templates/account/settings.html:45
+#: templates/account/settings.html:55 templates/macros/form.html:47
 msgid "确定"
 msgstr ""
 
-#: templates/account/signin.html:11
+#: templates/account/signin.html:11 templates/account/signin.html:43
 msgid "Sign In"
 msgstr ""
 
 #: templates/account/signin.html:34 templates/account/signup.html:34
 msgid "password"
-msgstr ""
-
-#: templates/account/signin.html:43 templates/account/signup.html:57
-msgid "Sign Up"
 msgstr ""
 
 #: templates/account/signin.html:44
@@ -162,5 +281,13 @@ msgstr ""
 
 #: templates/account/signup.html:42
 msgid "confirm password"
+msgstr ""
+
+#: templates/account/signup.html:57
+msgid "Sign Up"
+msgstr ""
+
+#: templates/book/index.html:10
+msgid "Book index"
 msgstr ""
 

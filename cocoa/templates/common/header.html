@@ -19,7 +19,8 @@
                 <li><a href="{{ url_for('account.signin') }}">登入</a></li>
                 <li><a href="{{ url_for('account.signup') }}">注册</a></li>
             {% else %}
-                <li><a href="#">{{ current_user.username }}</a></li>
+                <li><a href="{{ url_for('account.settings') }}">{{ current_user.get_display_name() }}的帐号</a></li>
+                <li><a href="{{ url_for('shelf.item', shelf_id=current_user.shelf.id) }}">我的书架</a></li>
                 <li><a href="{{ url_for('account.signout') }}">登出</a></li>
             {% endif %}
             </ul>
