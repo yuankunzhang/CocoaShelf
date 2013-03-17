@@ -117,6 +117,29 @@ def reading_plan_data(shelf_id):
     return jsonify(timeline)
 
 
+@mod.route('/<int:shelf_id>/tags/')
+def tags(shelf_id):
+
+    shelf = _get_shelf(shelf_id)
+
+    tags = shelf.get_tags()
+
+    return render_template('shelf/tags.html', shelf=shelf, tags=tags)
+
+
+@mod.route('/<int:shelf_id>/tagbooks/', methods=['POST'])
+def tag_books(shelf_id):
+
+    shelf = _get_shelf(shelf_id)
+    tag_id = request.form['tag_id']
+    data = shelf.get_tag_books(tag_id)
+    
+    books = [{'id': d.id, 'title': d.title, 'cover': d.cover} \
+            for d in data]
+
+    return jsonify(books=books)
+
+
 def _get_shelf(shelf_id):
 
     if shelf_id is not None:

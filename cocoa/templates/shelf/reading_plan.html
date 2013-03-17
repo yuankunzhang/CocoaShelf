@@ -11,13 +11,9 @@
 {% endblock %}
 
 {% block main %}
-<ul class="breadcrumb">
-    <li>
-        <a href="#">{{ shelf.user.penname }}的书架</a>
-        <span class="divider">/</span>
-    </li>
-    <li class="active">阅读计划</li>
-</ul>
+
+{% from 'shelf/breadcrumb.html' import breadcrumb %}
+{{ breadcrumb(shelf, '阅读计划') }}
 
 <div id="timeline-embed"></div>
 

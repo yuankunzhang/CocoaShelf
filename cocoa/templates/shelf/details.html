@@ -11,13 +11,9 @@
 {% endblock %}
 
 {% block main %}
-<ul class="breadcrumb">
-    <li>
-        <a href="#">{{ shelf.user.penname }}的书架</a>
-        <span class="divider">/</span>
-    </li>
-    <li class="active">书架详情</li>
-</ul>
+
+{% from 'shelf/breadcrumb.html' import breadcrumb %}
+{{ breadcrumb(shelf, '书架详情') }}
 
 <div class="shelf-books">
 </div>

@@ -4,6 +4,7 @@ from flask.ext.babel import gettext as _
 
 from cocoa.helpers.common import str2list
 from .models import Book
+from ..colist.models import Colist
 
 class AjaxActions(object):
 
@@ -24,6 +25,15 @@ class AjaxActions(object):
             pass
 
         obj_response.alert(_(u'Added to your shelf!'))
+
+    @staticmethod
+    def add_to_colist(obj_response, colist_id, book_id):
+        book = Book.query.get_or_404(book_id)
+
+        colist = Colist.query.get(colist_id)
+        colist.add_book(book)
+
+        obj_response.alert(_(u'Successfully added.'))
 
     @staticmethod
     @login_required

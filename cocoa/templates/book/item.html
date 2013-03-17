@@ -204,7 +204,7 @@ $('#star').raty({
 
 <div id="operations">
     <div>
-        <a href="#">写书评&rarr;</a>
+        <a href="{{ url_for('blog.new', ref_book_id=book.id) }}">写书评&rarr;</a>
     </div>
 
     <div>
@@ -225,6 +225,15 @@ $('#star').raty({
                     {% endfor %}
                     </select>
                 </div>
+
+                <div>
+                    或者，<a href="{{ url_for('colist.new') }}">创建新书单&rarr;</a>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                <button class="btn btn-primary">确定</button>
             </div>
         </div>
     </div>
@@ -264,6 +273,21 @@ $('#star').raty({
 <script type="text/javascript">
 $(function() {
     var book_id = {{ book.id }};
+
+    // add to colist
+    $('#add-to-colist-modal .btn-primary').click(function() {
+        colist_id = $('select[name=colist_id]').val();
+
+        if (!colist_id) {
+            alert('请选择一个书单');
+            return false;
+        }
+
+        Sijax.request('add_to_colist', [colist_id, book_id]);
+        $('#add-to-colist-modal').modal('hide');
+
+        return false;
+    });
 
     // add to shelf
     $('#shelf-column ul li').toggle(function() {

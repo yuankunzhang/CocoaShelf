@@ -1,0 +1,32 @@
+{% extends 'layout/shelf.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/shelf/shelf.css">
+{% endblock %}
+
+{% block sidebar %}
+    {% set active='tags' %}
+    {% include 'shelf/sidebar.html' %}
+{% endblock %}
+
+{% block main %}
+
+{% from 'shelf/breadcrumb.html' import breadcrumb %}
+{{ breadcrumb(shelf, '标签') }}
+
+<div class="tag-list" shelf="{{ shelf.id }}">
+    <ul class="nav nav-pills">
+    {% for tag in tags %}
+        <li><a href="#" value="{{ tag.id }}">{{ tag.name }}({{ tag.count }})</a></li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div class="shelf-books">
+{% include 'shelf/book_list.html' %}
+</div>
+
+<script type="text/javascript" src="/static/js/shelf/tag_books.js"></script>
+
+{% endblock %}

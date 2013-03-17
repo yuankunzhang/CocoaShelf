@@ -14,7 +14,7 @@
         <li class="divider"></li>
 
         <li id="colists"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">书单</a></li>
-        <li id="tags"><a href="#">标签</a></li>
+        <li id="tags"><a href="{{ url_for('shelf.tags', shelf_id=shelf.id) }}">标签</a></li>
 
         <li class="divider"></li>
         <li class="divider"></li>

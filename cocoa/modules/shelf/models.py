@@ -2,6 +2,8 @@
 from datetime import datetime
 from time import time
 
+from sqlalchemy import func
+
 from flask.ext.babel import gettext as _
 
 from cocoa.extensions import db
@@ -9,6 +11,7 @@ from .consts import ColumnType
 from .query import ShelfQuery
 from ..book.models import Book, BookExtra
 from ..event.models import AddBookToShelfEvent
+from ..tag.models import Tag, UserBookTags
 
 class ColumnBase(object):
 
@@ -194,6 +197,16 @@ class Shelf(db.Model):
             reading_book.finished_timestamp = int(time())
             ColumnRead.add_book(self, book)
             db.session.commit()
+
+    def get_tags(self):
+        return db.session.query(UserBookTags.tag_id, Tag.id,
+                Tag.name, func.count(Tag.id).label('count')).\
+               outerjoin(Tag).filter(UserBookTags.user==self.user).\
+               order_by(func.count(Tag.id).desc()).group_by(Tag.id).all()
+
+    def get_tag_books(self, tag_id):
+        return Book.query.outerjoin(UserBookTags).outerjoin(Tag).\
+               filter(UserBookTags.user==self.user, Tag.id==tag_id).all()
 
     @staticmethod
     def get_by_uid(user_id):

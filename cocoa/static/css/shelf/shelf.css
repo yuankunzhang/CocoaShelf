@@ -54,3 +54,15 @@
 .pop .book-title {
     font-size: 14px;
 }
+
+.tag-list .nav-pills > li {
+    margin-right: 6px;
+}
+
+.tag-list .nav-pills > li > a {
+    border: 1px solid #ddd;
+}
+
+.tag-list .nav-pills > li.active > a {
+    border: 1px solid #0088cc;
+}

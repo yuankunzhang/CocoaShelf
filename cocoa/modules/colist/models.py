@@ -52,6 +52,11 @@ class Colist(db.Model):
         current_user.colists.append(self)
         db.session.commit()
 
+    def add_book(self, book):
+        if book not in self.books:
+            self.books.append(book)
+            db.session.commit()
+
     def add_books(self, book_ids):
         for bid in book_ids:
             book = Book.query.filter_by(isbn13=bid).first()

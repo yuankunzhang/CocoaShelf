@@ -30,6 +30,6 @@ class DictField(Field):
     def process_formdata(self, valuelist):
         if valuelist:
             self.data = str2list(valuelist[0],
-                                 self.remove_duplicates)
+                                 remove_duplicates=self.remove_duplicates)
         else:
             self.data = []

@@ -5,7 +5,6 @@ from flask.ext.login import current_user
 
 from cocoa.extensions import db
 from cocoa.helpers.sql import JSONEncodedDict
-from cocoa.helpers.html import safe_html
 from .consts import PostType, PostStatus
 from ..book.models import Book
 
@@ -30,7 +29,7 @@ class Post(db.Model):
                  status=None, author=None):
         self.type = type
         self.title = title
-        self.content = safe_html(content)
+        self.content = content
 
         self.ref_books = ref_books
 
