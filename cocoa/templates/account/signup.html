@@ -8,16 +8,19 @@
 
 {% block content %}
 
+{% from 'macros/link_to.html' import link_to %}
+
 <div class="page-header">
     <h1><small>创建一个帐号</small></h1>
 
     <div id="go-to-signin">
-        有帐号？从<a href="{{ url_for('account.signin') }}">这里</a>登入
+        有帐号？从{{ link_to('account.signin', '这里') }}</a>登入
     </div>
 </div>
 
 <div id="signup-form">
-    <form method="post" class="form-horizontal" action="{{ url_for('account.signup') }}">
+    {% from 'macros/form.html' import center_form %}
+    {% call center_form('account.signup') %}
         {{ form.csrf_token }}
 
         <div class="control-group{% if form.email.errors %} error{% endif %}">
@@ -57,7 +60,7 @@
                 <button class="btn btn-primary" type="submit">{{ _('Sign Up') }}</button>
             </div>
         </div>
-    </form>
+    {% endcall %}
 </div>
 
 <script type="text/javascript">

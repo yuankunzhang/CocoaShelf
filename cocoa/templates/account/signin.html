@@ -7,11 +7,13 @@
 
 {% block content %}
 
+{% from 'macros/link_to.html' import link_to %}
+
 <div class="page-header">
     <h1><small>{{ _('Sign In') }}</small></h1>
 
     <div id="go-to-signin">
-        还没有帐号？到<a href="{{ url_for('account.signup') }}">这里</a>注册
+        还没有帐号？到{{ link_to('account.signup', '这里') }}注册
     </div>
 </div>
 
