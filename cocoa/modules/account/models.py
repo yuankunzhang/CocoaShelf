@@ -6,6 +6,8 @@ from PIL import Image
 
 from werkzeug import generate_password_hash, check_password_hash
 
+from sqlalchemy.ext.associationproxy import association_proxy
+
 from flask import current_app
 from flask.ext.babel import gettext as _
 
@@ -36,6 +38,8 @@ class User(db.Model):
     timestamp = db.Column(db.Integer, default=int(time()))
 
     city = db.relationship('City', backref='users')
+    followings = association_proxy('u_followings', 'to_user')
+    followers = association_proxy('u_followers', 'from_user')
 
     def __init__(self, email, password, city_id=None, username=None):
         self.email = email.lower()
@@ -148,7 +152,7 @@ class User(db.Model):
 
     def get_thumbnail(self):
         if self.avatar is None:
-            return None
+            return 'default_t.jpg'
         else:
             slices = self.avatar.split('.')
             return slices[0] + '_t.' + slices[1]

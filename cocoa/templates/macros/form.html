@@ -1,3 +1,12 @@
+{% macro center_form(endpoint, method='post') %}
+<form action="{{ url_for(endpoint, **kwargs) }}"
+      class="form-horizontal"
+      method="{{ method }}">
+
+    {{ caller() }}
+</form>
+{% endmacro %}
+
 {% macro render_field(field, placeholder) %}
     <div class="control-group">
         {{ field.label(class="control-label") }}

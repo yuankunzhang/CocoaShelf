@@ -1,6 +1,16 @@
 {% set user=shelf.user %}
 {% include 'account/badge.html' %}
 
+<script type="text/javascript">
+$(function() {
+    var user_id = {{ user.id }};
+    $('#follow-btn').click(function() {
+        Sijax.request('follow', [user_id]);
+        return false;
+    });
+});
+</script>
+
 <div id="sidebar">
 	<ul class="nav nav-list nav-pills nav-stacked">
         <li id="details"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">书架详情</a></li>

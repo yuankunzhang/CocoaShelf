@@ -16,8 +16,8 @@
 </div>
 
 <div id="signin-form">
-    {% from 'macros/form.html' import render_checkbox %}
-    <form method="post" class="form-horizontal" action="{{ url_for('account.signin', next=next) }}">
+    {% from 'macros/form.html' import center_form, render_checkbox %}
+    {% call center_form('account.signin', next=next) %}
         {{ form.csrf_token }}
 
         <div class="control-group{% if form.email.errors %} error{% endif %}">
@@ -44,7 +44,7 @@
                 <a href="#">{{ _('Forgot your password?') }}</a>
             </div>
         </div>
-    </form>
+    {% endcall %}
 </div>
 
 {% endblock %}

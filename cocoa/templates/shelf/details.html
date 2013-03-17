@@ -15,6 +15,36 @@
 {% from 'shelf/breadcrumb.html' import breadcrumb %}
 {{ breadcrumb(shelf, '书架详情') }}
 
-<div class="shelf-books">
+<div id="comment-board">
+    <hr class="dashed-hr">
+
+    <div class="comments">
+        <ul class="unstyled">
+        {% for comment in shelf.comments %}
+            <li><div class="media">
+                <a class="pull-left" href="{{ url_for('shelf.item', shelf_id=comment.user.shelf.id) }}">
+                    <img src="/static/upload/avatar/{{ comment.user.get_thumbnail() }}" width=60 height=60>
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading"><small><a href="{{ url_for('shelf.item', shelf_id=comment.user.shelf.id) }}">{{ comment.user.get_display_name() }}</a> | {{ comment.user.timestamp|dt }}</small></h4>
+                    {{ comment.content }}
+                </div>
+            </div><hr></li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    {% if current_user.is_authenticated() %}
+    <div id="comment-form">
+        {% from 'macros/form.html' import center_form, render_field, render_submit %}
+        {% call center_form('shelf.new_comment', shelf_id=shelf.id) %}
+            {{ form.csrf_token }}
+            {{ render_field(form.content) }}
+
+            {{ render_submit() }}
+        {% endcall %}
+    </div>
+    {% endif %}
 </div>
+
 {% endblock %}

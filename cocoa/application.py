@@ -93,6 +93,11 @@ def configure_template_filters(app):
         dt = datetime.fromtimestamp(timestamp)
         return _timesince(dt)
 
+    @app.template_filter()
+    def dt(timestamp):
+        dt = datetime.fromtimestamp(timestamp)
+        return dt
+
 
 def configure_errorhandlers(app):
 

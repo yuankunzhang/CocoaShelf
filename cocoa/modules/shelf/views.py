@@ -5,11 +5,14 @@ import flask_sijax
 from flask import Blueprint, request, render_template, \
     g, redirect, url_for, flash, jsonify, abort
 from flask.ext.login import current_user, login_required
+from flask.ext.babel import gettext as _
 
 from .models import Shelf, ColumnReading
 from .consts import ColumnType
 from .ajax import AjaxActions
+from .forms import CommentForm
 from ..book.models import Book
+from ..comment.models import ShelfComments
 from ..event.models import EventRecord
 from ..event.consts import EventType
 
@@ -36,11 +39,33 @@ def home():
                             add_book_events=add_book_events)
 
 
-@mod.route('/<int:shelf_id>/')
+@flask_sijax.route(mod, '/<int:shelf_id>/')
 def item(shelf_id):
 
+    if g.sijax.is_sijax_request:
+        g.sijax.register_object(AjaxActions)
+        return g.sijax.process_request()
+
+    print current_user.followings
+
     shelf = _get_shelf(shelf_id)
-    return render_template('shelf/details.html', shelf=shelf)
+    form = CommentForm(request.form)
+
+    return render_template('shelf/details.html', shelf=shelf, form=form)
+
+
+@mod.route('/<int:shelf_id>/comment/', methods=['POST'])
+@login_required
+def new_comment(shelf_id):
+
+    form = CommentForm(request.form)
+    shelf = _get_shelf(shelf_id)
+
+    if form.validate_on_submit():
+        comment = ShelfComments(form.content.data, current_user, shelf)
+        comment.save()
+        flash(_(u'Commented this shelf.'))
+        return redirect(url_for('shelf.item', shelf_id=shelf_id))
 
 
 @flask_sijax.route(mod, '/<int:shelf_id>/<string:column_name>/')
@@ -72,7 +97,7 @@ def add_books(shelf_id, column_name):
             if book is not None:
                 shelf.add_book(book, (column_name,))
 
-        flash(u'Added books to shelf.')
+        flash(_(u'Added books to shelf.'))
         return redirect(url_for('shelf.column', shelf_id=shelf_id,
                                 column_name=column_name))
 

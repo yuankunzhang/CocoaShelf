@@ -38,10 +38,6 @@ class Mail(db.Model):
             user = User.query.get(to_user)
             user.inbox.append(MailInbox(from_user, mail))
         db.session.commit()
-
-    def get_datetime(self, format):
-        return datetime.fromtimestamp(int(self.timestamp)).\
-               strftime(format)
                
 
 class MailInbox(db.Model):

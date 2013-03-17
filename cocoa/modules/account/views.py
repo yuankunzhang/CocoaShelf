@@ -51,11 +51,9 @@ def signin(next=None):
     form = SigninForm(request.form)
     if request.args.has_key('next'):
         next = request.args['next']
-    else:
-        next = url_for('account.home')
 
     if current_user.is_authenticated():
-        return redirect(next)
+        return redirect(url_for('frontend.home'))
 
     if form.validate_on_submit():
         user, ok = User.authenticate(form.email.data, form.password.data)
@@ -63,6 +61,7 @@ def signin(next=None):
         if ok:
             login_user(user, form.remember.data)
             flash(_('Successfully signed in.'))
+            next = url_for('shelf.item', shelf_id=user.shelf.id)
             return redirect(next)
 
     return render_template('account/signin.html', form=form, next=next)

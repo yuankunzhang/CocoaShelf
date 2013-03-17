@@ -1,7 +1,8 @@
+{% from 'macros/link_to.html' import link_to, li_link_to %}
 <div id="header">
     <div id="top-bar" class="container clearfix">
         <div class="logo">
-            <a href="{{ url_for('frontend.home') }}">可可书架</a>
+            {{ link_to('frontend.home', '可可书架') }}
         </div>
 
         <div class="search-box">
@@ -16,12 +17,12 @@
         <div id="account-nav" class="navbar nav-collapse">
             <ul class="nav">
             {% if not current_user.is_authenticated() %}
-                <li><a href="{{ url_for('account.signin') }}">登入</a></li>
-                <li><a href="{{ url_for('account.signup') }}">注册</a></li>
+                {{ li_link_to('account.signin', '登入') }}
+                {{ li_link_to('account.signup', '注册') }}
             {% else %}
-                <li><a href="{{ url_for('account.settings') }}">{{ current_user.get_display_name() }}的帐号</a></li>
-                <li><a href="{{ url_for('shelf.item', shelf_id=current_user.shelf.id) }}">我的书架</a></li>
-                <li><a href="{{ url_for('account.signout') }}">登出</a></li>
+                {{ li_link_to('account.settings', current_user.get_display_name()+'的帐号') }}
+                {{ li_link_to('shelf.item', '我的书架', shelf_id=current_user.shelf.id) }}
+                {{ li_link_to('account.signout', '登出') }}
             {% endif %}
             </ul>
         </div>
@@ -33,11 +34,11 @@
         <div class="navbar nav-collapse">
             <ul class="nav">
                 <li class="divider-vertical"></li>
-                <li><a href="{{ url_for('frontend.home') }}">主页</a></li>
+                {{ li_link_to('frontend.home', '主页') }}
                 <li class="divider-vertical"></li>
-                <li><a href="{{ url_for('shelf.home') }}">书架</a></li>
+                {{ li_link_to('shelf.home', '书架') }}
                 <li class="divider-vertical"></li>
-                <li><a href="{{ url_for('book.home') }}">图书</a></li>
+                {{ li_link_to('book.home', '图书') }}
                 <li class="divider-vertical"></li>
                 <li><a href="#">小组</a></li>
                 <li class="divider-vertical"></li>
