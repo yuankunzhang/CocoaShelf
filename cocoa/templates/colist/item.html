@@ -1,14 +1,15 @@
-{% extends 'layout/single_column.html' %}
+{% extends 'layout/double_columns.html' %}
+{% from 'macros/link_to.html' import link_to %}
 
 {% block css %}
 {{ super() }}
 <link rel="stylesheet" type="text/css" href="/static/css/colist/colist.css">
 {% endblock %}
 
-{% block content %}
+{% block left_col %}
 
 <div class="page-header">
-    <h1><small>书单：{{ colist.name }}</small></h1>
+    <h1><small>{{ colist.user.get_display_name() }}的书单：{{ colist.name }}</small></h1>
     <a id="add-books-btn" href="{{ url_for('colist.add_books', colist_id=colist.id) }}">添加图书</a>
 </div>
 
@@ -23,7 +24,7 @@
 
         <div class="book-meta media-body">
             <ul class="unstyled">
-                <li><a href="{{ url_for('book.item', book_id=book.id) }}">{{ book.title }}</a></li>
+                <li>{{ link_to('book.item', book.title, book_id=book.id) }}</li>
                 <li>作者：{{ ','.join(book.author) }}</li>
                 <li>出版社：{{ book.publisher }}</li>
             </ul>
@@ -33,4 +34,17 @@
     {% endfor %}
 </div>
 
+{% endblock %}
+
+{% block right_col %}
+<h3><small>他的其他书单：</small></h3>
+<hr>
+
+<ul class="unstyled">
+{% for c in colist.user.colists %}
+    {% if not c==colist %}
+    <li>{{ link_to('colist.item', c.name, colist_id=c.id) }}</li>
+    {% endif %}
+{% endfor %}
+</ul>
 {% endblock %}

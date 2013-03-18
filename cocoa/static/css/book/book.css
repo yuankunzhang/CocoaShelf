@@ -39,3 +39,11 @@
     height: 20px;
     text-align: center;
 }
+
+.book-list ul li {
+    float: left;
+    width: 100px;
+    height: 140px;
+    margin-right: 6px;
+    margin-bottom: 20px;
+}

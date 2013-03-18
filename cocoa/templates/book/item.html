@@ -13,6 +13,8 @@
 </script>
 {% endblock %}
 
+{% from 'macros/link_to.html' import link_to %}
+
 {% block left_col %}
 <div class="page-header">
     <h2><small>{{ book.title }}</small></h2>
@@ -94,6 +96,10 @@ $('#hint').html(hints[score]);
 $('#rate-count span').html('{{ book.get_rate_count() }}');
 {% endif %}
 
+{% if not current_user.is_authenticated() %}
+readOnly = true;
+{% endif %}
+
 $('#star').raty({
     readOnly : readOnly,
     score    : score,
@@ -123,8 +129,8 @@ $('#star').raty({
                 {% if book.category %}
                 <dd>{{ book.category.as_tree()|safe }}</dd>
                 {% endif %}
-                {% if current_user.is_authenticated %}
-                <dd><a href="{{ url_for('category.change_category', book_id=book.id) }}">修改</a></dd>
+                {% if current_user.is_authenticated() %}
+                <dd>{{ link_to('category.change_category', '修改', book_id=book.id) }}</dd>
                 {% endif %}
             </dl>
         </div>

@@ -32,6 +32,10 @@ class Tag(db.Model):
         self.count += 1
         db.session.commit()
 
+    @staticmethod
+    def top_list(num=10):
+        return Tag.query.order_by(Tag.count.desc()).limit(num).all()
+
 
 class BookTags(db.Model):
 

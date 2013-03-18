@@ -65,7 +65,6 @@
 var thumbnail_box = false;
 {% if current_user.thumbnail_box %}
 thumbnail_box = {{ current_user.thumbnail_box|tojson|safe }};
-console.debug(thumbnail_box);
 {% endif %}
 
 initThumbnail(thumbnail_box);

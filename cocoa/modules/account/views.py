@@ -23,13 +23,12 @@ def home():
 
 
 @mod.route('/signup/', methods=['GET', 'POST'])
-def signup(next=None):
+def signup():
 
     form = SignupForm(request.form)
-    next = next or url_for('account.home')
 
     if current_user.is_authenticated():
-        return redirect(next)
+        return redirect(url_for('frontend.home'))
 
     if form.validate_on_submit():
         user = User(form.email.data,
@@ -40,7 +39,7 @@ def signup(next=None):
         
         login_user(user)
         flash(_(u'Successfully signed up.'))
-        return redirect(next)
+        return redirect(url_for('account.settings', user_id=user.id))
 
     return render_template('account/signup.html', form=form)
 

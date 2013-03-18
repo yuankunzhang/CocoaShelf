@@ -1,10 +1,5 @@
 {% extends 'layout/shelf.html' %}
 
-{% block css %}
-{{ super() }}
-<link rel="stylesheet" href="/static/css/shelf/shelf.css">
-{% endblock %}
-
 {% block sidebar %}
     {% set active='details' %}
     {% include 'shelf/sidebar.html' %}

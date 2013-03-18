@@ -1,21 +1,45 @@
-{% extends 'layout/single_column.html' %}
+{% extends 'layout/double_columns.html' %}
 
 {% block css %}
 {{ super() }}
+<link rel="stylesheet" type="text/css" href="/static/css/book/book.css">
 {% endblock %}
 
-{% block content %}
+{% block left_col %}
 
 <div class="page-header">
-    <h1><small>{{ _('Book index') }}</small></h1>
+    <h1><small>图书首页</small></h1>
 </div>
 
-<div id="books">
-    <ol>
-    {% for book in books %}
-        <li><a href="{{ url_for('book.item', book_id=book.id) }}">{{ book.title }}</a></li>
+<div id="popular-books" class="book-list clearfix">
+    <h2><small>图书</small></h2>
+    <ul class="unstyled inline">
+    {% for book in books_top_10 %}
+        <li><a href="{{ url_for('book.item', book_id=book.id) }}">
+            <img src="/static/upload/cover/{{ book.cover }}" width=100 height=140>
+        </a></li>
     {% endfor %}
-    </ol>
+    </ul>
 </div>
 
+<div id="popular-tags">
+    <h2><small>标签</small></h2>
+    <ul class="unstyled inline">
+    {% for tag in tags_top_20 %}
+        <li><a href="#">{{ tag.name }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div id="popular-colists">
+    <h2><small>书单</small></h2>
+</div>
+
+<div id="sugguests">
+    <h2><small>你可能喜欢</small></h2>
+</div>
+
+{% endblock %}
+
+{% block right_col %}
 {% endblock %}

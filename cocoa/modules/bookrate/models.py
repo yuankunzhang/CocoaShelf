@@ -77,3 +77,11 @@ class BookRate(db.Model):
         self.count += 1
 
         db.session.commit()
+
+    @staticmethod
+    def top_list(num=10):
+        from ..book.models import Book
+
+        return Book.query.outerjoin(BookRate).\
+               order_by((BookRate.total / BookRate.count).desc()).\
+               limit(num).all()

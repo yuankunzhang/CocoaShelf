@@ -23,19 +23,28 @@ $(function() {
         <li class="divider"></li>
         <li class="divider"></li>
 
-        <li id="colists"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">书单</a></li>
+        <li id="colists"><a href="{{ url_for('shelf.colists', shelf_id=shelf.id) }}">书单</a></li>
         <li id="tags"><a href="{{ url_for('shelf.tags', shelf_id=shelf.id) }}">标签</a></li>
 
         <li class="divider"></li>
         <li class="divider"></li>
 
         <li id="reading-track"><a href="{{ url_for('shelf.reading_plan', shelf_id=shelf.id) }}">阅读计划</a></li>
+        <li id="blog"><a href="#">部落格</a></li>
 	</ul>
 </div>
 
-<script>
+<script type="text/javascript" src="/static/js/browser_detect.js"></script>
+<script type="text/javascript">
 {% if active %}
 $('#sidebar ul li').removeClass('active');
 $('#sidebar ul li#{{ active }}').addClass('active');
 {% endif %}
+
+if (BrowserDetect.browser == 'Explorer' &&
+    (BrowserDetect.version == '6' ||
+    BrowserDetect.version == '7')) {
+
+    $('li#reading-track').remove();
+}
 </script>

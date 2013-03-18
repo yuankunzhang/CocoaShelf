@@ -1,0 +1,30 @@
+{% extends 'layout/shelf.html' %}
+
+{% block sidebar %}
+    {% set active='colists' %}
+    {% include 'shelf/sidebar.html' %}
+{% endblock %}
+
+{% block main %}
+
+{% from 'macros/link_to.html' import link_to %}
+
+{% from 'shelf/breadcrumb.html' import breadcrumb %}
+{{ breadcrumb(shelf, '书单') }}
+
+<div class="colists">
+    <h2><small>书单 &gt;&gt;</small></h2>
+    <ul class="unstyled">
+    {% for colist in shelf.user.colists %}
+        <li>
+            <h2><small>{{ link_to('colist.item', colist.name, colist_id=colist.id) }}</small></h2>
+            <div class="colist-intro">
+                <p>{{ colist.intro }}</p>
+            </div>
+        </li>
+        <hr>
+    {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

@@ -46,8 +46,6 @@ def item(shelf_id):
         g.sijax.register_object(AjaxActions)
         return g.sijax.process_request()
 
-    print current_user.followings
-
     shelf = _get_shelf(shelf_id)
     form = CommentForm(request.form)
 
@@ -140,6 +138,13 @@ def reading_plan_data(shelf_id):
     }
 
     return jsonify(timeline)
+
+
+@mod.route('/<int:shelf_id>/colists/')
+def colists(shelf_id):
+
+    shelf = _get_shelf(shelf_id)
+    return render_template('shelf/colist.html', shelf=shelf)
 
 
 @mod.route('/<int:shelf_id>/tags/')

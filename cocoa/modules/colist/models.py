@@ -60,7 +60,7 @@ class Colist(db.Model):
     def add_books(self, book_ids):
         for bid in book_ids:
             book = Book.query.filter_by(isbn13=bid).first()
-            if book not in self.books:
+            if book is not None and book not in self.books:
                 self.books.append(book)
 
         db.session.commit()
