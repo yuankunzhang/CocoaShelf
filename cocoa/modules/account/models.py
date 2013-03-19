@@ -176,6 +176,9 @@ class User(db.Model):
 
             db.session.commit()
 
+    def get_gender(self):
+        return Gender.from_int(self.gender).text()
+
 
 @login_manager.user_loader
 def load_user(user_id):

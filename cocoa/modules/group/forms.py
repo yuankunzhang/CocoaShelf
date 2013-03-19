@@ -12,4 +12,4 @@ class GroupNewForm(Form):
 
     intro = TextAreaField(_(u'Group Introduction'), [
         Required(message=_(u'Required'))
-    ], id='add-intro')
+    ], id='group-intro')

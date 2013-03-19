@@ -1,0 +1,21 @@
+{% extends 'layout/single_column.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>小组：{{ group.name }}</small></h1>
+</div>
+
+<div class="well">
+    {{ group.intro }}
+</div>
+
+<hr class="dashed-hr">
+
+<div class="group-users">
+    {% for user in group.users %}
+    {{ user.get_display_name() }}
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -10,6 +10,32 @@
 {% from 'shelf/breadcrumb.html' import breadcrumb %}
 {{ breadcrumb(shelf, '书架详情') }}
 
+<div id="profile">
+    {% if current_user==shelf.user %}
+    <a class="btn btn-small" href="{{ url_for('account.settings') }}">更新帐号设置&rarr;</a>
+    {% endif %}
+
+    <div id="avatar" class="media">
+        <img class="pull-left" src="/static/upload/avatar/{{ shelf.user.get_thumbnail() }}">
+        <div class="media-body">
+            {{ shelf.user.get_display_name() }}
+        </div>
+    </div>
+
+    <dl>
+        <dt>性别：</dt>
+        <dd>{{ shelf.user.get_gender() }}</dd>
+        <dt>所在地：</dt>
+        <dd>{{ shelf.user.get_location()['text'] }}</dd>
+        <dt>简介：</dt>
+        <dd><div>{{ shelf.user.intro }}</div></dd>
+        <dt>关注：</dt>
+        <dd>{{ shelf.user.followings|count }}</dd>
+        <dt>被关注：</dt>
+        <dd>{{ shelf.user.followers|count }}</dd>
+    </dl>
+</div>
+
 <div id="comment-board">
     <hr class="dashed-hr">
 

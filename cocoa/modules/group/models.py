@@ -5,6 +5,42 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from cocoa.extensions import db
 
+class GroupTopicReplies(db.Model):
+
+    __tablename__ = 'm_group_topic_replies'
+
+    id = db.Column(db.Integer, primary_key=True)
+    topic_id = db.Column(db.Integer, db.ForeignKey('m_group_topics.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.Integer, default=int(time()))
+
+    topic = db.relationship('GroupTopics',
+        backref=db.backref('replies', cascade='all, delete-orphan'))
+    user = db.relationship('User')
+
+    def __init__(self, user, topic=None):
+        self.user = user
+        self.topic = topic
+
+
+class GroupTopics(db.Model):
+
+    __tablename__ = 'm_group_topics'
+
+    id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    timestamp = db.Column(db.Integer, default=int(time()))
+
+    group = db.relationship('Group',
+        backref=db.backref('topics', cascade='all, delete-orphan'))
+    user = db.relationship('User')
+
+    def __init__(self, user, group=None):
+        self.user = user
+        self.group = group
+
+
 class GroupUsers(db.Model):
 
     __tablename__ = 'm_group_users'
@@ -42,3 +78,8 @@ class Group(db.Model):
         self.name = name
         self.intro = intro
         self.owner = owner
+
+    def save(self):
+        self.users.append(self.owner)
+        db.session.add(self)
+        db.session.commit()

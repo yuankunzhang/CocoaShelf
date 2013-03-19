@@ -87,7 +87,8 @@ def settings():
                             form.city_id.data)
 
         flash(_(u'Settings updated'))
-        return redirect(url_for('account.settings'))
+        return redirect(url_for('shelf.item',
+                                shelf_id=current_user.shelf.id))
 
     return render_template('account/settings.html', form=form)
 
