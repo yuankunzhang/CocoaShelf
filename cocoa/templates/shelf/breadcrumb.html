@@ -1,7 +1,7 @@
 {% macro breadcrumb(shelf, active) %}
 <ul class="breadcrumb">
     <li>
-        <a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">{{ shelf.user.penname }} 的书架</a>
+        <a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">{{ shelf.user.get_display_name() }} 的书架</a>
         <span class="divider">/</span>
     </li>
     <li class="active">{{ active }}</li>

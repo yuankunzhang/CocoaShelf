@@ -10,7 +10,7 @@ def mkdir(basedir):
         os.makedirs(basedir)
 
     FILES_PER_DIR = current_app.config['FILES_PER_DIR']
-    sub_dirs = os.listdir(basedir)
+    sub_dirs = [x for x in os.listdir(basedir) if os.path.isdir(x)]
     folder = None
     path = None
 

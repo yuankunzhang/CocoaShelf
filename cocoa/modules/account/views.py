@@ -3,16 +3,18 @@ import json
 
 from PIL import Image
 
+import flask_sijax
 from flask import Blueprint, request, render_template, \
-    redirect, url_for, flash
+        redirect, url_for, flash, g, jsonify
 from flask.ext.login import login_required, login_user, \
-    logout_user, current_user
+        logout_user, current_user
 from flask.ext.babel import gettext as _
 
 from .models import User
 from .forms import SigninForm, SignupForm, SettingsForm, \
-    AvatarUploadForm, PasswordChangeForm
+        PasswordChangeForm
 from .helpers import save_avatar, update_thumbnail
+from .ajax import AjaxActions
 
 mod = Blueprint('account', __name__)
 
@@ -97,13 +99,23 @@ def settings():
 @login_required
 def upload_avatar():
 
-    form = AvatarUploadForm(request.form)
+    if request.method == 'POST':
+        print '------------------'
+        print request.files['files']
 
-    if form.validate_on_submit():
-        save_avatar(Image.open(request.files['avatar']))
-        flash(_(u'Avatar uploaded successfully.'))
+        files = {
+            'files': [{
+                'name': '1.jpg',
+                'size': 1000,
+                'url': '/static/upload/avatar/' + current_user.avatar,
+                'delete_url': '',
+                'delete_type': 'DELETE',
+            }],
+        }
 
-    return render_template('account/upload_avatar.html', form=form)
+        return jsonify(files)
+
+    return render_template('account/upload_avatar.html')
 
 
 @mod.route('/edit_thumbnail/', methods=['POST'])

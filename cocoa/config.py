@@ -42,7 +42,7 @@ class DefaultConfig(object):
     AVATAR_BASE_DIR = os.path.join(_basedir, 'static/upload/avatar')
     COVER_BASE_DIR = os.path.join(_basedir, 'static/upload/cover')
     FILES_PER_DIR = 1000
-    MAX_CONTENT_LENGTH = 8 * 1024 * 1024
+    MAX_CONTENT_LENGTH = 3 * 1024 * 1024
 
 
 class TestConfig(object):

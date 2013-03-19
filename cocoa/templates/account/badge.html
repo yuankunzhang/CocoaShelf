@@ -7,7 +7,7 @@
         </a>
 
         <ul class="unstyled">
-            <li>{{ user.penname }}</li>
+            <li>{{ user.get_display_name() }}</li>
             <li>{{ user.get_location()['text'] }}</li>
         </ul>
     </div>

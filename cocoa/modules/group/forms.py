@@ -13,3 +13,17 @@ class GroupNewForm(Form):
     intro = TextAreaField(_(u'Group Introduction'), [
         Required(message=_(u'Required'))
     ], id='group-intro')
+
+
+class TopicNewForm(Form):
+
+    title = TextField(_(u'Topic title'), [
+        Required(message=_(u'Required'))
+    ], id=u'topic-title')
+
+
+class ReplyForm(Form):
+
+    content = TextAreaField(_(u'Reply'), [
+        Required(message=_(u'Required'))
+    ], id=u'reply-content')

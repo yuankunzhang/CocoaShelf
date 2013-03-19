@@ -19,7 +19,8 @@ from cocoa.modules.colist.models import Colist, ColistBooks
 from cocoa.modules.mail.models import Mail, MailInbox
 from cocoa.modules.comment.models import ShelfComments
 from cocoa.modules.follower.models import Follower
-from cocoa.modules.group.models import Group, GroupUsers
+from cocoa.modules.group.models import Group, GroupUsers, \
+        GroupTopics, GroupTopicReplies
 
 manager = Manager(create_app())
 

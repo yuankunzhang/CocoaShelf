@@ -1,0 +1,39 @@
+{% extends 'layout/single_column.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>{{ group.name }}：{{ topic.title }}</small></h1>
+</div>
+
+<div id="replies">
+    <ul class="unstyled">
+    {% for reply in topic.replies %}
+        <li>
+            <div class="media">
+                <a class="pull-left" href="{{ url_for('shelf.item', shelf_id=reply.user.shelf.id) }}">
+                    <img src="/static/upload/avatar/{{ reply.user.get_thumbnail() }}" width=60 height=60>
+                </a>
+
+                <div class="media-body">
+                    <h4 class="media-heading"><small><a href="{{ url_for('shelf.item', shelf_id=reply.user.shelf.id) }}">{{ reply.user.get_display_name() }}</a> | {{ reply.timestamp|dt }}</small></h4>
+                    {{ reply.content }}
+                </div>
+            </div>
+    {% endfor %}
+    </ul>
+</div>
+
+<hr>
+
+<div id="reply-form">
+    {% from 'macros/form.html' import center_form, render_field, render_submit %}
+    {% call center_form('group.reply_topic', group_id=group.id, topic_id=topic.id) %}
+        {{ form.csrf_token }}
+        {{ render_field(form.content) }}
+
+        {{ render_submit() }}
+    {% endcall %}
+</div>
+
+{% endblock %}

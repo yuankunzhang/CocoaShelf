@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from flask.ext.login import current_user
 from flask.ext.babel import gettext as _
+#from flask.ext.uploads import UploadSet, IMAGES
 from flask.ext.wtf import TextField, TextAreaField, \
-    BooleanField, PasswordField, HiddenField, FileField,  \
-    RadioField, Required, Email, EqualTo, Regexp, Length, \
-    ValidationError
+    BooleanField, PasswordField, HiddenField, FileField, \
+    RadioField, Required, Email, EqualTo, ValidationError
 
 from cocoa.helpers.wtf import Form
 from .models import User
@@ -81,12 +81,14 @@ class SettingsForm(Form):
     city_id = HiddenField()
 
 
+"""
 class AvatarUploadForm(Form):
 
     avatar = FileField(_(u'Upload avatar'), [
-        # TODO
-        # safty check
+        FileRequired(message=_(u'No file')),
+        FileAllowed(UploadSet('images', IMAGES), _(u'Images only!'))
     ], id=u'avatar')
+"""
 
 
 def old_password_ok():

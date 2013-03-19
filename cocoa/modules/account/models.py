@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+    account models.
+"""
 import os
 import re
 from time import time
@@ -51,7 +54,7 @@ class User(db.Model):
         # check if email address is valid.
 
         if self.username is None:
-            email_name = re.match('^([\d\w.-]+)@', self.email).group(1)
+            email_name = re.match(r'^([\d\w.-]+)@', self.email).group(1)
             if User.query.filter_by(username=email_name).first() is None:
                 self.username = email_name
             else:

@@ -10,12 +10,15 @@
     {{ group.intro }}
 </div>
 
+<a class="btn" href="{{ url_for('group.new_topic', group_id=group.id) }}">+ 创建新话题</a>
 <hr class="dashed-hr">
 
-<div class="group-users">
-    {% for user in group.users %}
-    {{ user.get_display_name() }}
+<div class="group-topics">
+    <ul class="unstyled">
+    {% for topic in group.topics %}
+        <li><a href="{{ url_for('group.topic', group_id=group.id, topic_id=topic.id) }}">{{ topic.title }}</a></li>
     {% endfor %}
+    </ul>
 </div>
 
 {% endblock %}

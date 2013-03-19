@@ -1,0 +1,19 @@
+{% extends 'layout/single_column.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>{{ group.name }}：创建新话题</small></h1>
+</div>
+
+<div id="topic-new-form">
+    {% from 'macros/form.html' import center_form, render_field, render_submit %}
+    {% call center_form('group.new_topic', group_id=group.id) %}
+        {{ form.csrf_token }}
+        {{ render_field(form.title) }}
+        
+        {{ render_submit() }}
+    {% endcall %}
+</div>
+
+{% endblock %}

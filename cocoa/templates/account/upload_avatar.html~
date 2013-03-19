@@ -1,0 +1,156 @@
+{% extends 'layout/single_column.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/account/account.css">
+<link rel="stylesheet" href="/static/css/account/upload_avatar.css">
+<link rel="stylesheet" href="/static/css/imgareaselect-default.css">
+
+<link rel="stylesheet" href="/static/plugins/fileupload/css/jquery.fileupload-ui.css">
+{% endblock %}
+
+{% block js %}
+{{ super() }}
+<script type="text/javascript" src="/static/js/jquery/jquery.imgareaselect.pack.js"></script>
+<script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
+<script type="text/javascript" src="/static/js/sijax/sijax_upload.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>{{ _('Upload avatar') }}</small></h1>
+</div>
+
+<!--
+<div id="upload-avatar-form">
+    {% from 'macros/form.html' import render_hidden %}
+    <form method="post" id="upload_avatar" name="upload_avatar" enctype="multipart/form-data">
+        <div class="input-append">
+            <input type="file" name="avatar">
+            <button class="btn" type="submit">上传</button>
+        </div>
+    </form>
+</div>
+
+{% if current_user.avatar %}
+<div id="avatar">
+    <img src="/static/upload/avatar/{{ current_user.avatar }}">
+</div>
+{% endif %}
+
+<div id="edit-thumbnail">
+    <form id="edit-thumbnail-form" method="post" action="{{ url_for('account.edit_thumbnail') }}">
+        {% if current_user.avatar %}
+        <div class="alert alert-info">
+            拖曳或缩放左侧的矩形区域
+        </div>
+
+        <div id="avatar-preview">
+            <div class="box">
+                <img src="/static/upload/avatar/{{ current_user.avatar }}">
+            </div>
+        </div>
+        <button type="submit" class="btn">确定</button>
+
+        <div id="thumbnail-values">
+            {{ render_hidden('x1', '0') }}
+            {{ render_hidden('y1', '0') }}
+            {{ render_hidden('x2', '0') }}
+            {{ render_hidden('y2', '0') }}
+        </div>
+
+        {% endif %}
+    </form>
+</div>
+
+<script src="/static/js/account/upload_avatar.js"></script>
+<script>
+{% if current_user.avatar %}
+    var thumbnail_box = false;
+    {% if current_user.thumbnail_box %}
+    thumbnail_box = {{ current_user.thumbnail_box|tojson|safe }};
+    {% endif %}
+
+    initThumbnail(thumbnail_box);
+{% endif %}
+</script>
+-->
+
+<form id="fileupload" action="" method="post" enctype="multipart/form-data">
+    <div class="row fileupload-buttonbar">
+        <div class="span7">
+            <span class="btn btn-success fileinput-button">
+                <i class="icon-plus icon-white"></i>
+                <span>Add files...</span>
+                <input type="file" name="files[]" multiple>
+            </span>
+        </div><!-- end .span7 -->
+
+        <div class="span5 fileupload-progress fade">
+            <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                <div class="bar" style="width: 0%;"></div>
+            </div>
+            <div class="progress-extended">&nbsp;</div>
+            </div><!-- end .span5 -->
+
+            <div class="fielupload-loading"></div>
+        </div><!-- end .fileupload-buttonbar -->
+        <br>
+        <table role="presentation" class="table table-striped">
+            <tbody class="files"></tbody>
+        </table>
+    </form>
+
+{% raw %}
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td class="preview"><span class="fade"></span></td>
+        <td class="name"><span>{%=file.name%}</span></td>
+        <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        {% if (file.error) { %}
+            <td class="error" colspan="2"><span class="label label-important">Error</span> {%=file.error%}</td>
+        {% } else if (o.files.valid && !i) { %}
+            <td>
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
+            </td>
+            <td>{% if (!o.options.autoUpload) { %}
+                <button class="btn btn-primary start">
+                    <i class="icon-upload icon-white"></i>
+                    <span>Start</span>
+                </button>
+            {% } %}</td>
+        {% } else { %}
+            <td colspan="2"></td>
+        {% } %}
+        <td>{% if (!i) { %}
+            <button class="btn btn-warning cancel">
+                <i class="icon-ban-circle icon-white"></i>
+                <span>Cancel</span>
+            </button>
+        {% } %}</td>
+    </tr>
+{% } %}
+</script>
+{% endraw %}
+
+<script type="text/javascript" src="/static/plugins/fileupload/js/vendor/jquery.ui.widget.js"></script>
+<!--<script type="text/javascript" src="/static/plugins/fileupload/js/tmpl.min.js"></script>-->
+<script src="http://blueimp.github.com/JavaScript-Templates/tmpl.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.fileupload-fp.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.fileupload-ui.js"></script>
+
+<script type="text/javascript">
+var uploader = $('#fileupload');
+uploader.fileupload({
+    url: '#',
+    dataType: 'json',
+    autoUpload: true,
+    fileInput: uploader.find('input:file')
+});
+</script>
+
+{% endblock %}
