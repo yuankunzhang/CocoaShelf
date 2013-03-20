@@ -11,6 +11,10 @@
     text-indent: 4em;
 }
 
+#profile blockquote {
+    padding-left: 20px;
+}
+
 .shelf-books .book-list {
     padding: 10px;
     height: 360px;

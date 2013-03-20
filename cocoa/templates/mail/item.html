@@ -1,0 +1,22 @@
+{% extends 'layout/single_column.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>邮件：{{ mail.title }}</small></h1>
+    <p>写信人：{{ mail.from_user.get_display_name() }}</p>
+    <p>时间：{{ mail.timestamp|dt }}</p>
+</div>
+
+<div class="mail-content">
+    <p>{{ mail.content|safe }}</p>
+</div>
+
+<hr>
+
+<div class="operations">
+    <a href="{{ url_for('mail.inbox') }}" class="btn">返回收件箱</a>
+    <a href="{{ url_for('mail.new', to_user_id=mail.from_user.id, parent_id=mail.id) }}" class="btn btn-primary">回复</a>
+</div>
+
+{% endblock %}

@@ -100,20 +100,23 @@ def settings():
 def upload_avatar():
 
     if request.method == 'POST':
-        print '------------------'
-        print request.files['files']
+        if 'avatar' not in request.files:
+            raise ValueError(_(u'bad request'))
 
-        files = {
-            'files': [{
-                'name': '1.jpg',
-                'size': 1000,
-                'url': '/static/upload/avatar/' + current_user.avatar,
-                'delete_url': '',
-                'delete_type': 'DELETE',
-            }],
+        save_avatar(Image.open(request.files['avatar']))
+
+        file = {
+            'file': {
+                'name':     '1.jpg',
+                'size':     1000,
+                'url':      '/static/upload/avatar/' + current_user.avatar,
+                'delete_url':       '',
+                'delete_type':      'DELETE',
+                'thumbnail_box':    current_user.thumbnail_box,
+            },
         }
 
-        return jsonify(files)
+        return jsonify(file)
 
     return render_template('account/upload_avatar.html')
 

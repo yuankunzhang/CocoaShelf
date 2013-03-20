@@ -47,6 +47,7 @@ def item(shelf_id):
         return g.sijax.process_request()
 
     shelf = _get_shelf(shelf_id)
+    shelf.book_count = Shelf.query.book_count(shelf.id)
     form = CommentForm(request.form)
 
     return render_template('shelf/details.html', shelf=shelf, form=form)

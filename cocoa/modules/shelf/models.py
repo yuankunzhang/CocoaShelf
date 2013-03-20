@@ -204,6 +204,12 @@ class Shelf(db.Model):
                outerjoin(Tag).filter(UserBookTags.user==self.user).\
                order_by(func.count(Tag.id).desc()).group_by(Tag.id).all()
 
+    def get_tag_count(self):
+        return db.session.query(UserBookTags.tag_id, Tag.id,
+                Tag.name, func.count(Tag.id).label('count')).\
+               outerjoin(Tag).filter(UserBookTags.user==self.user).\
+               order_by(func.count(Tag.id).desc()).group_by(Tag.id).count()
+
     def get_tag_books(self, tag_id):
         return Book.query.outerjoin(UserBookTags).outerjoin(Tag).\
                filter(UserBookTags.user==self.user, Tag.id==tag_id).all()

@@ -1,0 +1,43 @@
+{% extends 'layout/single_column.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/mail/mail.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>收件箱</small></h1>
+</div>
+
+<div id="inbox">
+    <table class="table table-condensed table-hover">
+        <thead>
+            <tr>
+                <th>写信人</th>
+                <th>主题</th>
+                <th>日期</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in mail_thumb %}
+            <tr value="{{ m.id }}"{% if m.unread %} class="unread"{% endif %}>
+                <td>{{ m.from_user.get_display_name() }}</td>
+                <td>{{ m.mail.title }}</td>
+                <td>{{ m.mail.timestamp|dt }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+$(function() {
+    $('#inbox table tbody tr').click(function() {
+        window.location = '/mail/' + $(this).attr('value') + '/';
+    });
+});
+</script>
+
+{% endblock %}

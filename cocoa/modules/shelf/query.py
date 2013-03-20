@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from sqlalchemy import func
+
 from flask.ext.sqlalchemy import BaseQuery
 
 from cocoa.extensions import db
@@ -41,3 +43,22 @@ class ShelfQuery(BaseQuery):
                     not_in_columns.append(ColumnType.from_name(k))
 
         return in_columns, not_in_columns
+
+    def book_count(self, shelf_id):
+        from .models import ColumnHave, ColumnRead, ColumnReading, \
+            ColumnWish, ColumnLike
+        
+        have = ColumnHave.query.filter_by(shelf_id=shelf_id).count()
+        read = ColumnRead.query.filter_by(shelf_id=shelf_id).count()
+        reading = ColumnReading.query.filter_by(shelf_id=shelf_id).\
+                    filter_by(finished_timestamp=None).count()
+        wish = ColumnWish.query.filter_by(shelf_id=shelf_id).count()
+        like = ColumnLike.query.filter_by(shelf_id=shelf_id).count()
+
+        return {
+            'have':     have,
+            'read':     read,
+            'reading':  reading,
+            'wish':     wish,
+            'like':     like,
+        }

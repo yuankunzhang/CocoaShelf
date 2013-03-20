@@ -1,0 +1,27 @@
+{% extends 'layout/single_column.html' %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>写信...</small></h1>
+</div>
+
+<div id="mail-new-form">
+    {% from 'macros/form.html' import render_field, render_submit %}
+    <form method="post" class="form-horizontal" action="{{ url_for('mail.new', to_user_id=to_user.id) }}">
+        <div class="control-group">
+            <label class="control-label">To</label>
+            <div class="controls">
+                <span>{{ to_user.get_display_name() }}</span>
+            </div>
+        </div>
+        {{ form.csrf_token }}
+        {{ render_field(form.title) }}
+        {{ render_field(form.content) }}
+        {{ form.parent_id }}
+
+        {{ render_submit() }}
+    </form>
+</div>
+
+{% endblock %}

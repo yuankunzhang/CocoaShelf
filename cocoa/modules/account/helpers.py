@@ -18,7 +18,14 @@ THUMBNAIL_SIDE_LEN = 60
 def save_avatar(img):
 
     basedir = current_app.config['AVATAR_BASE_DIR']
-    folder = mkdir(basedir)
+    folder = None
+
+    # 如果是更新头像，则使用原头像的目录
+    # 否则，获取新目录
+    if current_user.avatar is not None:
+        folder = os.path.join(basedir, current_user.avatar.split('/')[0])
+    else:
+        folder = mkdir(basedir)
 
     basename = 'u' + str(current_user.id) + '_' + str(int(time.time()))
     avatar_name = basename + EXTENSION

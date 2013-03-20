@@ -182,6 +182,11 @@ class User(db.Model):
     def get_gender(self):
         return Gender.from_int(self.gender).text()
 
+    def unread_mail_count(self):
+        from ..mail.models import MailInbox
+        return MailInbox.query.filter_by(user=self).\
+                filter_by(unread=True).count()
+
 
 @login_manager.user_loader
 def load_user(user_id):

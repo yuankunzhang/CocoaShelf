@@ -18,7 +18,7 @@ from .config import DefaultConfig
 from .extensions import db, sijax, login_manager, cache, babel
 from .helpers.common import timesince as _timesince
 from .modules import frontend, location, account, book, shelf, \
-        category, blog, colist, group, bookstore
+        category, blog, colist, group, bookstore, mail
 
 __all__ = ['create_app']
 
@@ -35,6 +35,7 @@ DEFAULT_MODULES = (
     (colist.mod, '/colist'),
     (group.mod, '/group'),
     (bookstore.mod, '/bookstore'),
+    (mail.mod, '/mail'),
 )
 
 def create_app(config=None, app_name=None, modules=None):

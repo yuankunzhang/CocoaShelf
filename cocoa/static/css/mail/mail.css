@@ -1,0 +1,7 @@
+#inbox table tbody tr {
+    cursor: pointer;
+}
+
+#inbox table tbody tr.unread {
+    font-weight: bold;
+}
