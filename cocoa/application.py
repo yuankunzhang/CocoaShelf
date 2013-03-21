@@ -16,6 +16,7 @@ from flask.ext.misaka import Misaka
 
 from .config import DefaultConfig
 from .extensions import db, sijax, login_manager, cache, babel
+from .admin import admin
 from .helpers.common import timesince as _timesince
 from .modules import frontend, location, account, book, shelf, \
         category, blog, colist, group, bookstore, mail, tag
@@ -140,6 +141,8 @@ def configure_extensions(app):
     login_manager.init_app(app)
     login_manager.login_view = 'account.signin'
     Misaka(app)
+
+    admin.init_app(app)
 
     configure_i18n(app)
 

@@ -141,7 +141,7 @@ $('#star').raty({
             <dl>
                 <dt>这本书的标签：</dt>
                 {% for book_tag in book.book_tags %}
-                <dd><a href="#">{{ book_tag.tag.name }}({{ book_tag.count }})</a></dd>
+                <dd><a href="{{ url_for('tag.item', tag_id=book_tag.tag.id) }}">{{ book_tag.tag.name }}({{ book_tag.count }})</a></dd>
                 {% endfor %}
             </dl>
         </div>

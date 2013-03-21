@@ -1,15 +1,14 @@
 {% extends 'layout/double_columns.html' %}
-{% from 'macros/link_to.html' import li_link_to %}
 
 {% block css %}
 {{ super() }}
-<link rel="stylesheet" type="text/css" href="/static/css/book/book.css">
+<link rel="stylesheet" type="text/css" href="/static/css/frontend/frontend.css">
 {% endblock %}
 
 {% block left_col %}
 
 <div class="page-header">
-    <h1><small>图书首页</small></h1>
+    <h1><small>主页</small></h1>
 </div>
 
 <div id="popular-books" class="book-list clearfix">
@@ -26,11 +25,11 @@
     </ul>
 </div>
 
-<div id="popular-tags">
+<div id="popular-tags" class="clearfix">
     <h2><small>热门标签</small></h2>
-    <ul class="unstyled inline">
+    <ul class="nav nav-pills inline">
     {% for tag in tags_top_20 %}
-        {{ li_link_to('tag.item', tag.name, tag_id=tag.id) }}
+        <li><a href="{{ url_for('tag.item', tag_id=tag.id) }}">{{ tag.name }}</a></li>
     {% endfor %}
     </ul>
 </div>
@@ -39,7 +38,10 @@
     <h2><small>新书单</small></h2>
     <ul class="unstyled">
     {% for colist in new_colists %}
-        <li><a href="{{ url_for('colist.item', colist_id=colist.id) }}">{{ colist.name }}</a></li>
+        <li>
+            <a href="{{ url_for('colist.item', colist_id=colist.id) }}">{{ colist.name }}</a> --
+            <div class="well well-small">{{ colist.intro }}</div>
+        </li>
     {% endfor %}
     </ul>
 </div>

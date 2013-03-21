@@ -4,7 +4,6 @@ from flask.ext.babel import gettext as _
 
 from cocoa.helpers.common import str2list
 from .models import Book
-from ..colist.models import Colist
 
 class AjaxActions(object):
 
@@ -13,6 +12,8 @@ class AjaxActions(object):
     def add_to_shelf(obj_response, book_id, column_names,
                      str_tags=None, short_review=None):
         """添加图书到书架"""
+
+        from ..colist.models import Colist
 
         book = Book.query.get_or_404(book_id)
 
