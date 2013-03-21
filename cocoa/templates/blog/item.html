@@ -1,0 +1,28 @@
+{% extends 'layout/double_columns.html' %}
+{% from 'macros/link_to.html' import li_link_to %}
+
+{% block left_col %}
+
+<div class="page-header">
+    <h1><small>我的部落格</small></h1>
+    <a class="btn" href="{{ url_for('blog.new') }}">撰写新文章&rarr;</a>
+</div>
+
+{% set posts=user.posts %}
+{% include 'blog/list.html' %}
+
+{% endblock %}
+
+{% block right_col %}
+{% include 'account/badge.html' %}
+<hr>
+
+<div id="recend-posts">
+    <h2><small>最近文章...</small></h2>
+    <ul class="unstyled">
+    {% for post in user.recent_posts() %}
+    {{ li_link_to('blog.entry', post.title, user_id=user.id, slug=post.slug) }}
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

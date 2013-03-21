@@ -106,14 +106,14 @@ def upload_avatar():
         save_avatar(Image.open(request.files['avatar']))
 
         file = {
-            'file': {
+            'files': [{
                 'name':     '1.jpg',
                 'size':     1000,
                 'url':      '/static/upload/avatar/' + current_user.avatar,
                 'delete_url':       '',
                 'delete_type':      'DELETE',
                 'thumbnail_box':    current_user.thumbnail_box,
-            },
+            }]
         }
 
         return jsonify(file)

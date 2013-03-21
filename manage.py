@@ -17,7 +17,8 @@ from cocoa.modules.bookrate.models import BookRateDetail, BookRate
 from cocoa.modules.blog.models import Post
 from cocoa.modules.colist.models import Colist, ColistBooks
 from cocoa.modules.mail.models import Mail, MailInbox
-from cocoa.modules.comment.models import ShelfComments
+from cocoa.modules.comment.models import ShelfComments, \
+        BookShortReview
 from cocoa.modules.follower.models import Follower
 from cocoa.modules.group.models import Group, GroupUsers, \
         GroupTopics, GroupTopicReplies

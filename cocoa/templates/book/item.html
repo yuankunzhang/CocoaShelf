@@ -266,6 +266,11 @@ $('#star').raty({
                     <label for="add-tags">打几个标签：</label>
                     <input type="text" id="add-tags" name="tags">
                 </div>
+
+                <div>
+                    <label for"short-review">简单说两句吧：</label>
+                    <textarea id="short-review" name="short-review"></textarea>
+                </div>
             </div><!-- end .modal-body -->
 
             <div class="modal-footer">
@@ -309,13 +314,14 @@ $(function() {
         });
 
         tags = $('input:text[name=tags]').val();
+        short_review = $('textarea[name=short-review]').val();
 
         if (columns.length == 0) {
             alert('至少选择一个书架');
             return false;
         }
 
-        Sijax.request('add_to_shelf', [book_id, columns, tags]);
+        Sijax.request('add_to_shelf', [book_id, columns, tags, short_review]);
         $('#add-to-shelf-modal').modal('hide');
         return false;
     });

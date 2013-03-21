@@ -22,88 +22,33 @@
     <h1><small>{{ _('Upload avatar') }}</small></h1>
 </div>
 
-<!--
-<div id="upload-avatar-form">
-    {% from 'macros/form.html' import render_hidden %}
-    <form method="post" id="upload_avatar" name="upload_avatar" enctype="multipart/form-data">
-        <div class="input-append">
-            <input type="file" name="avatar">
-            <button class="btn" type="submit">上传</button>
-        </div>
-    </form>
-</div>
-
-{% if current_user.avatar %}
-<div id="avatar">
-    <img src="/static/upload/avatar/{{ current_user.avatar }}">
-</div>
-{% endif %}
-
-<div id="edit-thumbnail">
-    <form id="edit-thumbnail-form" method="post" action="{{ url_for('account.edit_thumbnail') }}">
-        {% if current_user.avatar %}
-        <div class="alert alert-info">
-            拖曳或缩放左侧的矩形区域
-        </div>
-
-        <div id="avatar-preview">
-            <div class="box">
-                <img src="/static/upload/avatar/{{ current_user.avatar }}">
-            </div>
-        </div>
-        <button type="submit" class="btn">确定</button>
-
-        <div id="thumbnail-values">
-            {{ render_hidden('x1', '0') }}
-            {{ render_hidden('y1', '0') }}
-            {{ render_hidden('x2', '0') }}
-            {{ render_hidden('y2', '0') }}
-        </div>
-
-        {% endif %}
-    </form>
-</div>
-
-<script src="/static/js/account/upload_avatar.js"></script>
-<script>
-{% if current_user.avatar %}
-    var thumbnail_box = false;
-    {% if current_user.thumbnail_box %}
-    thumbnail_box = {{ current_user.thumbnail_box|tojson|safe }};
-    {% endif %}
-
-    initThumbnail(thumbnail_box);
-{% endif %}
-</script>
--->
-
 <form id="fileupload" action="" method="post" enctype="multipart/form-data">
     <div class="row fileupload-buttonbar">
         <div class="span7">
             <span class="btn btn-success fileinput-button">
                 <i class="icon-plus icon-white"></i>
-                <span>Add files...</span>
-                <input type="file" name="files[]" multiple>
+                <span>上传头像...</span>
+                <input type="file" name="avatar" multiple>
             </span>
-        </div><!-- end .span7 -->
+        </div>
+    </div><!-- end .fileupload-buttonbar -->
 
-        <div class="span5 fileupload-progress fade">
-            <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                <div class="bar" style="width: 0%;"></div>
+	<div class="span5 fileupload-progress fade">
+                <!-- The global progress bar -->
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="bar" style="width:0%;"></div>
+                </div>
+                <!-- The extended global progress information -->
+                <div class="progress-extended">&nbsp;</div>
             </div>
-            <div class="progress-extended">&nbsp;</div>
-            </div><!-- end .span5 -->
-
-            <div class="fielupload-loading"></div>
-        </div><!-- end .fileupload-buttonbar -->
+	<div class="fileupload-loading"></div>
         <br>
-        <table role="presentation" class="table table-striped">
-            <tbody class="files"></tbody>
-        </table>
-    </form>
+        <!-- The table listing the files available for upload/download -->
+        <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+</form>
 
-{% raw %}
 <script id="template-upload" type="text/x-tmpl">
+{% raw %}
 {% for (var i=0, file; file=o.files[i]; i++) { %}
     <tr class="template-upload fade">
         <td class="preview"><span class="fade"></span></td>
@@ -132,12 +77,59 @@
         {% } %}</td>
     </tr>
 {% } %}
-</script>
 {% endraw %}
+</script>
+<script id="template-download" type="text/x-tmpl">
+</script>
+
+<div id="avatar">
+{% if current_user.avatar %}
+    <img src="/static/upload/avatar/{{ current_user.avatar }}">
+{% endif %}
+</div>
+
+<div id="edit-thumbnail">
+    {% from 'macros/form.html' import render_hidden %}
+    <form id="edit-thumbnail-form" method="post" action="{{ url_for('account.edit_thumbnail') }}">
+        {% if current_user.avatar %}
+        <div class="alert alert-info">
+            拖曳或缩放左侧的矩形区域
+        </div>
+
+        <div id="avatar-preview">
+            <div class="box">
+                <img src="/static/upload/avatar/{{ current_user.avatar }}">
+            </div>
+        </div>
+        <button type="submit" class="btn">确定</button>
+
+        <div id="thumbnail-values">
+            {{ render_hidden('x1', '0') }}
+            {{ render_hidden('y1', '0') }}
+            {{ render_hidden('x2', '0') }}
+            {{ render_hidden('y2', '0') }}
+        </div>
+
+        {% endif %}
+    </form>
+</div>
+
+<script type="text/javascript" src="/static/js/account/upload_avatar.js"></script>
+<script type="text/javascript">
+$(window).load(function() {
+{% if current_user.avatar %}
+    var thumbnail_box = false;
+    {% if current_user.thumbnail_box %}
+    thumbnail_box = {{ current_user.thumbnail_box|tojson|safe }};
+    {% endif %}
+
+    initThumbnail(thumbnail_box);
+{% endif %}
+});
+</script>
 
 <script type="text/javascript" src="/static/plugins/fileupload/js/vendor/jquery.ui.widget.js"></script>
-<!--<script type="text/javascript" src="/static/plugins/fileupload/js/tmpl.min.js"></script>-->
-<script src="http://blueimp.github.com/JavaScript-Templates/tmpl.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/tmpl.min.js"></script>
 <script type="text/javascript" src="/static/plugins/fileupload/js/jquery.iframe-transport.js"></script>
 <script type="text/javascript" src="/static/plugins/fileupload/js/jquery.fileupload.js"></script>
 <script type="text/javascript" src="/static/plugins/fileupload/js/jquery.fileupload-fp.js"></script>
@@ -146,11 +138,26 @@
 <script type="text/javascript">
 var uploader = $('#fileupload');
 uploader.fileupload({
-    url: '#',
-    dataType: 'json',
-    autoUpload: true,
-    fileInput: uploader.find('input:file')
+    dataType:           'json',
+    autoUpload:         true,
+    fileInput:          uploader.find('input:file'),
+    acceptFileTypes:    /(\.|\/)(gif|jpe?g|png)$/i,
+    maxNumberOfFiles:   1,
+    maxFileSize:        3 * 1024 * 1024,
+    success:            function(data, status) {
+        $('#avatar-preview').find('img').attr('src', data.files[0].url);
+        //$('#avatar').find('img').attr('src', data.files[0].url).load(function() {
+        $('#avatar').find('img').attr('src', data.files[0].url);
+        $('#avatar').find('img').load(function() {
+            initThumbnail(data.files[0].thumbnail_box);
+        });
+    },
+    error:              function(data, status) {
+    }
 });
+
+// fix firefox bug
+uploader.find('input:file').removeAttr('disabled');
 </script>
 
 {% endblock %}

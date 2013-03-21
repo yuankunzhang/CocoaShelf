@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from sqlalchemy.ext.associationproxy import association_proxy
+
 from cocoa.extensions import db
 
 class Tag(db.Model):
@@ -9,6 +11,8 @@ class Tag(db.Model):
     name = db.Column(db.String(50), unique=True)
     count = db.Column(db.Integer, default=1)
     disabled = db.Column(db.Boolean, default=False)
+
+    books = association_proxy('tag_books', 'book')
 
     def __init__(self, name):
         self.name = name.lower()
@@ -49,7 +53,8 @@ class BookTags(db.Model):
 
     book = db.relationship('Book',
         backref=db.backref('book_tags', cascade='all, delete-orphan'))
-    tag = db.relationship('Tag')
+    tag = db.relationship('Tag',
+        backref=db.backref('tag_books', cascade='all, delete-orphan'))
 
     def __init__(self, tag=None, book=None):
         self.tag = tag

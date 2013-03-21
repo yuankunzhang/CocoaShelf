@@ -11,7 +11,7 @@ class AjaxActions(object):
     @staticmethod
     @login_required
     def add_to_shelf(obj_response, book_id, column_names,
-                     str_tags=None, comment=None):
+                     str_tags=None, short_review=None):
         """添加图书到书架"""
 
         book = Book.query.get_or_404(book_id)
@@ -21,8 +21,8 @@ class AjaxActions(object):
         if str_tags is not None:
             current_user.add_booktags(book, str2list(str_tags))
 
-        if comment is not None:
-            pass
+        if short_review is not None:
+            current_user.publish_short_review(book, short_review)
 
         obj_response.alert(_(u'Added to your shelf!'))
 

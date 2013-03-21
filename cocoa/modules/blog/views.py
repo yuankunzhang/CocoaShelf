@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, request, render_template, \
-    flash, redirect, url_for
+        flash, redirect, url_for, abort
 from flask.ext.login import current_user, login_required
 from flask.ext.babel import gettext as _
 
 from .models import Post
 from .forms import PostNewForm
+from ..account.models import User
 
 mod = Blueprint('blog', __name__)
 
@@ -35,3 +36,21 @@ def new(ref_book_id=None):
         return redirect(url_for('blog.home'))
 
     return render_template('blog/new.html', form=form)
+
+
+@mod.route('/<int:user_id>/')
+def item(user_id):
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template('blog/item.html', user=user)
+
+
+@mod.route('/<int:user_id>/<string:slug>/')
+def entry(user_id, slug):
+
+    post = Post.get_by_slug(user_id, slug)
+    if post is None:
+        abort(404)
+
+    return render_template('blog/entry.html', post=post)

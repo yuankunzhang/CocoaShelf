@@ -23,7 +23,7 @@ def save_avatar(img):
     # 如果是更新头像，则使用原头像的目录
     # 否则，获取新目录
     if current_user.avatar is not None:
-        folder = os.path.join(basedir, current_user.avatar.split('/')[0])
+        folder = current_user.avatar.split('/')[0]
     else:
         folder = mkdir(basedir)
 

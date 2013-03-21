@@ -22,18 +22,6 @@
     <h1><small>{{ _('Upload avatar') }}</small></h1>
 </div>
 
-<!--
-<div id="upload-avatar-form">
-    {% from 'macros/form.html' import render_hidden %}
-    <form method="post" id="upload_avatar" name="upload_avatar" enctype="multipart/form-data">
-        <div class="input-append">
-            <input type="file" name="avatar">
-            <button class="btn" type="submit">上传</button>
-        </div>
-    </form>
-</div>
--->
-
 <form id="fileupload" action="" method="post" enctype="multipart/form-data">
     <div class="row fileupload-buttonbar">
         <div class="span7">
@@ -42,14 +30,9 @@
                 <span>上传头像...</span>
                 <input type="file" name="avatar" multiple>
             </span>
-        </div><!-- end .span7 -->
-
+        </div>
     </div><!-- end .fileupload-buttonbar -->
-    <table role="presentation" class="table table-striped">
-        <tbody class="files"></tbody>
-    </table>
 </form>
-
 
 <div id="avatar">
 {% if current_user.avatar %}
@@ -58,6 +41,7 @@
 </div>
 
 <div id="edit-thumbnail">
+    {% from 'macros/form.html' import render_hidden %}
     <form id="edit-thumbnail-form" method="post" action="{{ url_for('account.edit_thumbnail') }}">
         {% if current_user.avatar %}
         <div class="alert alert-info">
@@ -112,9 +96,11 @@ uploader.fileupload({
     maxNumberOfFiles:   1,
     maxFileSize:        3 * 1024 * 1024,
     success:            function(data, status) {
-        $('#avatar-preview img').attr('src', data.file.url);
-        $('#avatar img').attr('src', data.file.url).load(function() {
-            initThumbnail(data.file.thumbnail_box);
+        $('#avatar-preview').find('img').attr('src', data.files[0].url);
+        //$('#avatar img').attr('src', data.files[0].url).load(function() {
+        $('#avatar').find('img').attr('src', data.files[0].url);
+        $('#avatar').find('img').load(function() {
+            initThumbnail(data.files[0].thumbnail_box);
         });
     },
     error:              function(data, status) {

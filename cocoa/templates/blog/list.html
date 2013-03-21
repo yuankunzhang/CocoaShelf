@@ -1,7 +1,7 @@
 <div id="posts">
-    {% for post in posts %}
+    {% for post in posts|reverse %}
     <div class="post-title">
-        <h4><a href="#">{{ post.title }}</a></h4>
+        <h4><a href="{{ url_for('blog.entry', user_id=post.author.id, slug=post.slug) }}">{{ post.title }}</a></h4>
     </div>
 
     <div class="post-content">

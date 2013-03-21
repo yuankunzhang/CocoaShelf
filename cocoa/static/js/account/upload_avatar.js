@@ -6,11 +6,11 @@ function initThumbnail(thumbnail_box) {
         var THUMBNAIL_SIZE = {
             width: THUMBNAIL_SIDE_LEN,
             height: THUMBNAIL_SIDE_LEN
-        }
+        };
         $('#avatar-preview').css(THUMBNAIL_SIZE);
         $('#avatar-preview .box').css(THUMBNAIL_SIZE);
 
-        var avatar = $('#avatar img');
+        var avatar = $('#avatar').find('img');
         var avatarPreview = $('#avatar-preview .box img');
         var w = avatar.width();
         var h = avatar.height();

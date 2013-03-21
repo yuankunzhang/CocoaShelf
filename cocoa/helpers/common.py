@@ -3,7 +3,11 @@
     通用帮助函数
     2013.03.01
 """
+import re
+
 from datetime import datetime
+
+from unidecode import unidecode
 
 from flask.ext.babel import gettext, ngettext
 
@@ -59,3 +63,16 @@ def _remove_duplicates(seq):
         if item.lower() not in d:
             d[item.lower()] = True
             yield item
+
+
+def slugify(text, delim=u'-'):
+
+    _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
+    max_len = 10
+
+    result = []
+    text = text[:max_len]
+    for word in _punct_re.split(text.lower()):
+        if unidecode(word).split() != u'[?]':
+            result.extend(unidecode(word).split())
+    return unicode(delim.join(result))

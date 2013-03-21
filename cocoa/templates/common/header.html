@@ -22,7 +22,12 @@
             {% else %}
                 {{ li_link_to('account.settings', '我的帐号') }}
                 {{ li_link_to('shelf.item', '我的书架', shelf_id=current_user.shelf.id) }}
-                {{ li_link_to('mail.inbox', '收件箱('~current_user.unread_mail_count()~')') }}
+                {% set unread_mail_count=current_user.unread_mail_count() %}
+                {% if unread_mail_count == 0 %}
+                {{ li_link_to('mail.inbox', '收件箱') }}
+                {% else %}
+                {{ li_link_to('mail.inbox', '收件箱('~unread_mail_count~')') }}
+                {% endif %}
                 {{ li_link_to('account.signout', '登出') }}
             {% endif %}
             </ul>

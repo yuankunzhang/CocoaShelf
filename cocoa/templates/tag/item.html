@@ -1,0 +1,13 @@
+{% extends 'layout/single_column.html' %}
+
+{% block css %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>标签：{{ tag.name }}</small></h1>
+</div>
+
+{% endblock %}

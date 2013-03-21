@@ -18,13 +18,17 @@ from cocoa.extensions import db, login_manager
 from cocoa.helpers.sql import JSONEncodedDict
 from cocoa.helpers.upload import mkdir
 from .consts import Role, Gender
+from .query import UserQuery
 from ..event.models import SignUpEvent
 from ..tag.models import Tag, UserBookTags
 from ..shelf.models import Shelf
+from ..comment.models import BookShortReview
 
 class User(db.Model):
 
     __tablename__ = 'user'
+
+    query_class = UserQuery
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
@@ -179,6 +183,10 @@ class User(db.Model):
 
             db.session.commit()
 
+    def publish_short_review(self, book, short_review):
+        s_review = BookShortReview(short_review, book, self)
+        s_review.save()
+
     def get_gender(self):
         return Gender.from_int(self.gender).text()
 
@@ -186,6 +194,11 @@ class User(db.Model):
         from ..mail.models import MailInbox
         return MailInbox.query.filter_by(user=self).\
                 filter_by(unread=True).count()
+
+    def recent_posts(self, num=10):
+        from ..blog.models import Post
+        return Post.query.filter_by(author=self).\
+                order_by(Post.timestamp.desc()).limit(num)
 
 
 @login_manager.user_loader

@@ -30,7 +30,7 @@ $(function() {
         <li class="divider"></li>
 
         <li id="reading-track"><a href="{{ url_for('shelf.reading_plan', shelf_id=shelf.id) }}">阅读计划</a></li>
-        <li id="blog"><a href="#">部落格</a></li>
+        <li id="blog"><a href="{{ url_for('blog.item', user_id=shelf.user.id) }}">部落格</a></li>
 	</ul>
 </div>
 
