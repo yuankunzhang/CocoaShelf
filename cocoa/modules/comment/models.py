@@ -58,7 +58,9 @@ class BookShortReview(db.Model):
         s_review = BookShortReview.query.filter_by(user=self.user).\
                     filter_by(book=self.book).first()
         if s_review is not None:
-            raise ValueError(_(u'You\'ve already comment this book.'))
+            s_review.content = self.content
+            s_review.timestamp = int(time())
         else:
             db.session.add(self)
-            db.session.commit()
+
+        db.session.commit()

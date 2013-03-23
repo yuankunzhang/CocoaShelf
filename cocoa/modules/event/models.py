@@ -30,9 +30,10 @@ class EventRecord(db.Model):
         return Event.get(self.type, self.what, self.timestamp)
 
     @staticmethod
-    def get_records(type):
+    def get_records(type, num=10):
         return EventRecord.query.filter_by(type=type).\
-               order_by(EventRecord.timestamp.desc()).all()
+               order_by(EventRecord.timestamp.desc()).\
+               limit(10).all()
 
 
 class Event(object):

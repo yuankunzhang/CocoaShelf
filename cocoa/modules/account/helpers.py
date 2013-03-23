@@ -89,13 +89,13 @@ def _resize(img):
     if ratio_w > ratio_h:
         if ratio_w > 1:
             target_w = LEN
-            target_h = 1.0 * origin_h / ratio_w
+            target_h = 1.0 * origin_h // ratio_w
     else:
         if ratio_h > 1:
             target_h = LEN
-            target_w = 1.0 * origin_w / ratio_h
+            target_w = 1.0 * origin_w // ratio_h
 
-    return img.resize((int(target_w), int(target_h)), Image.ANTIALIAS)
+    return img.resize((target_w, target_h), Image.ANTIALIAS)
 
 
 def _save_thumbnail(img, out):

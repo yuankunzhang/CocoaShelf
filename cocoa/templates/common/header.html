@@ -20,7 +20,7 @@
                 {{ li_link_to('account.signin', '登入') }}
                 {{ li_link_to('account.signup', '注册') }}
             {% else %}
-                {{ li_link_to('account.settings', '我的帐号') }}
+                {{ li_link_to('account.settings', current_user.get_display_name()+' 的帐号') }}
                 {{ li_link_to('shelf.item', '我的书架', shelf_id=current_user.shelf.id) }}
                 {% set unread_mail_count=current_user.unread_mail_count() %}
                 {% if unread_mail_count == 0 %}

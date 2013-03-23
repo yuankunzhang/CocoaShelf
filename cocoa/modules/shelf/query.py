@@ -2,13 +2,14 @@
 from sqlalchemy import func
 
 from flask.ext.sqlalchemy import BaseQuery
+from flask.ext.login import current_user
 
 from cocoa.extensions import db
 from .consts import ColumnType
 
 class ShelfQuery(BaseQuery):
 
-    def check_columns(self, book):
+    def check_columns(self, book, user=current_user):
         from .models import ColumnHave, ColumnRead, ColumnReading, \
             ColumnWish, ColumnLike
 
@@ -31,6 +32,7 @@ class ShelfQuery(BaseQuery):
                 ColumnHave.book_id==ColumnLike.book_id).\
              filter(ColumnHave.book==book).\
              filter(ColumnReading.finished_timestamp==None).\
+             filter(ColumnHave.shelf_id==user.shelf.id).\
              first()
 
         if result is None:

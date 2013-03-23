@@ -62,6 +62,26 @@ class ColumnHave(db.Model, ColumnBase):
         self.book = book
         self.shelf = shelf
 
+    @staticmethod
+    def who_have(book_id, num=None):
+        query = db.session.query(Shelf.id).\
+                outerjoin(ColumnHave).\
+                filter(ColumnHave.book_id==book_id)
+
+        if num is not None:
+            query = query.limit(num)
+
+        return [Shelf.query.get(x.id) for x in query.all()]
+
+    @staticmethod
+    def how_many_have(book_id):
+        return db.session.query(Shelf.id).\
+                outerjoin(ColumnHave).\
+                filter(ColumnHave.book_id==book_id).\
+                count()
+
+
+
 
 class ColumnRead(db.Model, ColumnBase):
     """读过"""
@@ -158,6 +178,24 @@ class ColumnLike(db.Model, ColumnBase):
     def __init__(self, book=None, shelf=None):
         self.book = book
         self.shelf = shelf
+
+    @staticmethod
+    def who_like(book_id, num=None):
+        query = db.session.query(Shelf.id).\
+                outerjoin(ColumnLike).\
+                filter(ColumnLike.book_id==book_id)
+
+        if num is not None:
+            query = query.limit(num)
+
+        return [Shelf.query.get(x.id) for x in query.all()]
+
+    @staticmethod
+    def how_many_like(book_id):
+        return db.session.query(Shelf.id).\
+                outerjoin(ColumnLike).\
+                filter(ColumnLike.book_id==book_id).\
+                count()
 
 
 class Shelf(db.Model):

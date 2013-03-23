@@ -13,6 +13,7 @@ from jinja2 import evalcontextfilter, Markup, escape
 from flask import Flask, request, jsonify, render_template, g
 from flask.ext.babel import gettext as _
 from flask.ext.misaka import Misaka
+from flask.ext.principal import Principal, identity_loaded
 
 from .config import DefaultConfig
 from .extensions import db, sijax, login_manager, cache, babel
@@ -54,6 +55,7 @@ def create_app(config=None, app_name=None, modules=None):
     configure_extensions(app)
     configure_errorhandlers(app)
     configure_modules(app, modules)
+    configure_identity(app)
     configure_logging(app)
     configure_template_filters(app)
 
@@ -150,6 +152,15 @@ def configure_extensions(app):
 def configure_i18n(app):
 
     babel.init_app(app)
+
+
+def configure_identity(app):
+
+    Principal(app)
+
+    @identity_loaded.connect_via(app)
+    def on_identity_loaded(sender, identity):
+        g.user = account.models.User.query.from_identity(identity)
 
 
 def configure_logging(app):

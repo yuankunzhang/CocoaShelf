@@ -12,17 +12,36 @@ from werkzeug import generate_password_hash, check_password_hash
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from flask import current_app
+from flask.ext.sqlalchemy import BaseQuery
 from flask.ext.babel import gettext as _
+from flask.ext.principal import UserNeed, RoleNeed, \
+     identity_loaded
 
 from cocoa.extensions import db, login_manager
+from cocoa.permissions import moderator
 from cocoa.helpers.sql import JSONEncodedDict
 from cocoa.helpers.upload import mkdir
 from .consts import Role, Gender
-from .query import UserQuery
 from ..event.models import SignUpEvent
 from ..tag.models import Tag, UserBookTags
 from ..shelf.models import Shelf
 from ..comment.models import BookShortReview
+
+class UserQuery(BaseQuery):
+
+    def from_identity(self, identity):
+        try:
+            user = self.get(int(identity.name))
+        except ValueError:
+            user = None
+
+        if user:
+            identity.provides.update(user.principal_provides())
+
+        identity.user = user
+
+        return user
+
 
 class User(db.Model):
 
@@ -72,6 +91,23 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.email
+
+    def principal_provides(self):
+        needs = [RoleNeed('member'), UserNeed(self.id)]
+
+        if self.is_moderator():
+            needs.append(RoleNeed('moderator'))
+
+        if self.is_admin():
+            needs.append(RoleNeed('admin'))
+
+        return needs
+
+    def is_moderator(self):
+        return self.role >= Role.MODERATOR.value()
+
+    def is_admin(self):
+        return self.role >= Role.ADMIN.value()
 
     def save(self):
         u = User.query.filter_by(email=self.email).first()
@@ -199,6 +235,11 @@ class User(db.Model):
         from ..blog.models import Post
         return Post.query.filter_by(author=self).\
                 order_by(Post.timestamp.desc()).limit(num)
+
+    def get_book_short_review(self, book_id):
+        from ..comment.models import BookShortReview
+        return BookShortReview.query.filter_by(book_id=book_id).\
+                filter_by(user_id=self.id).first()
 
 
 @login_manager.user_loader

@@ -4,12 +4,15 @@ import json
 from PIL import Image
 
 import flask_sijax
-from flask import Blueprint, request, render_template, \
-        redirect, url_for, flash, g, jsonify
+from flask import Blueprint, request, render_template, session, \
+     redirect, url_for, flash, g, jsonify, current_app
 from flask.ext.login import login_required, login_user, \
-        logout_user, current_user
+     logout_user, current_user
 from flask.ext.babel import gettext as _
+from flask.ext.principal import Identity, AnonymousIdentity, \
+     identity_changed
 
+from cocoa.permissions import moderator
 from .models import User
 from .forms import SigninForm, SignupForm, SettingsForm, \
         PasswordChangeForm
@@ -61,8 +64,13 @@ def signin(next=None):
 
         if ok:
             login_user(user, form.remember.data)
+            # Tell flask-principal the identity changed
+            identity_changed.send(current_app._get_current_object(),
+                                  identity=Identity(user.id))
+
             flash(_('Successfully signed in.'))
-            next = url_for('shelf.item', shelf_id=user.shelf.id)
+            if next is None:
+                next = url_for('shelf.item', shelf_id=user.shelf.id)
             return redirect(next)
 
     return render_template('account/signin.html', form=form, next=next)
@@ -73,6 +81,14 @@ def signin(next=None):
 def signout():
 
     logout_user()
+
+    # Remove session keys set by flask-principal
+    for key in ('identity.name', 'identity.auth_type'):
+        session.pop(key, None)
+    # Tell flask-principal the user is anonymous
+    identity_changed.send(current_app._get_current_object(),
+                          identity=AnonymousIdentity())
+
     return redirect(url_for('frontend.home'))
 
 

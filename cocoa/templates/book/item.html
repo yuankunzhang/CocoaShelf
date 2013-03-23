@@ -83,7 +83,7 @@
 <script type="text/javascript">
 var readOnly = false;
 var score = null;
-var hints = [null, '差劲', '一般', '还行', '喜欢', '力荐'];
+var hints = [null, '差劲', '一般', '还行', '很好', '力荐'];
 
 {% if book.score %}
 {% if current_user.is_authenticated() and book.my_rate() %}
@@ -117,7 +117,8 @@ $('#star').raty({
         } else {
             target.empty();
         }
-    }
+    },
+    hints: hints
 });
 </script>
 
@@ -129,7 +130,7 @@ $('#star').raty({
                 {% if book.category %}
                 <dd>{{ book.category.as_tree()|safe }}</dd>
                 {% endif %}
-                {% if current_user.is_authenticated() %}
+                {% if edit_category_perm.can() %}
                 <dd>{{ link_to('category.change_category', '修改', book_id=book.id) }}</dd>
                 {% endif %}
             </dl>
@@ -198,12 +199,19 @@ $('#star').raty({
 {% block right_col %}
 
 {% if current_user.is_authenticated() %}
-<div id="book-for-me">
-    <ul class="unstyled">
-        {% for x in book.in_columns %}
-        <li>{{ x.text() }}</li>
-        {% endfor %}
-    </ul>
+<div id="on-my-shelf">
+    <div class="alert alert-success">
+    {% if not book.in_columns %}
+        这本书不在我的书架上
+    {% else %}
+        <ul class="unstyled clearfix">
+            <li>在我的书架上：</li>
+            {% for x in book.in_columns %}
+            <li><a href="{{ url_for('shelf.column', shelf_id=current_user.shelf.id, column_name=x.name()) }}">{{ x.text() }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
 </div>
 
 <hr>
@@ -221,20 +229,39 @@ $('#star').raty({
             </div>
 
             <div class="modal-body">
-                <div id="select-colist">
-                    <label>请选择书单：</label>
-                    <select name="colist_id" multiple="multiple">
-                    {% for colist in current_user.colists %}
-                        <option value="{{ colist.id }}">
+            {% if current_user.colists|count %}
+                <div class="span6">
+                    <div id="select-colist">
+                        <label>请选择书单：</label>
+                        <select name="colist_id" multiple="multiple">
+                        {% for colist in current_user.colists %}
+                            <option value="{{ colist.id }}">
                             {{ colist.name }}
-                        </option>
-                    {% endfor %}
-                    </select>
+                            </option>
+                        {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for"short-review">短评：</label>
+                        <textarea id="short-review" name="short-review" placeholder="简单说两句吧">{{ current_user.get_book_short_review(book.id).content }}</textarea>
+                    </div>
+
+                    <div>
+                        或者，<a href="{{ url_for('colist.new') }}">创建新书单&rarr;</a>
+                    </div>
                 </div>
 
-                <div>
-                    或者，<a href="{{ url_for('colist.new') }}">创建新书单&rarr;</a>
+                <div class="tips span5">
+                    <div class="alert alert-info">
+                        Tips go here.
+                    </div>
                 </div>
+            {% else %}
+                <div>
+                    你还没有书单，去<a href="{{ url_for('colist.new') }}">创建一个</a>吧&rarr;
+                </div>
+            {% endif %}
             </div>
 
             <div class="modal-footer">
@@ -253,23 +280,35 @@ $('#star').raty({
             </div>
 
             <div class="modal-body">
-                <div id="shelf-column">
-                    <label>请选择书架：（可选多项）</label>
-                    <ul class="nav nav-pills">
-                        {% for x in book.not_in_columns %}
-                        <li><a href="#" value="{{ x.name() }}">{{ x.text() }}</a></li>
-                        {% endfor %}
-                    </ul>
+                <div class="span6">
+                    <div id="shelf-column">
+                        <label>请选择书架：</label>
+                        <ul class="nav nav-pills">
+                            {% for x in book.not_in_columns %}
+                            <li><a href="#" value="{{ x.name() }}">{{ x.text() }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <label for="add-tags">打几个标签：</label>
+                        <input type="text" id="add-tags" name="tags">
+                    </div>
+
+                    <div>
+                        <label for"short-review">短评：</label>
+                        <textarea id="short-review" name="short-review" placeholder="简单说两句吧">{{ current_user.get_book_short_review(book.id).content }}</textarea>
+                    </div>
                 </div>
 
-                <div>
-                    <label for="add-tags">打几个标签：</label>
-                    <input type="text" id="add-tags" name="tags">
-                </div>
-
-                <div>
-                    <label for"short-review">简单说两句吧：</label>
-                    <textarea id="short-review" name="short-review"></textarea>
+                <div class="tips span5">
+                    <div class="alert alert-info">
+                        <ol>
+                            <li>书架可以选择多项</li>
+                            <li>标签请用英文逗号“,“分隔</li>
+                            <li>短评请不要超过200字</li>
+                        </ol>
+                    </div>
                 </div>
             </div><!-- end .modal-body -->
 
@@ -287,14 +326,15 @@ $(function() {
 
     // add to colist
     $('#add-to-colist-modal .btn-primary').click(function() {
-        colist_id = $('select[name=colist_id]').val();
+        colist_id = $('#add-to-colist-modal select[name=colist_id]').val();
+        short_review = $('#add-to-colist-modal textarea[name=short-review]').val();
 
         if (!colist_id) {
             alert('请选择一个书单');
             return false;
         }
 
-        Sijax.request('add_to_colist', [colist_id, book_id]);
+        Sijax.request('add_to_colist', [colist_id, book_id, short_review]);
         $('#add-to-colist-modal').modal('hide');
 
         return false;
@@ -313,8 +353,8 @@ $(function() {
             columns.push($(this).attr('value'));
         });
 
-        tags = $('input:text[name=tags]').val();
-        short_review = $('textarea[name=short-review]').val();
+        tags = $('#add-to-shelf-modal input:text[name=tags]').val();
+        short_review = $('#add-to-shelf-modal textarea[name=short-review]').val();
 
         if (columns.length == 0) {
             alert('至少选择一个书架');
@@ -329,5 +369,49 @@ $(function() {
 </script>
 </div><!-- end #operations -->
 {% endif %}
+
+<hr>
+
+<div id="who-have">
+    <h3><small>{{ book.how_many_have() }}人有这本书：</small></h3>
+    <ul class="unstyled clearfix">
+    {% for shelf in book.who_have(10) %}
+        <li>
+            <div class="media">
+                <a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='have') }}" class="pull-left">
+                    <img src="/static/upload/avatar/{{ shelf.user.get_thumbnail() }}" width=50 height=50>
+                </a>
+
+                <ul class="unstyled">
+                    <li><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='have') }}">{{ shelf.user.get_display_name() }}</a></li>
+                </ul>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+
+    {% if book.how_many_have() > 10 %}
+    <a href="#">...查看全部</a>
+    {% endif %}
+</div>
+
+<div id="who-like">
+    <h3><small>{{ book.how_many_like() }}人喜欢这本书：</small></h3>
+    <ul class="unstyled clearfix">
+    {% for shelf in book.who_like(10) %}
+        <li>
+            <div class="media">
+                <a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='have') }}" class="pull-left">
+                    <img src="/static/upload/avatar/{{ shelf.user.get_thumbnail() }}" width=50 height=50>
+                </a>
+
+                <ul class="unstyled">
+                    <li><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='have') }}">{{ shelf.user.get_display_name() }}</a></li>
+                </ul>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
 
 {% endblock %}

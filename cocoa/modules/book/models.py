@@ -149,8 +149,8 @@ class Book(db.Model):
         
         patterns = {
             '%Y-%m-%d': '^(\d{4}-\d{1,2}-\d{1,2})',     # 年月日
-            '%Y-%m':    '^(\d{4}-\d{1,2})',            # 年月
-            '%Y':       '^(\d{4})',                    # 年
+            '%Y-%m':    '^(\d{4}-\d{1,2})',             # 年月
+            '%Y':       '^(\d{4})',                     # 年
         }
 
         for k in patterns.keys():
@@ -251,3 +251,19 @@ class Book(db.Model):
 
     def get_rate_count(self):
         return BookRateDetail.query.filter_by(book_id=self.id).count()
+
+    def who_have(self, num=None):
+        from ..shelf.models import ColumnHave
+        return ColumnHave.who_have(self.id)
+
+    def how_many_have(self):
+        from ..shelf.models import ColumnHave
+        return ColumnHave.how_many_have(self.id)
+
+    def who_like(self, num=None):
+        from ..shelf.models import ColumnLike
+        return ColumnLike.who_like(self.id)
+
+    def how_many_like(self):
+        from ..shelf.models import ColumnLike
+        return ColumnLike.how_many_like(self.id)

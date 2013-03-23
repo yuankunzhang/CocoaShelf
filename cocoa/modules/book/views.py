@@ -3,7 +3,9 @@ import flask_sijax
 from flask import Blueprint, request, render_template, g, \
     redirect, url_for, flash
 from flask.ext.login import current_user, login_required
+from flask.ext.principal import Permission
 
+from cocoa.permissions import moderator
 from .models import Book
 from .ajax import AjaxActions
 from ..tag.models import BookTags
@@ -35,6 +37,8 @@ def item(book_id):
 
     book = Book.query.get_or_404(book_id)
 
+    edit_category_perm = Permission(moderator)
+
     if book.rate:
         book.score = book.rate.total / book.rate.count
 
@@ -42,4 +46,5 @@ def item(book_id):
         book.in_columns, book.not_in_columns = \
             current_user.shelf.query.check_columns(book)
 
-    return render_template('book/item.html', book=book)
+    return render_template('book/item.html', book=book,
+                           edit_category_perm=edit_category_perm)
