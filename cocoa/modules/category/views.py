@@ -5,12 +5,14 @@ from flask import Blueprint, render_template, flash, \
     url_for, redirect
 from flask.ext.babel import gettext as _
 
+from cocoa.permissions import moderator
 from ..book.models import Book
 from .models import Category
 
 mod = Blueprint('category', __name__)
 
 @mod.route('/')
+@moderator.require(403)
 def home():
 
     return render_template('index.html')
@@ -33,6 +35,7 @@ def change_category(book_id, category_id=None):
 
 
 @mod.route('/categories/<int:parent_id>/', methods=['POST'])
+@moderator.require(403)
 def categories(parent_id):
     print parent_id
 

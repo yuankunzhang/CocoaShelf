@@ -2,23 +2,57 @@
 
 {% block css %}
 {{ super() }}
+<link rel="stylesheet" href="/static/css/blog/blog.css">
 {% endblock %}
 
 {% block content %}
+
 <div class="page-header">
     <h1><small>撰写新文章</small></h1>
 </div>
 
 <div id="post-new-form">
     {% from 'macros/form.html' import render_field, render_submit %}
-    <form method="post" class="form-horizontal" action="{{ url_for('blog.new') }}">
+    <form method="post" action="{{ url_for('blog.new') }}">
         {{ form.csrf_token }}
-        {{ render_field(form.title) }}
+        {{ render_field(form.title, class='span5') }}
         {{ render_field(form.type) }}
+        <div class="control-group">
+            <label>引用图书</label>
+            <div id="ref-books"><ul class="unstyled"></ul></div>
+            <a href="#add-ref-books-modal" class="btn" rol="button" data-toggle="modal">+ 添加</a>
+        </div>
         {{ render_field(form.ref_books) }}
-        {{ render_field(form.content) }}
+        {{ render_field(form.keywords, class='span5', placeholder='请使用英文逗号“,”作分隔符') }}
+        <a class="markdown-help" href="#">支持markdown格式</a>
+        {{ render_field(form.content, class='span7') }}
 
         {{ render_submit('确定') }}
     </form>
+
+    <div id="add-ref-books-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-header">
+            <h1><small>添加引用</small></h1>
+        </div>
+
+        <div class="modal-body">
+            {% from 'macros/widget_add_books.html' import widget_add_books %}
+            {{ widget_add_books(submit=False) }}
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary">确定</button>
+        </div>
+    </div><!-- end .modal -->
 </div>
+
+<script type="text/javascript" src="/static/js/blog/ref_book_input.js"></script>
+<script type="text/javascript" src="/static/js/jquery/jquery.placeholder.min.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('input').placeholder();
+});
+</script>
+
 {% endblock %}

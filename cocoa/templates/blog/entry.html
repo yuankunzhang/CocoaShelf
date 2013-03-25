@@ -4,17 +4,68 @@
 
 <div class="page-header">
     <h1><small>{{ post.title }}</small></h1>
+    <blockquote>
+        <div class="post-meta">
+            <span>{{ post.author.get_display_name() }}</span>
+            <span class="divider">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <span>{{ post.timestamp|dt }}</span>
+
+            <div class="operations pull-right">
+            {% if perms.edit_perm.can() %}
+                <a href="#"><i class="icon-pencil"></i> 编辑</a>
+            {% endif %}
+            {% if perms.delete_perm.can() %}
+                <a href="#delete-confirm-modal" rol="button" data-toggle="modal"><i class="icon-trash"></i> 删除</a>
+                <div id="delete-confirm-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-header">
+                        <h1><small>确认删除</small></h1>
+                    </div>
+
+                    <div class="modal-body">
+                        <p class="text-error">警告：确实要删除这篇文章吗？</p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                        <button class="btn btn-primary">确定</button>
+                    </div>
+                </div><!-- end .modal -->
+            {% endif %}
+            </div>
+        </div><!-- end .post-meta -->
+    </blockquote>
 </div>
 
 <div id="post-content">
     {% if post.ref_books %}
-        <p>引用图书：</p>
         {% for book in post.get_ref_books() %}
-        <a href="{{ url_for('book.item', book_id=book.id) }}">book.title</a>
+        {% include 'book/badge.html' %}
         {% endfor %}
+        <br>
     {% endif %}
 
     {{ post.content|markdown|nl2br }}
+</div>
+
+<hr>
+
+<blockquote>
+    <div class="post-keywords">
+        <span>关键字：</span>
+        {% for keyword in post.keywords %}
+        <span><a href="#">{{ keyword.name }}</a></span>
+        {% endfor %}
+    </div>
+</blockquote>
+
+<div>
+{% if post.previous %}
+    <a class="pull-left" href="{{ url_for('blog.entry', user_id=post.author.id, slug=post.previous.slug) }}">&larr;前一篇</a>
+{% endif %}
+
+{% if post.next %}
+    <a class="pull-right" href="{{ url_for('blog.entry', user_id=post.author.id, slug=post.next.slug) }}">后一篇&rarr;</a>
+{% endif %}
 </div>
 
 {% endblock %}

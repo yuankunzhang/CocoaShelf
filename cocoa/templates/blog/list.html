@@ -1,8 +1,39 @@
 <div id="posts">
     {% for post in posts|reverse %}
-    <div class="post-title">
+    <div class="post-title clearfix">
         <h4><a href="{{ url_for('blog.entry', user_id=post.author.id, slug=post.slug) }}">{{ post.title }}</a></h4>
     </div>
+    <blockquote class="clearfix">
+        <div class="post-meta pull-left">
+            <span>{{ post.author.get_display_name() }}</span>
+            <span class="divider">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <span>{{ post.timestamp|dt }}</span>
+        </div>
+
+        <div class="operations pull-left">
+        {% if perms.edit_perm.can() %}
+            <span class="divider">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <a href="#"><i class="icon-pencil"></i> 编辑</a>
+        {% endif %}
+        {% if perms.delete_perm.can() %}
+            <a href="#delete-confirm-modal" rol="button" data-toggle="modal"><i class="icon-trash"></i> 删除</a>
+            <div id="delete-confirm-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-header">
+                    <h1><small>确认删除</small></h1>
+                </div>
+
+                <div class="modal-body">
+                    <p class="text-error">警告：确实要删除这篇文章吗？</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                    <button class="btn btn-primary">确定</button>
+                </div>
+            </div><!-- end .modal -->
+        {% endif %}
+        </div>
+    </blockquote>
 
     <div class="post-content">
         {{ post.content|markdown|nl2br }}

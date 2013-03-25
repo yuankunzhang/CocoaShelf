@@ -1,6 +1,11 @@
 {% extends 'layout/double_columns.html' %}
 {% from 'macros/link_to.html' import li_link_to %}
 
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/blog/blog.css">
+{% endblock %}
+
 {% block left_col %}
 
 <div class="page-header">
@@ -15,6 +20,11 @@
 
 {% block right_col %}
 {% include 'account/badge.html' %}
+<hr>
+
+<div class="nav">
+    <a href="{{ url_for('shelf.item', shelf_id=user.shelf.id) }}">到我的书架&rarr;</a>
+</div>
 <hr>
 
 <div id="recend-posts">

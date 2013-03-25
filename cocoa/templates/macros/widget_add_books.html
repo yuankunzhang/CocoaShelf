@@ -1,0 +1,27 @@
+{% macro widget_add_books(action='', submit=True) %}
+<div id="add-books">
+    <div class="alert alert-success">
+        您可以通过图书的链接或者图书的ISBN号来添加，例如下面的格式：
+        <ol>
+            <li>9787544711630</li>
+            <li>xxx/book/23</li>
+        </ol>
+    </div>
+
+    {% from 'macros/form.html' import render_submit %}
+    <form action="{{ action }}" class="form-horizontal" method="post">
+    {% for i in range(1, 4) %}
+        <div class="control-group">
+            <label class="control-label">#{{ i }}</label>
+            <div class="controls">
+                <input type="text" name="book_ids">
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if submit %}
+        {{ render_submit() }}
+    {% endif %}
+    </form>
+</div>
+{% endmacro %}

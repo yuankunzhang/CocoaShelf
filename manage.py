@@ -14,7 +14,7 @@ from cocoa.modules.shelf.models import Shelf, ColumnHave, \
         ColumnRead, ColumnReading, ColumnWish, ColumnLike
 from cocoa.modules.event.models import EventRecord
 from cocoa.modules.bookrate.models import BookRateDetail, BookRate
-from cocoa.modules.blog.models import Post
+from cocoa.modules.blog.models import Post, Keyword, PostKeywords
 from cocoa.modules.colist.models import Colist, ColistBooks
 from cocoa.modules.mail.models import Mail, MailInbox
 from cocoa.modules.comment.models import ShelfComments, \

@@ -1,0 +1,26 @@
+.page-header .btn {
+    float: right;
+    font-size: 12px;
+    margin-top: -30px;
+    margin-right: 60px;
+}
+
+#post-new-form textarea {
+    height: 300px;
+}
+
+#post-new-form .markdown-help {
+    float: right;
+    margin-right: 80px;
+}
+
+#post-new-form #ref-books ul li {
+    width: 360px;
+    background: #eee;
+    padding: 4px;
+    margin-bottom: 8px;
+
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}

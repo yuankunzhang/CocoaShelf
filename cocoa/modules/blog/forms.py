@@ -23,3 +23,6 @@ class PostNewForm(Form):
 
     ref_books = DictField(_(u'References'), [
     ], id=u'post-ref-books')
+
+    keywords =DictField(_(u'Keywords'), [
+    ], id=u'post-keywords')

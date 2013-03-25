@@ -7,8 +7,8 @@ class Tag(db.Model):
 
     __tablename__ = 'tag'
 
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(50), unique=True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True)
     count = db.Column(db.Integer, default=1)
     disabled = db.Column(db.Boolean, default=False)
 

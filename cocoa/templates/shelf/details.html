@@ -11,43 +11,62 @@
 {{ breadcrumb(shelf, '书架详情') }}
 
 <div id="profile"><blockquote>
-    {% if current_user==shelf.user %}
-    <a class="btn btn-small" href="{{ url_for('account.settings') }}">更新帐号设置&rarr;</a>
-    {% endif %}
+    <div class="btns">
+        {% if current_user==shelf.user %}
+        <a class="btn btn-small" href="{{ url_for('account.settings') }}">更新帐号设置&rarr;</a>
+        {% endif %}
+    </div>
 
-    <div id="avatar" class="media">
-        <img class="pull-left" src="/static/upload/avatar/{{ shelf.user.get_thumbnail() }}">
-        <div class="media-body">
-            {{ shelf.user.get_display_name() }}
+    <div class="clearfix">
+        <div id="avatar" class="media pull-left">
+            <img class="pull-left" src="/static/upload/avatar/{{ shelf.user.get_thumbnail() }}">
+            <div class="media-body">
+                {{ shelf.user.get_display_name() }}
+            </div>
+        </div>
+
+        <div class="intro pull-left">
+            {{ shelf.user.intro|nl2br }}
         </div>
     </div>
 
-    <dl class="dl-horizontal">
-        <dt>性别：</dt>
-        <dd>{{ shelf.user.get_gender() }}</dd>
-        <dt>所在地：</dt>
-        <dd>{{ shelf.user.get_location()['text'] }}</dd>
-        <dt>简介：</dt>
-        <dd><div>{{ shelf.user.intro }}</div></dd>
-        <dt>关注：</dt>
-        <dd>{{ shelf.user.followings|count }}</dd>
-        <dt>被关注：</dt>
-        <dd>{{ shelf.user.followers|count }}</dd>
-        <hr>
-        <dt>我有：</dt>
-        <dd>{{ shelf.book_count['have'] }}</dd>
-        <dt>读过：</dt>
-        <dd>{{ shelf.book_count['read'] }}</dd>
-        <dt>在读：</dt>
-        <dd>{{ shelf.book_count['reading'] }}</dd>
-        <dt>想读：</dt>
-        <dd>{{ shelf.book_count['wish'] }}</dd>
-        <dt>喜欢：</dt>
-        <dd>{{ shelf.book_count['like'] }}</dd>
-        <dt>书单：</dt>
-        <dd>{{ shelf.user.colists|count }}</dd>
-        <dt>标签：</dt>
-        <dd>{{ shelf.get_tag_count() }}</dd>
+    <dl class="clearfix">
+        <h4><small>基本信息:</small></h4>
+        <div class="controls-row">
+            <dt>性别：</dt>
+            <dd>{{ shelf.user.get_gender() }}</dd>
+            <dt>所在地：</dt>
+            <dd>{{ shelf.user.get_location()['text'] }}</dd>
+        </div>
+        <div class="controls-row">
+            <dt>关注：</dt>
+            <dd>{{ shelf.user.followings|count }}</dd>
+            <dt>被关注：</dt>
+            <dd>{{ shelf.user.followers|count }}</dd>
+        </div>
+        <h4><small>书架信息:</small></h4>
+        <div class="controls-row">
+            <dt>我有：</dt>
+            <dd>{{ shelf.book_count['have'] }}</dd>
+            <dt>读过：</dt>
+            <dd>{{ shelf.book_count['read'] }}</dd>
+        </div>
+        <div class="controls-row">
+            <dt>在读：</dt>
+            <dd>{{ shelf.book_count['reading'] }}</dd>
+            <dt>想读：</dt>
+            <dd>{{ shelf.book_count['wish'] }}</dd>
+        </div>
+        <div class="controls-row">
+            <dt>喜欢：</dt>
+            <dd>{{ shelf.book_count['like'] }}</dd>
+        </div>
+        <div class="controls-row">
+            <dt>书单：</dt>
+            <dd>{{ shelf.user.colists|count }}</dd>
+            <dt>标签：</dt>
+            <dd>{{ shelf.get_tag_count() }}</dd>
+        </div>
     </dl>
 </blockquote></div>
 

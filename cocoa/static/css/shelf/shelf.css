@@ -13,6 +13,45 @@
 
 #profile blockquote {
     padding-left: 20px;
+    font-family: '微软雅黑';
+}
+
+#profile .btns {
+    margin-bottom: 20px;
+}
+
+#profile .intro {
+    margin-left: 40px;
+    border: 1px dashed #ddd;
+    width: 400px;
+    height: 50px;
+    padding: 5px 10px;
+    overflow: auto;
+
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+
+#profile dt,
+#profile dd {
+    float: left;
+    width: 120px;
+    padding: 6px;
+    text-align: center;
+    background: #eee;
+    font-weight: normal;
+    border: 1px solid #eee;
+}
+
+#profile dd {
+    margin-left: 0;
+    margin-right: 10px;
+    background: #fff;
+}
+
+#profile .controls-row {
+    margin-bottom: 6px;
 }
 
 .shelf-books .book-list {
