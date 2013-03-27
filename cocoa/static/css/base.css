@@ -26,6 +26,12 @@ body > .container {
     border-top: 1px dashed #cdcdcd;
 }
 
+span.vertical-divider {
+    margin-left: 30px;
+    margin-right: 10px;
+    color: #ccc;
+}
+
 #header {
     background: white;
     border-bottom: 3px solid #ddd;
@@ -36,7 +42,7 @@ body > .container {
     border-top: 1px solid #ddd;
 }
 
-#header .divider {
+#header .divider-line {
     border-bottom: 1px dashed #ccc;
 }
 

@@ -112,7 +112,8 @@ def _save_thumbnail(img, out):
 
     thumbnail_box = (x, y, x + ruler, y + ruler)
 
-    img.crop(thumbnail_box).resize((THUMBNAIL_SIDE_LEN, THUMBNAIL_SIDE_LEN), \
-        Image.ANTIALIAS).save(out, FORMAT, quality=100)
+    img.crop(thumbnail_box).\
+        resize((THUMBNAIL_SIDE_LEN, THUMBNAIL_SIDE_LEN), Image.ANTIALIAS).\
+        save(out, FORMAT, quality=100)
 
     return thumbnail_box

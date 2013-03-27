@@ -8,12 +8,12 @@
 {% block content %}
 
 <div class="page-header">
-    <h1><small>撰写新文章</small></h1>
+    <h1><small>编辑文章</small></h1>
 </div>
 
 <div id="post-new-form">
     {% from 'macros/form.html' import render_field, render_submit %}
-    <form method="post" action="{{ url_for('blog.new') }}">
+    <form method="post" action="{{ url_for('blog.edit', user_id=post.author.id, slug=post.slug) }}">
         {{ form.csrf_token }}
         {{ render_field(form.title, class='span5') }}
         {{ render_field(form.type) }}

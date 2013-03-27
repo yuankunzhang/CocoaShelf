@@ -39,8 +39,16 @@ class DefaultConfig(object):
     CACHE_DEFAULT_TIMEOUT = 300
 
     # 路径设置
+    # 用户头像
+    AVATAR_STATIC_PATH = '/static/upload/avatar/'
     AVATAR_BASE_DIR = os.path.join(_basedir, 'static/upload/avatar')
+    # 图书封面
+    COVER_STATIC_PATH = '/static/upload/cover/'
     COVER_BASE_DIR = os.path.join(_basedir, 'static/upload/cover')
+    # 小组图腾
+    TOTEM_STATIC_PATH = '/static/upload/totem/'
+    TOTEM_BASE_DIR = os.path.join(_basedir, 'static/upload/totem')
+
     FILES_PER_DIR = 1000
     MAX_CONTENT_LENGTH = 3 * 1024 * 1024
 

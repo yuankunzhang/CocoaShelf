@@ -1,15 +1,21 @@
 # -*- coding: utf-8 -*-
 from time import time
 
+from sqlalchemy import func
+
 from sqlalchemy.ext.associationproxy import association_proxy
 
+from flask.ext.sqlalchemy import BaseQuery
 from flask.ext.login import current_user
+from flask.ext.principal import Permission, UserNeed
 
 from cocoa.extensions import db
 from cocoa.helpers.sql import JSONEncodedDict
 from cocoa.helpers.common import slugify
+from cocoa.permissions import moderator
 from .consts import PostType, PostStatus
 from ..book.models import Book
+from ..permissions import Permissions
 
 class Keyword(db.Model):
 
@@ -37,6 +43,11 @@ class Keyword(db.Model):
             keyword.count += 1
 
         db.session.commit()
+        return keyword
+
+    @staticmethod
+    def from_name(name):
+        return Keyword.query.filter_by(name=name).first()
 
 
 class PostKeywords(db.Model):
@@ -58,9 +69,23 @@ class PostKeywords(db.Model):
         self.post = post
 
 
+class PostQuery(BaseQuery):
+
+    def get_published(self, user_id):
+        return Post.query.filter_by(user_id=user_id).\
+               filter_by(status=PostStatus.PUBLISHED.value()).\
+               all()
+
+    def get_by_slug(self, user_id, slug):
+        return Post.query.filter_by(user_id=user_id).\
+                filter_by(slug=slug).first()
+
+
 class Post(db.Model):
 
     __tablename__ = 'post'
+
+    query_class = PostQuery
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -94,6 +119,20 @@ class Post(db.Model):
     def __repr__(self):
         return '<Post %r>' % self.title
 
+    class _Permissions(Permissions):
+
+        def default(self):
+            return Permission(UserNeed(self.user_id)) & moderator
+
+        def delete(self):
+            return self.default()
+
+        def edit(self):
+            return Permission(UserNeed(self.user_id))
+
+    def permissions(self):
+        return self._Permissions(self)
+
     def get_ref_books(self):
         return [Book.query.get(i) for i in self.ref_books]
 
@@ -112,7 +151,41 @@ class Post(db.Model):
         current_user.posts.append(self)
         db.session.commit()
 
+    def update(self, type, title, content, ref_books, keywords):
+        self.type = type
+        self.title = title
+        self.content = content
+
+        self.ref_books = ref_books
+
+        kws = [kw.name for kw in self.keywords]
+        for name in kws:
+            if name not in keywords:
+                self.keywords.remove(Keyword.from_name(name))
+        for name in keywords:
+            if name not in kws:
+                self.keywords.append(Keyword.create_or_increase(name))
+
+        db.session.commit()
+
+    def delete(self):
+        self.status = PostStatus.DROPPED.value()
+        db.session.commit()
+
     @staticmethod
-    def get_by_slug(user_id, slug):
-        return Post.query.filter_by(user_id=user_id).\
-                filter_by(slug=slug).first()
+    def get_keywords(user_id):
+        return db.session.query(Keyword.id, Keyword.name,
+                    func.count(Keyword.id).label('count')).\
+                outerjoin(PostKeywords,
+                    PostKeywords.keyword_id==Keyword.id).\
+                outerjoin(Post,
+                    Post.id==PostKeywords.post_id).\
+                filter(Post.user_id==user_id).\
+                order_by(func.count(Keyword.id).desc()).\
+                group_by(Keyword.id).all()
+
+    @staticmethod
+    def get_keyword_posts(user_id, keyword_id):
+        return Post.query.outerjoin(PostKeywords).outerjoin(Keyword).\
+                filter(Post.user_id==user_id, Keyword.id==keyword_id).\
+                all()

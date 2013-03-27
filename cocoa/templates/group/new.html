@@ -8,8 +8,9 @@
 
 <div id="group-new-form">
     {% from 'macros/form.html' import render_field, render_submit %}
-    <form method="post" class="form-horizontal" action="{{ url_for('group.new') }}">
+    <form method="post" class="form-horizontal" action="{{ url_for('group.new') }}" enctype="multipart/form-data">
         {{ form.csrf_token }}
+        {{ render_field(form.totem) }}
         {{ render_field(form.name) }}
         {{ render_field(form.intro) }}
 

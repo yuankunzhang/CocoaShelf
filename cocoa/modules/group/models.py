@@ -3,7 +3,9 @@ from time import time
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
+from flask import current_app
 from flask.ext.login import current_user
+from flask.ext.babel import gettext as _
 
 from cocoa.extensions import db
 
@@ -77,8 +79,9 @@ class Group(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    name = db.Column(db.String(255))
+    name = db.Column(db.String(255), unique=True)
     intro = db.Column(db.Text)
+    totem = db.Column(db.String(100))
     active = db.Column(db.Boolean, default=False)
     timestamp = db.Column(db.Integer, default=int(time()))
 
@@ -91,11 +94,62 @@ class Group(db.Model):
         self.owner = owner
 
     def save(self):
+        group = Group.query.filter_by(name=self.name).first()
+        if group is not None:
+            raise ValueError(_(u'This group name has been used.'))
         self.users.append(self.owner)
         db.session.add(self)
         db.session.commit()
+
+    def applied(self, applier, intro):
+        """申请加入"""
+
+        if applier in self.users:
+            raise ValueError(_(u'You\'ve already in this group'))
+        else:
+            appler = GroupAppliers(applier, intro, self)
+            appler.save()
 
     def new_topic(self, title):
         topic = GroupTopics(title, current_user)
         self.topics.append(topic)
         db.session.commit()
+
+    def get_totem_path(self):
+        if self.totem:
+            return current_app.config['TOTEM_STATIC_PATH'] + self.totem
+        else:
+            return None
+
+
+class GroupAppliers(db.Model):
+    """成员申请加入小组的临时表"""
+
+    __tablename__ = 'group_appliers'
+
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'),
+        primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
+        primary_key=True)
+    intro = db.Column(db.String(255))    # 申请理由
+    timestamp = db.Column(db.Integer, default=int(time()))
+
+    group = db.relationship('Group',
+        backref=db.backref('appliers', cascade='all, delete-orphan'))
+    applier = db.relationship('User',
+        backref=db.backref('applied_groups',
+                            cascade='all, delete-orphan'))
+
+    def __init__(self, applier, intro, group=None):
+        self.applier = applier
+        self.intro = intro
+        self.group = group
+
+    def save(self):
+        applier = GroupAppliers.query.filter_by(group=self.group).\
+                    filter_by(applier=self.applier).first()
+        if applier is not None:
+            raise ValueError(_(u'You\'ve already applied to join.'))
+        else:
+            db.session.add(self)
+            db.session.commit()

@@ -1,24 +1,45 @@
-{% extends 'layout/single_column.html' %}
-{% from 'macros/link_to.html' import link_to %}
+{% extends 'layout/double_columns.html' %}
 
-{% block content %}
+{% block left_col %}
 
 <div class="page-header">
-    <h1><small>我的小组</small></h1>
+    <h1><small>小组首页</small></h1>
 </div>
 
-<div id="groups">
+<div id="popular-groups" class="clearfix">
+    <h2><small>活跃小组</small></h2>
+</div>
+
+<div id="new-groups" class="clearfix">
+    <h2><small>新加入</small></h2>
     <ul class="unstyled">
-    {% for group in groups %}
+    {% for group in new_groups %}
         <li>
-            <div>
-                <h2><small>{{ link_to('group.item', group.name, group_id=group.id) }}</small></h2>
-                <p>{{ group.intro }}</p>
+            <div class="media">
+                <a href="{{ url_for('group.item', group_id=group.id) }}" class="pull-left">
+                    <img src="{{ group.get_totem_path() }}">
+                </a>
+                <div class="media-body">
+                    <div class="pull-right">
+                        <a class="btn" href="#">加入</a>
+                    </div>
+                    <ul class="unstyled">
+                        <li>
+                            <span><a href="{{ url_for('group.item', group_id=group.id) }}">{{ group.name }}</a></span>
+                            <span class="vertical-divider">|</span>
+                            <span>创建者：<a href="{{ url_for('shelf.item', shelf_id=group.owner.shelf.id) }}">{{ group.owner.get_display_name() }}</a></span>
+                        </li>
+                        <li>{{ group.intro|nl2br }}</li>
+                    </ul>
+                </div>
             </div>
         </li>
-        <hr>
+        <hr class="dashed-hr">
     {% endfor %}
     </ul>
 </div>
 
+{% endblock %}
+
+{% block right_col %}
 {% endblock %}

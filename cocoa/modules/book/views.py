@@ -28,7 +28,7 @@ def list():
     return render_template('book/list.html', books=books)
 
 
-@flask_sijax.route(mod, '/<book_id>/')
+@flask_sijax.route(mod, '/<int:book_id>/')
 def item(book_id):
 
     if g.sijax.is_sijax_request:

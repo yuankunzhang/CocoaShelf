@@ -1,9 +1,57 @@
 {% extends 'layout/single_column.html' %}
 
+{% block js %}
+{{ super() }}
+<script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
+<script type="text/javascript">
+    {{ g.sijax.get_js()|safe }}
+</script>
+{% endblock %}
+
 {% block content %}
 
 <div class="page-header">
     <h1><small>小组：{{ group.name }}</small></h1>
+    {% if current_user.is_authenticated() and current_user not in group.users %}
+    <a href="#apply-modal" class="btn btn-small" role="button" data-toggle="modal">我要加入</a>
+    <div id="apply-modal" class="modal hide fade" role="dialog" aria-hidden="true">
+        <div class="modal-header">
+            <h1><small>申请加入</small></h1>
+        </div>
+
+        <div class="modal-body">
+            <label for="apply-intro">加入理由（不多于100个汉字）</label>
+            <textarea id="apply-intro" name="apply-intro"></textarea>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary">确定</button>
+        </div>
+    </div><!-- end #join-group-modal -->
+
+<script type="text/javascript">
+$(function() {
+    var group_id = {{ group.id }};
+
+    $('#apply-modal .btn-primary').click(function() {
+        var intro = $('#apply-modal textarea[name=apply-intro]').val();
+        console.debug(intro);
+
+        if (!intro) {
+            alert('申请理由不能为空');
+            return false;
+        }
+
+        Sijax.request('join', [group_id, intro]);
+
+        $('#apply-modal').modal('hide');
+        return false;
+    });
+});
+</script>
+
+    {% endif %}
 </div>
 
 <div class="well">

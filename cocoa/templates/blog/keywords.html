@@ -1,0 +1,82 @@
+{% extends 'layout/double_columns.html' %}
+{% from 'macros/link_to.html' import li_link_to %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/blog/blog.css">
+{% endblock %}
+
+{% block left_col %}
+
+<div class="page-header">
+    <h1><small>关键字</small></h1>
+</div>
+
+<div class="keyword-list" user="{{ user.id }}">
+    <ul class="nav nav-pills">
+    {% for keyword in keywords %}
+        <li><a href="#" value="{{ keyword.id }}">{{ keyword.name }}({{ keyword.count }})</a></li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div id="posts">
+</div>
+
+{% raw %}
+<script type="text/x-tmpl" id="keyword-posts">
+{% for (var i=0; i<o.posts.length; i++) { %}
+<div class="post">
+    <div class="post-title clearfix">
+        <h4><a href="#">{%=o.posts[i].title%}</a></h4>
+    </div>
+
+    <blockquote class="clearfix">
+        <div class="post-meta pull-left">
+            <span>{%=o.posts[i].author%}</span>
+            <span class="divider">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <span>{%=o.posts[i].timestamp%}</span>
+        </div>
+    </blockquote>
+
+    <div class="post-content">
+        {%=o.posts[i].content%}
+    </div>
+
+    <blockquote>
+        <div class="post-keywords">
+            <span>关键字：</span>
+            {% for (var j=0; j< o.posts[i].keywords.length; j++) { %}
+            <span><a href="#"><i class="icon-tag"></i> {%=o.posts[i].keywords[j]%}</a></span>&nbsp;&nbsp;
+            {% } %}
+        </div>
+    </blockquote>
+</div>
+<hr>
+{% } %}
+</script>
+{% endraw %}
+
+{% endblock %}
+
+{% block right_col %}
+{% include 'account/badge.html' %}
+<hr>
+
+<div class="nav">
+    <a href="{{ url_for('shelf.item', shelf_id=user.shelf.id) }}">到{% if user==current_user %}我{% else %}{{ user.get_display_name() }}{% endif %}的书架&rarr;</a>
+</div>
+<hr>
+
+<div id="recend-posts">
+    <h2><small>最近文章...</small></h2>
+    <ul class="unstyled">
+    {% for post in user.recent_posts() %}
+    {{ li_link_to('blog.entry', post.title, user_id=user.id, slug=post.slug) }}
+    {% endfor %}
+    </ul>
+</div>
+
+<script type="text/javascript" src="/static/js/tmpl.min.js"></script>
+<script type="text/javascript" src="/static/js/blog/keyword_posts.js"></script>
+{% endblock %}

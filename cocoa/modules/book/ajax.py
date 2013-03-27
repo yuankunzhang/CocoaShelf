@@ -36,7 +36,7 @@ class AjaxActions(object):
         colist = Colist.query.get(colist_id)
         colist.add_book(book)
 
-        if short_review is not None:
+        if short_review != '':
             current_user.publish_short_review(book, short_review)
 
         obj_response.alert(_(u'Successfully added.'))

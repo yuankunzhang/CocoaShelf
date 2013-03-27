@@ -3,6 +3,7 @@
     对WTForms的扩展
     2013.03.03
 """
+from flask import request
 from flask.ext.wtf import Form as Base, Field, TextInput
 
 from .common import str2list

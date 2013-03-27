@@ -12,8 +12,6 @@
 {% block js %}
 {{ super() }}
 <script type="text/javascript" src="/static/js/jquery/jquery.imgareaselect.pack.js"></script>
-<script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
-<script type="text/javascript" src="/static/js/sijax/sijax_upload.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -28,7 +26,7 @@
             <span class="btn btn-success fileinput-button">
                 <i class="icon-plus icon-white"></i>
                 <span>上传头像...</span>
-                <input type="file" name="avatar" multiple>
+                <input type="file" name="avatar">
             </span>
         </div>
     </div><!-- end .fileupload-buttonbar -->

@@ -13,7 +13,6 @@
     <a class="btn" href="{{ url_for('blog.new') }}">撰写新文章&rarr;</a>
 </div>
 
-{% set posts=user.posts %}
 {% include 'blog/list.html' %}
 
 {% endblock %}
@@ -23,7 +22,7 @@
 <hr>
 
 <div class="nav">
-    <a href="{{ url_for('shelf.item', shelf_id=user.shelf.id) }}">到我的书架&rarr;</a>
+    <a href="{{ url_for('shelf.item', shelf_id=user.shelf.id) }}">到{% if user==current_user %}我{% else %}{{ user.get_display_name() }}{% endif %}的书架&rarr;</a>
 </div>
 <hr>
 
@@ -35,4 +34,21 @@
     {% endfor %}
     </ul>
 </div>
+
+<script type="text/javascript" src="/static/js/blog/delete_entry.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('.post .operations').hide();
+    $('.post').hover(
+        function() {
+            $(this).find('.operations').show();
+        },
+        function() {
+            if (!$('.delete-confirm-modal').hasClass('in')) {
+                $(this).find('.operations').hide();
+            }
+        }
+    );
+});
+</script>
 {% endblock %}

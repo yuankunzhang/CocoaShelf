@@ -20,21 +20,30 @@
                 {{ li_link_to('account.signin', '登入') }}
                 {{ li_link_to('account.signup', '注册') }}
             {% else %}
-                {{ li_link_to('account.settings', current_user.get_display_name()+' 的帐号') }}
-                {{ li_link_to('shelf.item', '我的书架', shelf_id=current_user.shelf.id) }}
-                {% set unread_mail_count=current_user.unread_mail_count() %}
-                {% if unread_mail_count == 0 %}
-                {{ li_link_to('mail.inbox', '收件箱') }}
-                {% else %}
-                {{ li_link_to('mail.inbox', '收件箱('~unread_mail_count~')') }}
-                {% endif %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        {{ current_user.get_display_name() }}的帐号 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {{ li_link_to('shelf.item', '我的书架', shelf_id=current_user.shelf.id) }}
+                        {{ li_link_to('blog.item', '部落格', user_id=current_user.id) }}
+                        {% set unread_mail_count=current_user.unread_mail_count() %}
+                        {% if unread_mail_count == 0 %}
+                        {{ li_link_to('mail.inbox', '收件箱') }}
+                        {% else %}
+                        {{ li_link_to('mail.inbox', '收件箱('~unread_mail_count~')') }}
+                        {% endif %}
+                        <li class="divider"></li>
+                        {{ li_link_to('account.settings', '帐号设置') }}
+                    </ul>
+                </li>
                 {{ li_link_to('account.signout', '登出') }}
             {% endif %}
             </ul>
         </div>
     </div>
 
-    <div class="divider"></div>
+    <div class="divider-line"></div>
 
     <div id="main-nav" class="container clearfix">
         <div class="navbar nav-collapse">
