@@ -5,7 +5,7 @@ from werkzeug import FileStorage
 
 import flask_sijax
 from flask import Blueprint, request, render_template, \
-        redirect, url_for, g
+        redirect, url_for, g, abort
 from flask.ext.login import current_user, login_required
 from flask.ext.babel import gettext as _
 
@@ -99,3 +99,19 @@ def reply_topic(group_id, topic_id):
         return redirect(url_for('group.topic',
                                 group_id=group_id,
                                 topic_id=topic_id))
+
+
+@flask_sijax.route(mod, '/<int:group_id>/applicants/')
+@login_required
+def applicants(group_id):
+
+    if g.sijax.is_sijax_request:
+        g.sijax.register_object(AjaxActions)
+        return g.sijax.process_request()
+
+    group = Group.query.get_or_404(group_id)
+
+    if group.permissions().add_user().can():
+        return render_template('group/applicants.html', group=group)
+    else:
+        abort(403)

@@ -1,0 +1,58 @@
+{% extends 'layout/single_column.html' %}
+
+{% block js %}
+{{ super() }}
+<script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
+<script type="text/javascript">
+    {{ g.sijax.get_js()|safe }}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>{{ group.name }}：申请</small></h1>
+</div>
+
+<div class="applicants">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>用户</th>
+                <th>申请理由</th>
+                <th>时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for applicant in group.untreated_applicants() %}
+            <tr value="{{ applicant.id }}">
+                <td>{{ applicant.applier.get_display_name() }}</td>
+                <td>{{ applicant.intro }}</td>
+                <td>{{ applicant.timestamp|dt }}</td>
+                <td>
+                    <a href="#" class="badge badge-success"><i class="icon-ok"></i></a>
+                    <a href="#" class="badge badge-important"><i class="icon-remove"></i></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+$(function() {
+    $('table a.badge-success').click(function() {
+        var applicant_id = $(this).parent().parent().attr('value');
+        Sijax.request('accept_applicant', [applicant_id]);
+        return false;
+    });
+
+    $('table a.badge-important').click(function() {
+        var applicant_id = $(this).parent().parent().attr('value');
+        Sijax.request('decline_applicant', [applicant_id]);
+        return false;
+    });
+});
+</script>
+
+{% endblock %}

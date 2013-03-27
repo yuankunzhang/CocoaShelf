@@ -3,11 +3,15 @@ from time import time
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from flask import current_app
+from flask import current_app, abort
+from flask.ext.sqlalchemy import BaseQuery
 from flask.ext.login import current_user
 from flask.ext.babel import gettext as _
+from flask.ext.principal import Permission, UserNeed
 
 from cocoa.extensions import db
+from ..permissions import Permissions
+from .consts import ApplicantStatus
 
 class GroupTopicReplies(db.Model):
 
@@ -73,9 +77,21 @@ class GroupUsers(db.Model):
         self.group = group
 
 
+class GroupQuery(BaseQuery):
+
+    def user_joined(self, user_id):
+        """给定的用户在哪些小组中"""
+
+        return Group.query.outerjoin(GroupUsers).\
+                filter(GroupUsers.user_id==user_id).\
+                filter(Group.user_id!=user_id).all()
+
+
 class Group(db.Model):
 
     __tablename__ = 'group'
+
+    query_class = GroupQuery
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -87,11 +103,26 @@ class Group(db.Model):
 
     owner = db.relationship('User', backref='groups')
     users = association_proxy('group_users', 'user')
+    appliers = association_proxy('applicants', 'applier')
 
     def __init__(self, name, intro, owner=None):
         self.name = name
         self.intro = intro
         self.owner = owner
+
+    def __repr__(self):
+        return '<Group %r>' % self.name
+
+    class _Permissions(Permissions):
+
+        def default(self):
+            return Permission(UserNeed(self.owner.id))
+
+        def add_user(self):
+            return self.default()
+
+    def permissions(self):
+        return self._Permissions(self)
 
     def save(self):
         group = Group.query.filter_by(name=self.name).first()
@@ -106,9 +137,23 @@ class Group(db.Model):
 
         if applier in self.users:
             raise ValueError(_(u'You\'ve already in this group'))
+        elif applier in self.appliers:
+            raise ValueError(_(u'You\'ve post your applicant'))
         else:
-            appler = GroupAppliers(applier, intro, self)
+            appler = GroupApplicant(applier, intro, self)
             appler.save()
+
+    def untreated_applicants(self):
+        return GroupApplicant.query.filter_by(
+            status=ApplicantStatus.UNTREATED.value()).all()
+
+    def add_user(self, user):
+        if self.permissions().add_user().can():
+            if user in self.users:
+                raise ValueError(_(u'This user is group member'))
+            else:
+                self.users.append(user)
+                db.session.commit()
 
     def new_topic(self, title):
         topic = GroupTopics(title, current_user)
@@ -122,20 +167,21 @@ class Group(db.Model):
             return None
 
 
-class GroupAppliers(db.Model):
+class GroupApplicant(db.Model):
     """成员申请加入小组的临时表"""
 
-    __tablename__ = 'group_appliers'
+    __tablename__ = 'group_applicants'
 
-    group_id = db.Column(db.Integer, db.ForeignKey('group.id'),
-        primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
-        primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     intro = db.Column(db.String(255))    # 申请理由
+    status = db.Column(db.SmallInteger,
+        default=ApplicantStatus.UNTREATED.value())
     timestamp = db.Column(db.Integer, default=int(time()))
 
     group = db.relationship('Group',
-        backref=db.backref('appliers', cascade='all, delete-orphan'))
+        backref=db.backref('applicants', cascade='all, delete-orphan'))
     applier = db.relationship('User',
         backref=db.backref('applied_groups',
                             cascade='all, delete-orphan'))
@@ -146,10 +192,25 @@ class GroupAppliers(db.Model):
         self.group = group
 
     def save(self):
-        applier = GroupAppliers.query.filter_by(group=self.group).\
+        applier = GroupApplicant.query.filter_by(group=self.group).\
                     filter_by(applier=self.applier).first()
         if applier is not None:
             raise ValueError(_(u'You\'ve already applied to join.'))
         else:
             db.session.add(self)
             db.session.commit()
+
+    def accepted(self):
+        if self.group.permissions().add_user().can():
+            self.group.add_user(self.applier)
+            self.status = ApplicantStatus.ACCEPTED.value()
+            db.session.commit()
+        else:
+            abort(403)
+
+    def declined(self):
+        if self.group.permissions().add_user().can():
+            self.status = ApplicantStatus.DECLINED.value()
+            db.session.commit()
+        else:
+            abort(403)

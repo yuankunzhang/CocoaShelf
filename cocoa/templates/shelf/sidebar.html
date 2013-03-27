@@ -1,4 +1,5 @@
 {% set user=shelf.user %}
+{% from 'macros/link_to.html' import link_to %}
 {% include 'account/badge.html' %}
 
 <script type="text/javascript">
@@ -13,24 +14,25 @@ $(function() {
 
 <div id="sidebar">
 	<ul class="nav nav-list nav-pills nav-stacked">
-        <li id="details"><a href="{{ url_for('shelf.item', shelf_id=shelf.id) }}">书架详情</a></li>
-        <li id="have"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='have') }}">我有</a></li>
-        <li id="read"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='read') }}">读过</a></li>
-        <li id="reading"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='reading') }}">在读</a></li>
-        <li id="wish"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='wish') }}">想读</a></li>
-        <li id="like"><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='like') }}">喜欢</a></li>
+        <li id="details">{{ link_to('shelf.item', '书架详情', shelf_id=shelf.id) }}</li>
+        <li id="have">{{ link_to('shelf.column', '我有', shelf_id=shelf.id, column_name='have') }}</li>
+        <li id="read">{{ link_to('shelf.column', '读过', shelf_id=shelf.id, column_name='read') }}</li>
+        <li id="reading">{{ link_to('shelf.column', '在读', shelf_id=shelf.id, column_name='reading') }}</li>
+        <li id="wish">{{ link_to('shelf.column', '想读', shelf_id=shelf.id, column_name='wish') }}</li>
+        <li id="like">{{ link_to('shelf.column', '喜欢', shelf_id=shelf.id, column_name='like') }}</li>
 
         <li class="divider"></li>
         <li class="divider"></li>
 
-        <li id="colists"><a href="{{ url_for('shelf.colists', shelf_id=shelf.id) }}">书单</a></li>
-        <li id="tags"><a href="{{ url_for('shelf.tags', shelf_id=shelf.id) }}">标签</a></li>
+        <li id="colists">{{ link_to('shelf.colists', '书单', shelf_id=shelf.id) }}</li>
+        <li id="tags">{{ link_to('shelf.tags', '标签', shelf_id=shelf.id) }}</li>
 
         <li class="divider"></li>
         <li class="divider"></li>
 
-        <li id="reading-track"><a href="{{ url_for('shelf.reading_plan', shelf_id=shelf.id) }}">阅读计划</a></li>
-        <li id="blog"><a href="{{ url_for('blog.item', user_id=shelf.user.id) }}">部落格</a></li>
+        <li id="reading-plan">{{ link_to('shelf.reading_plan', '阅读计划', shelf_id=shelf.id) }}</li>
+        <li id="groups">{{ link_to('shelf.groups', '小组', shelf_id=shelf.id) }}</li>
+        <li id="blog">{{ link_to('blog.item', '部落格', user_id=shelf.user.id) }}</li>
 	</ul>
 </div>
 

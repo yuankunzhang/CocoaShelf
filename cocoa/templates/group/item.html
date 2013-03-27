@@ -12,23 +12,32 @@
 
 <div class="page-header">
     <h1><small>小组：{{ group.name }}</small></h1>
-    {% if current_user.is_authenticated() and current_user not in group.users %}
-    <a href="#apply-modal" class="btn btn-small" role="button" data-toggle="modal">我要加入</a>
-    <div id="apply-modal" class="modal hide fade" role="dialog" aria-hidden="true">
-        <div class="modal-header">
-            <h1><small>申请加入</small></h1>
-        </div>
 
-        <div class="modal-body">
-            <label for="apply-intro">加入理由（不多于100个汉字）</label>
-            <textarea id="apply-intro" name="apply-intro"></textarea>
-        </div>
+    <div>
+    {% if current_user.is_authenticated() %}
+        {% if current_user == group.owner %}
+        <span><i class="icon-user-md"></i> 我是这个小组的创建者</span>
+        {% elif current_user in group.users %}
+        <span><i class="icon-user"></i> 我是这个小组的成员</span>
+        {% elif current_user not in group.users and current_user in group.appliers %}
+        <span><i class="icon-spinner"></i> 已申请加入，请等待审核</span>
+        {% elif current_user not in group.users and current_user not in group.appliers %}
+        <a href="#apply-modal" class="btn btn-small" role="button" data-toggle="modal">我要加入</a>
+        <div id="apply-modal" class="modal hide fade" role="dialog" aria-hidden="true">
+            <div class="modal-header">
+                <h1><small>申请加入</small></h1>
+            </div>
 
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-            <button class="btn btn-primary">确定</button>
-        </div>
-    </div><!-- end #join-group-modal -->
+            <div class="modal-body">
+                <label for="apply-intro">加入理由（不多于100个汉字）</label>
+                <textarea id="apply-intro" name="apply-intro"></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                <button class="btn btn-primary">确定</button>
+            </div>
+        </div><!-- end #join-group-modal -->
 
 <script type="text/javascript">
 $(function() {
@@ -51,15 +60,34 @@ $(function() {
 });
 </script>
 
+        {% endif %}
     {% endif %}
+    </div>
 </div>
+
+{% if current_user == group.owner and group.appliers and group.untreated_applicants()|count %}
+<div class="clearfix">
+    <div class="pull-right">
+        {{ group.untreated_applicants()|count }}个申请，<a href="{{ url_for('group.applicants', group_id=group.id) }}">去处理&rarr;</a>
+    </div>
+</div>
+<hr>
+{% endif %}
 
 <div class="well">
     {{ group.intro }}
 </div>
 
+<div>
+    {{ group.users|count }}位小组成员
+</div>
+
+<hr>
+
+{% if current_user in group.users %}
 <a class="btn" href="{{ url_for('group.new_topic', group_id=group.id) }}">+ 创建新话题</a>
 <hr class="dashed-hr">
+{% endif %}
 
 <div class="group-topics">
     <ul class="unstyled">

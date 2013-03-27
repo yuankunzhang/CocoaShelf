@@ -21,7 +21,7 @@ from cocoa.modules.comment.models import ShelfComments, \
         BookShortReview
 from cocoa.modules.follower.models import Follower
 from cocoa.modules.group.models import Group, GroupUsers, \
-        GroupTopics, GroupTopicReplies, GroupAppliers
+        GroupTopics, GroupTopicReplies, GroupApplicant
 
 manager = Manager(create_app())
 

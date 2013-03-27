@@ -12,31 +12,8 @@
 
 <div id="new-groups" class="clearfix">
     <h2><small>新加入</small></h2>
-    <ul class="unstyled">
-    {% for group in new_groups %}
-        <li>
-            <div class="media">
-                <a href="{{ url_for('group.item', group_id=group.id) }}" class="pull-left">
-                    <img src="{{ group.get_totem_path() }}">
-                </a>
-                <div class="media-body">
-                    <div class="pull-right">
-                        <a class="btn" href="#">加入</a>
-                    </div>
-                    <ul class="unstyled">
-                        <li>
-                            <span><a href="{{ url_for('group.item', group_id=group.id) }}">{{ group.name }}</a></span>
-                            <span class="vertical-divider">|</span>
-                            <span>创建者：<a href="{{ url_for('shelf.item', shelf_id=group.owner.shelf.id) }}">{{ group.owner.get_display_name() }}</a></span>
-                        </li>
-                        <li>{{ group.intro|nl2br }}</li>
-                    </ul>
-                </div>
-            </div>
-        </li>
-        <hr class="dashed-hr">
-    {% endfor %}
-    </ul>
+    {% set groups=new_groups %}
+    {% include 'group/widget_list.html' %}
 </div>
 
 {% endblock %}

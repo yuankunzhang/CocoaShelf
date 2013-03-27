@@ -1,0 +1,30 @@
+{% extends 'layout/shelf.html' %}
+
+{% block sidebar %}
+    {% set active='groups' %}
+    {% include 'shelf/sidebar.html' %}
+{% endblock %}
+
+{% block main %}
+
+{% from 'shelf/breadcrumb.html' import breadcrumb %}
+{{ breadcrumb(shelf, '小组') }}
+
+<div id="created_groups">
+    <h2><small>我创建的小组 &gt;&gt;</small></h2>
+    {% set groups=created_groups %}
+    {% include 'group/widget_list.html' %}
+</div>
+
+<hr>
+
+<div id="joined_groups">
+    <h2><small>我参加的小组 &gt;&gt;</small></h2>
+    <ul class="unstyled">
+    {% for group in joined_groups %}
+        <li>{{ group.name }}</li>
+    {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

@@ -15,6 +15,7 @@ from ..book.models import Book
 from ..comment.models import ShelfComments
 from ..event.models import EventRecord
 from ..event.consts import EventType
+from ..group.models import Group
 
 mod = Blueprint('shelf', __name__)
 
@@ -169,6 +170,19 @@ def tag_books(shelf_id):
             for d in data]
 
     return jsonify(books=books)
+
+
+@mod.route('/<int:shelf_id>/groups/')
+def groups(shelf_id):
+
+    shelf = _get_shelf(shelf_id)
+    created_groups = shelf.user.groups
+    joined_groups = Group.query.user_joined(shelf.user.id)
+
+    return render_template('shelf/groups.html',
+                            shelf=shelf,
+                            created_groups=created_groups,
+                            joined_groups=joined_groups)
 
 
 def _get_shelf(shelf_id):
