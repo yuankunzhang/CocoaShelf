@@ -23,7 +23,7 @@
     {% endfor %}
     {% if column and current_user.is_authenticated() %}
         <li class="add-new">
-            <a href="{{ url_for('shelf.add_books', shelf_id=shelf.id, column_name=column.name()) }}"><img src="/static/img/add_new_book.png" width=100 height=140 title="添加图书到这里"></a>
+            <a href="{{ url_for('shelf.add_books', shelf_id=shelf.id, column_name=column.name) }}"><img src="/static/img/add_new_book.png" width=100 height=140 title="添加图书到这里"></a>
         </li>
     {% endif %}
     </ul>

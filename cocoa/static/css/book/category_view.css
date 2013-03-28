@@ -1,0 +1,40 @@
+.row-fluid {
+    min-height: 700px;
+}
+
+#category-tree {
+    padding: 0;
+}
+
+#category-tree > li {
+    line-height: 20px;
+    font-size: 14px;
+    position: relative;
+}
+
+#category-tree > li > a {
+    display: block;
+    padding: 8px 14px;
+    margin: 0 0 -1px;
+    border: 1px solid #e5e5e5;
+}
+
+#category-tree i {
+    float: right;
+    margin-top: 2px;
+    margin-right: -6px;
+}
+
+#category-tree .sub-menu {
+    left: 100%;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    margin-top: -1px;
+}
+
+#category-tree li:hover #second-level,
+#category-tree #second-level li:hover #third-level {
+    visibility: visible;
+    display: block;
+}

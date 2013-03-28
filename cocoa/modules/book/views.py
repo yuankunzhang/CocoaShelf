@@ -12,6 +12,7 @@ from ..tag.models import BookTags
 from ..shelf.consts import ColumnType
 from ..bookrate.models import BookRate
 from ..tag.models import Tag
+from ..category.models import Category
 
 mod = Blueprint('book', __name__)
 
@@ -29,10 +30,18 @@ def list():
 
 
 @mod.route('/categoryview/')
-def category_view():
+@mod.route('/categoryview/<int:category_id>')
+def category_view(category_id=None):
     """按分类展示图书"""
 
-    return render_template('book/category_view.html')
+    categories = Category.query.roots()
+    target_category = None
+    
+    if category_id:
+        target_category = Category.query.get(category_id)
+    return render_template('book/category_view.html',
+                            categories=categories,
+                            target_category=target_category)
 
 
 @flask_sijax.route(mod, '/<int:book_id>/')

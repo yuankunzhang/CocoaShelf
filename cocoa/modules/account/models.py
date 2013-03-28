@@ -37,7 +37,7 @@ class UserQuery(BaseQuery):
             user = None
 
         if user:
-            identity.provides.update(user.principal_provides())
+            identity.provides.update(user.principal_provides)
 
         identity.user = user
 
@@ -45,6 +45,7 @@ class UserQuery(BaseQuery):
 
 
 class User(db.Model):
+    """用户表"""
 
     __tablename__ = 'user'
 
@@ -197,6 +198,17 @@ class User(db.Model):
     def set_thumbnail_box(self, box):
         self.thumbnail_box = dict(zip(('x1', 'y1', 'x2', 'y2'), box))
 
+    @property
+    @cached_property
+    def thumbnail(self):
+        if self.avatar is None:
+            return 'default_t.jpg'
+        else:
+            slices = self.avatar.split('.')
+            return slices[0] + '_t.' + slices[1]
+
+    # Deprecated.
+    # user (property) self.thumbnail instead.
     def get_thumbnail(self):
         if self.avatar is None:
             return 'default_t.jpg'

@@ -23,7 +23,7 @@
 <div id="book-thumb" class="box clearfix">
     <div class="box-content">
         <div class="span3 book-cover">
-            <img width=100 src="/static/upload/cover/{{ book.cover }}">
+            <img width=100 src="{{ book.cover_path }}">
         </div>
         <div class="span4 book-meta">
             <dl>
@@ -207,7 +207,7 @@ $('#star').raty({
         <ul class="unstyled clearfix">
             <li>在我的书架上：</li>
             {% for x in book.in_columns %}
-            <li><a href="{{ url_for('shelf.column', shelf_id=current_user.shelf.id, column_name=x.name()) }}">{{ x.text() }}</a></li>
+            <li><a href="{{ url_for('shelf.column', shelf_id=current_user.shelf.id, column_name=x.name) }}">{{ x.text }}</a></li>
             {% endfor %}
         </ul>
     {% endif %}
@@ -285,7 +285,7 @@ $('#star').raty({
                         <label>请选择书架：</label>
                         <ul class="nav nav-pills">
                             {% for x in book.not_in_columns %}
-                            <li><a href="#" value="{{ x.name() }}">{{ x.text() }}</a></li>
+                            <li><a href="#" value="{{ x.name }}">{{ x.text }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>

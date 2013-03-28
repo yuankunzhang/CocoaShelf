@@ -19,7 +19,6 @@ $(function() {
 
                 var container = $('#posts');
                 container.empty();
-                console.debug(data);
                 container[0].innerHTML = tmpl('keyword-posts', data)
             }
         );

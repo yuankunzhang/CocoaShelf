@@ -7,7 +7,7 @@ from PIL import Image
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from flask import current_app
+from flask import current_app, url_for
 from flask.ext.babel import gettext as _
 from flask.ext.login import current_user
 
@@ -195,6 +195,17 @@ class Book(db.Model):
         m = re.match(re_pages, pages)
         if m is not None:
             self.pages = m.group(1)
+
+    @property
+    def url(self):
+        return url_for('book.item', book_id=self.id)
+
+    @property
+    def cover_path(self):
+        if self.cover:
+            return current_app.config['COVER_STATIC_PATH'] + self.cover
+        else:
+            return ''
 
     def save_cover(self, cover_img):
         FORMAT = 'JPEG'

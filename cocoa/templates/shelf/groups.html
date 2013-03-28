@@ -21,9 +21,8 @@
 <div id="joined_groups">
     <h2><small>我参加的小组 &gt;&gt;</small></h2>
     <ul class="unstyled">
-    {% for group in joined_groups %}
-        <li>{{ group.name }}</li>
-    {% endfor %}
+    {% set groups=joined_groups %}
+    {% include 'group/widget_list.html' %}
     </ul>
 </div>
 

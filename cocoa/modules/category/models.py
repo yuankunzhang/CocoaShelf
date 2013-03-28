@@ -1,9 +1,23 @@
 # -*- coding: utf-8 -*-
+from sqlalchemy.ext.associationproxy import association_proxy
+
+from flask.ext.sqlalchemy import BaseQuery
+
 from cocoa.extensions import db
+
+class CategoryQuery(BaseQuery):
+
+    def roots(self):
+        """第一级分类"""
+
+        return Category.query.filter_by(parent_id=None).all()
+
 
 class Category(db.Model):
 
     __tablename__ = 'category'
+
+    query_class = CategoryQuery
 
     id = db.Column(db.Integer, primary_key=True)
     parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
@@ -11,6 +25,7 @@ class Category(db.Model):
 
     sub_categories = db.relationship('Category',
         backref=db.backref('parent_category', remote_side=id))
+    books = association_proxy('category_books', 'book')
     
     def __init__(self, name, parent_id=None):
         self.name = name
@@ -53,8 +68,9 @@ class BookCategory(db.Model):
 
     book = db.relationship('Book',
         backref=db.backref('book_category',
-        cascade='all, delete-orphan', uselist=False))
-    category = db.relationship('Category')
+            cascade='all, delete-orphan', uselist=False))
+    category = db.relationship('Category',
+        backref=db.backref('category_books', cascade='all, delete-orphan'))
 
     def __init__(self, category, book=None):
         self.category = category

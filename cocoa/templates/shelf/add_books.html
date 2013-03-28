@@ -11,12 +11,12 @@
         <span class="divider">/</span>
     </li>
     <li>
-        <a href="#">{{ column.text() }}</a>
+        <a href="#">{{ column.text }}</a>
         <span class="divider">/</span>
     </li>
     <li class="active">添加图书</li>
 </ul>
 
 {% from 'macros/widget_add_books.html' import widget_add_books %}
-{{ widget_add_books(url_for('shelf.add_books', shelf_id=shelf.id, column_name=column.name())) }}
+{{ widget_add_books(url_for('shelf.add_books', shelf_id=shelf.id, column_name=column.name)) }}
 {% endblock %}

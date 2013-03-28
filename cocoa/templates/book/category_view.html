@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/book/category_view.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="row-fluid">
+    <div class="left-col span3">
+        <h2><small>图书分类:</small></h2>
+        <ul id="category-tree" class="nav nav-list">
+        {% for f_level in categories %}
+            <li>
+                <a href="#"><i class="icon-chevron-right"></i>{{ f_level.name }}</a>
+                <ul id="second-level" class="dropdown-menu sub-menu">
+                {% for s_level in f_level.sub_categories %}
+                    <li>
+                        <a href="#"><i class="icon-angle-right"></i>{{ s_level.name }}</a>
+                        <ul id="third-level" class="dropdown-menu sub-menu">
+                        {% for t_level in s_level.sub_categories %}
+                            <li><a href="#" value="{{ t_level.id }}">{{ t_level.name }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div class="right-col span9">
+        <div class="page-header">
+            <div id="current_category" class="alert alert-success">
+                当前分类：<span></span>
+            </div>
+        </div>
+
+        <div class="books"></div>
+    </div>
+
+{% raw %}
+<script type="text/x-tmpl" id="category-books">
+<ul class="unstyled">
+{% for (var i=0; i<o.books.length; i++) { %}
+    <li class="book">
+        <div class="media">
+            <a href="{%=o.books[i].url%}" class="pull-left">
+                <img width=71 height=100 src="{%=o.books[i].cover_path%}">
+            </a>
+            <div class="media-body">
+                <h4 class="media-header"><small><a href="{%=o.books[i].url%}">{%=o.books[i].title%}</a></small></h4>
+                <div class="book-author">
+                    {%=o.books[i].author%}
+                </div>
+                <div class="publisher">
+                    {%=o.books[i].publisher%}
+                </div>
+            </div>
+        </div>
+    </li>
+    <hr class="dashed-hr">
+{% } %}
+</ul>
+</script>
+{% endraw %}
+</div>
+
+<script type="text/javascript" src="/static/js/tmpl.min.js"></script>
+<script type="text/javascript">
+$(function() {
+    {% if target_category %}
+    /*
+     * 如果“当前分类“被设置
+     */
+    $('#current_category span').html('{{ target_category.as_tree()|safe }}');
+    var books = [];
+    {% for book in target_category.books %}
+    books.push({
+        'id':           '{{ book.id }}',
+        'url':          '{{ book.url }}',
+        'title':        '{{ book.title }}',
+        'cover_path':   '{{ book.cover_path }}',
+        'author':       '{{ ', '.join(book.author) }}',
+        'publisher':    '{{ book.publisher }}'
+    });
+    {% endfor %}
+    var container = $('.right-col .books');
+    container.empty();
+    container[0].innerHTML = tmpl('category-books', {books: books});
+    {% endif %}
+
+    var tree_path = [];
+
+    $('#category-tree > li > a').click(function() { return false;
+    });
+
+    $('#second-level > li > a').click(function() {
+        return false;
+    });
+
+    $('#third-level > li > a').click(function() {
+        $('li.active').removeClass('active');
+        $('.sub-menu').hide();
+        setTimeout(function() {
+            $('.sub-menu').show();
+        }, 200);
+
+        $('#current_category span').html(tree_path.join(' > '));
+
+        var category_id = $(this).attr('value');
+        $.post('/category/books/', {category_id: category_id},
+            function(data, status) {
+                var container = $('.right-col .books');
+                container.empty();
+                container[0].innerHTML = tmpl('category-books', data);
+            }
+        );
+        return false;
+    });
+
+    $('#category-tree li').hover(
+        function() {
+            tree_path.push($(this).children('a').text());
+            $(this).addClass('active');
+        },
+        function() {
+            tree_path.pop();
+            $(this).removeClass('active');
+        }
+    );
+});
+</script>
+
+{% endblock %}
