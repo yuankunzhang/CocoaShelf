@@ -71,9 +71,9 @@ class SettingsForm(Form):
 
     gender = RadioField(_(u'Gender'),
         choices=[
-            (Gender.SECRET.value(), Gender.SECRET.text()),
-            (Gender.MALE.value(), Gender.MALE.text()),
-            (Gender.FEMALE.value(), Gender.FEMALE.text()),
+            (Gender.SECRET.value, Gender.SECRET.text),
+            (Gender.MALE.value, Gender.MALE.text),
+            (Gender.FEMALE.value, Gender.FEMALE.text),
         ],
         coerce=int, id=u'settings-gender'
     )

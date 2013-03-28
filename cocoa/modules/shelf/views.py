@@ -3,7 +3,7 @@ from datetime import datetime
 
 import flask_sijax
 from flask import Blueprint, request, render_template, \
-    g, redirect, url_for, flash, jsonify, abort
+    g, redirect, url_for, flash, jsonify, abort, current_app
 from flask.ext.login import current_user, login_required
 from flask.ext.babel import gettext as _
 
@@ -42,6 +42,7 @@ def home():
 
 @flask_sijax.route(mod, '/<int:shelf_id>/')
 def item(shelf_id):
+    """某用户的书架"""
 
     if g.sijax.is_sijax_request:
         g.sijax.register_object(AjaxActions)

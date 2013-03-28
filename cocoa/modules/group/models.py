@@ -145,7 +145,7 @@ class Group(db.Model):
 
     def untreated_applicants(self):
         return GroupApplicant.query.filter_by(
-            status=ApplicantStatus.UNTREATED.value()).all()
+            status=ApplicantStatus.UNTREATED.value).all()
 
     def add_user(self, user):
         if self.permissions().add_user().can():
@@ -177,7 +177,7 @@ class GroupApplicant(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     intro = db.Column(db.String(255))    # 申请理由
     status = db.Column(db.SmallInteger,
-        default=ApplicantStatus.UNTREATED.value())
+        default=ApplicantStatus.UNTREATED.value)
     timestamp = db.Column(db.Integer, default=int(time()))
 
     group = db.relationship('Group',
@@ -203,14 +203,14 @@ class GroupApplicant(db.Model):
     def accepted(self):
         if self.group.permissions().add_user().can():
             self.group.add_user(self.applier)
-            self.status = ApplicantStatus.ACCEPTED.value()
+            self.status = ApplicantStatus.ACCEPTED.value
             db.session.commit()
         else:
             abort(403)
 
     def declined(self):
         if self.group.permissions().add_user().can():
-            self.status = ApplicantStatus.DECLINED.value()
+            self.status = ApplicantStatus.DECLINED.value
             db.session.commit()
         else:
             abort(403)

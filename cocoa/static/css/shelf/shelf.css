@@ -33,6 +33,10 @@
     -webkit-border-radius: 6px;
 }
 
+#profile .intro p {
+    font-size: 12px;
+}
+
 #profile dt,
 #profile dd {
     float: left;

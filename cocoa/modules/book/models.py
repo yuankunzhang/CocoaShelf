@@ -72,11 +72,11 @@ class Book(db.Model):
     pubdate = db.Column(db.Date)
 
     price = db.Column(db.Float)
-    currency = db.Column(db.SmallInteger, default=Currency.CNY.value())
+    currency = db.Column(db.SmallInteger, default=Currency.CNY.value)
     pages = db.Column(db.Integer)
-    binding = db.Column(db.SmallInteger, default=Binding.PAPERBACK.value())
+    binding = db.Column(db.SmallInteger, default=Binding.PAPERBACK.value)
     language = db.Column(JSONEncodedDict(255),
-        default=Language.CHINESE.value())
+        default=Language.CHINESE.value)
 
     timestamp = db.Column(db.Integer, default=int(time()))
     creator = db.Column(db.Integer, db.ForeignKey('user.id'))

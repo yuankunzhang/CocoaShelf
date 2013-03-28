@@ -7,7 +7,8 @@ import re
 from time import time
 from PIL import Image
 
-from werkzeug import generate_password_hash, check_password_hash
+from werkzeug import generate_password_hash, check_password_hash, \
+     cached_property
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -55,11 +56,11 @@ class User(db.Model):
     username = db.Column(db.String(100), unique=True)  # 用户名
     penname = db.Column(db.String(100))                # 笔名
     intro = db.Column(db.Text)
-    gender = db.Column(db.SmallInteger, default=Gender.SECRET.value())
+    gender = db.Column(db.SmallInteger, default=Gender.SECRET.value)
     avatar = db.Column(db.String(100))
     thumbnail_box = db.Column(JSONEncodedDict(255))
     city_id = db.Column(db.String(20), db.ForeignKey('geo_city.city_id'))
-    role = db.Column(db.SmallInteger, default=Role.MEMBER.value())
+    role = db.Column(db.SmallInteger, default=Role.MEMBER.value)
     active = db.Column(db.Boolean, default=False)
     timestamp = db.Column(db.Integer, default=int(time()))
 
@@ -92,22 +93,25 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.email
 
+    @cached_property
     def principal_provides(self):
         needs = [RoleNeed('member'), UserNeed(self.id)]
 
-        if self.is_moderator():
+        if self.is_moderator:
             needs.append(RoleNeed('moderator'))
 
-        if self.is_admin():
+        if self.is_admin:
             needs.append(RoleNeed('admin'))
 
         return needs
 
+    @property
     def is_moderator(self):
-        return self.role >= Role.MODERATOR.value()
+        return self.role >= Role.MODERATOR.value
 
+    @property
     def is_admin(self):
-        return self.role >= Role.ADMIN.value()
+        return self.role >= Role.ADMIN.value
 
     def save(self):
         u = User.query.filter_by(email=self.email).first()
@@ -224,7 +228,7 @@ class User(db.Model):
         s_review.save()
 
     def get_gender(self):
-        return Gender.from_int(self.gender).text()
+        return Gender.from_int(self.gender).text
 
     def unread_mail_count(self):
         from ..mail.models import MailInbox

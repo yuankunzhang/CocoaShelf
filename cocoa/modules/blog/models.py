@@ -73,7 +73,7 @@ class PostQuery(BaseQuery):
 
     def get_published(self, user_id):
         return Post.query.filter_by(user_id=user_id).\
-               filter_by(status=PostStatus.PUBLISHED.value()).\
+               filter_by(status=PostStatus.PUBLISHED.value).\
                all()
 
     def get_by_slug(self, user_id, slug):
@@ -90,13 +90,13 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     timestamp = db.Column(db.Integer, default=int(time()))
-    type = db.Column(db.SmallInteger, default=PostType.ARTICAL.value())
+    type = db.Column(db.SmallInteger, default=PostType.ARTICAL.value)
     slug = db.Column(db.String(100))
 
     title = db.Column(db.Text)
     content = db.Column(db.Text)
     ref_books = db.Column(JSONEncodedDict(255))
-    status = db.Column(db.SmallInteger, default=PostStatus.DRAFT.value())
+    status = db.Column(db.SmallInteger, default=PostStatus.DRAFT.value)
 
     author = db.relationship('User',
         backref=db.backref('posts', cascade='all, delete-orphan'))
@@ -169,7 +169,7 @@ class Post(db.Model):
         db.session.commit()
 
     def delete(self):
-        self.status = PostStatus.DROPPED.value()
+        self.status = PostStatus.DROPPED.value
         db.session.commit()
 
     @staticmethod

@@ -11,12 +11,15 @@ class EnumInteger(object):
     def __index__(self):
         return self._val
 
+    @property
     def value(self):
         return self._val
 
+    @property
     def name(self):
         return self._name.lower()
 
+    @property
     def text(self):
         return self._text
 

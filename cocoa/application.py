@@ -7,7 +7,10 @@
     2013.03.01
 """
 import re
+import logging
 from datetime import datetime
+
+from logging.handlers import RotatingFileHandler
 
 from jinja2 import evalcontextfilter, Markup, escape
 from flask import Flask, request, jsonify, render_template, g
@@ -167,5 +170,36 @@ def configure_identity(app):
 
 def configure_logging(app):
 
-    # TODO
-    pass
+    formatter = logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s '
+        '[in %(pathname)s:%(lineno)d]')
+
+    # Level: debug
+    debug_log = app.config['DEBUG_LOG']
+    debug_file_handler = \
+        RotatingFileHandler(debug_log,
+                            maxBytes=100000,
+                            backupCount=10)
+    debug_file_handler.setLevel(logging.DEBUG)
+    debug_file_handler.setFormatter(formatter)
+    app.logger.addHandler(debug_file_handler)
+
+    # Level: warning
+    warning_log = app.config['WARNING_LOG']
+    warning_file_handler = \
+        RotatingFileHandler(warning_log,
+                            maxBytes=100000,
+                            backupCount=10)
+    warning_file_handler.setLevel(logging.WARNING)
+    warning_file_handler.setFormatter(formatter)
+    app.logger.addHandler(warning_file_handler)
+
+    # Level: error
+    error_log = app.config['ERROR_LOG']
+    error_file_handler = \
+        RotatingFileHandler(error_log,
+                            maxBytes=100000,
+                            backupCount=10)
+    error_file_handler.setLevel(logging.ERROR)
+    error_file_handler.setFormatter(formatter)
+    app.logger.addHandler(error_file_handler)

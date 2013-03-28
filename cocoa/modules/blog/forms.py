@@ -16,9 +16,9 @@ class PostNewForm(Form):
     ], id=u'post-content')
 
     type = SelectField(_(u'Type'), choices=[
-        (PostType.ARTICAL.value(), PostType.ARTICAL.text()),
-        (PostType.REVIEW.value(), PostType.REVIEW.text()),
-        (PostType.NOTE.value(), PostType.NOTE.text()),
+        (PostType.ARTICAL.value, PostType.ARTICAL.text),
+        (PostType.REVIEW.value, PostType.REVIEW.text),
+        (PostType.NOTE.value, PostType.NOTE.text),
     ], coerce=int, id=u'post-type')
 
     ref_books = DictField(_(u'References'), [

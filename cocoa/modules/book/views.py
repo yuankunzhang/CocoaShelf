@@ -28,6 +28,13 @@ def list():
     return render_template('book/list.html', books=books)
 
 
+@mod.route('/categoryview/')
+def category_view():
+    """按分类展示图书"""
+
+    return render_template('book/category_view.html')
+
+
 @flask_sijax.route(mod, '/<int:book_id>/')
 def item(book_id):
 

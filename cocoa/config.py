@@ -16,6 +16,7 @@ class DefaultConfig(object):
     DEBUG = True
 
     DEBUG_LOG = os.path.join(_basedir, 'logs/debug.log')
+    WARNING_LOG = os.path.join(_basedir, 'logs/warning.log')
     ERROR_LOG = os.path.join(_basedir, 'logs/error.log')
 
     ADMINS = frozenset(['feber007@gmail.com'])
