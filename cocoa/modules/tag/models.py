@@ -1,11 +1,21 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy.ext.associationproxy import association_proxy
 
+from flask.ext.sqlalchemy import BaseQuery
+
 from cocoa.extensions import db
+
+class TagQuery(BaseQuery):
+
+    def useful_tags(self):
+        return Tag.query.filter_by(useless=False).all()
+
 
 class Tag(db.Model):
 
     __tablename__ = 'tag'
+
+    query_class = TagQuery
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)

@@ -40,9 +40,9 @@ class Event(object):
 
     @staticmethod
     def get(type, attrs, timestamp):
-        if type == EventType.SIGN_UP.value():
+        if type == EventType.SIGN_UP.value:
             return SignUpEvent(attrs['user_id'], timestamp)
-        elif type == EventType.ADD_BOOK_TO_SHELF.value():
+        elif type == EventType.ADD_BOOK_TO_SHELF.value:
             return AddBookToShelfEvent(
                 attrs['user_id'],
                 attrs['column_name'],
@@ -50,7 +50,7 @@ class Event(object):
                 timestamp)
 
     def save(self):
-        type = self.__type__.value()
+        type = self.__type__.value
         EventRecord(type, self).save()
 
 

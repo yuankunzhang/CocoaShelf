@@ -22,6 +22,8 @@ from cocoa.modules.comment.models import ShelfComments, \
 from cocoa.modules.follower.models import Follower
 from cocoa.modules.group.models import Group, GroupUsers, \
         GroupTopics, GroupTopicReplies, GroupApplicant
+from cocoa.modules.recsys.tag import SimilarityTags
+from cocoa.modules.recsys.book import SimilarityBooks
 
 manager = Manager(create_app())
 
