@@ -12,6 +12,10 @@ class Tag(db.Model):
     count = db.Column(db.Integer, default=1)
     disabled = db.Column(db.Boolean, default=False)
 
+    # useless: 标签从语义学角度讲是否是有用的，
+    # 而不是带有强烈个人偏好的，如“不好笑“
+    useless = db.Column(db.Boolean, default=False)
+
     books = association_proxy('tag_books', 'book')
 
     def __init__(self, name):

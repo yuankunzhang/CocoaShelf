@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from sqlalchemy.ext.associationproxy import association_proxy
 
+from flask import url_for
 from flask.ext.sqlalchemy import BaseQuery
 
 from cocoa.extensions import db
@@ -14,6 +15,7 @@ class CategoryQuery(BaseQuery):
 
 
 class Category(db.Model):
+    """图书分类"""
 
     __tablename__ = 'category'
 
@@ -38,9 +40,18 @@ class Category(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def as_tree(self):
-        tree_str = self.name
+    def as_tree(self, hyper_link=True):
         node = self
+        # 如果是末端分类，设置超链接
+        if node.parent_id and node.parent_category.parent_id \
+                and hyper_link:
+            tree_str = '<a href="' + \
+                url_for('book.category_view',
+                         category_id=self.id) + \
+                '">' + self.name + '</a>'
+        else:
+            tree_str = self.name
+
         while node.parent_id is not None:
             node = node.parent_category
             tree_str = node.name + ' &gt; ' + tree_str

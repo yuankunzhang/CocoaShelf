@@ -75,7 +75,7 @@ $(function() {
     /*
      * 如果“当前分类“被设置
      */
-    $('#current_category span').html('{{ target_category.as_tree()|safe }}');
+    $('#current_category span').html('{{ target_category.as_tree(hyper_link=False)|safe }}');
     var books = [];
     {% for book in target_category.books %}
     books.push({
