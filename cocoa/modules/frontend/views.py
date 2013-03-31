@@ -10,9 +10,6 @@ mod = Blueprint('frontend', __name__)
 @mod.route('/')
 def home():
 
-    from ..recsys.tag import tag_similarity
-    tag_similarity()
-
     books_top_10 = BookRate.top_list(10)
     tags_top_20 = Tag.top_list(20)
     new_colists = Colist.query.order_by(Colist.timestamp.desc()).all()
