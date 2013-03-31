@@ -12,13 +12,13 @@
     <h1><small>图书首页</small></h1>
 </div>
 
-<div id="popular-books" class="book-list clearfix">
-    <h2><small>好评图书</small></h2>
+<div id="recent-books" class="book-list clearfix">
+    <h2><small>新书</small></h2>
     <ul class="unstyled inline">
-    {% for book in books_top_10 %}
+    {% for book in recent_books %}
         <li>
             <a href="{{ url_for('book.item', book_id=book.id) }}">
-                <img src="/static/upload/cover/{{ book.cover }}" width=100 height=140>
+                <img src="{{ book.cover_path }}" width=100 height=140>
             </a>
             <p class="ellipsis"><a title="{{ book.title }}" href="{{ url_for('book.item', book_id=book.id) }}">{{ book.title }}</a></p>
         </li>
@@ -26,29 +26,19 @@
     </ul>
 </div>
 
-<div id="popular-tags">
-    <h2><small>热门标签</small></h2>
+<div id="popular-books" class="book-list clearfix">
+    <h2><small>好评图书</small></h2>
     <ul class="unstyled inline">
-    {% for tag in tags_top_20 %}
-        {{ li_link_to('tag.item', tag.name, tag_id=tag.id) }}
+    {% for book in popular_books %}
+        <li>
+            <a href="{{ url_for('book.item', book_id=book.id) }}">
+                <img src="{{ book.cover_path }}" width=100 height=140>
+            </a>
+            <p class="ellipsis"><a title="{{ book.title }}" href="{{ url_for('book.item', book_id=book.id) }}">{{ book.title }}</a></p>
+        </li>
     {% endfor %}
     </ul>
 </div>
-
-<div id="popular-colists">
-    <h2><small>新书单</small></h2>
-    <ul class="unstyled">
-    {% for colist in new_colists %}
-        <li><a href="{{ url_for('colist.item', colist_id=colist.id) }}">{{ colist.name }}</a></li>
-    {% endfor %}
-    </ul>
-</div>
-
-{% if current_user.is_authenticated() %}
-<div id="sugguests">
-    <h2><small>你可能喜欢</small></h2>
-</div>
-{% endif %}
 
 <script type="text/javascript" src="/static/js/jquery/jquery.ellipsis.js"></script>
 <script type="text/javascript">

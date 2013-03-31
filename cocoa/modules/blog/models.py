@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from time import time
 
+from werkzeug import cached_property
+
 from sqlalchemy import func
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
+from flask import url_for
 from flask.ext.sqlalchemy import BaseQuery
 from flask.ext.login import current_user
 from flask.ext.principal import Permission, UserNeed
@@ -72,13 +75,17 @@ class PostKeywords(db.Model):
 class PostQuery(BaseQuery):
 
     def get_published(self, user_id):
-        return Post.query.filter_by(user_id=user_id).\
+        return self.filter_by(user_id=user_id).\
                filter_by(status=PostStatus.PUBLISHED.value).\
-               all()
+               order_by(Post.timestamp.desc()).all()
 
     def get_by_slug(self, user_id, slug):
-        return Post.query.filter_by(user_id=user_id).\
-                filter_by(slug=slug).first()
+        return self.filter_by(user_id=user_id).\
+               filter_by(slug=slug).first()
+
+    def get_recommended_posts(self, num=10):
+        return self.filter_by(recommended=True).\
+               order_by(Post.timestamp.desc()).all()
 
 
 class Post(db.Model):
@@ -92,6 +99,8 @@ class Post(db.Model):
     timestamp = db.Column(db.Integer, default=int(time()))
     type = db.Column(db.SmallInteger, default=PostType.ARTICAL.value)
     slug = db.Column(db.String(100))
+    # 编辑推荐
+    recommended = db.Column(db.Boolean, default=False)
 
     title = db.Column(db.Text)
     content = db.Column(db.Text)
@@ -171,6 +180,17 @@ class Post(db.Model):
     def delete(self):
         self.status = PostStatus.DROPPED.value
         db.session.commit()
+
+    @cached_property
+    def thumbnail(self):
+        if len(self.content) > 100:
+            return self.content[:60] + '......'
+        else:
+            return self.content
+
+    @cached_property
+    def url(self):
+        return url_for('blog.entry', user_id=self.user_id, slug=self.slug)
 
     @staticmethod
     def get_keywords(user_id):

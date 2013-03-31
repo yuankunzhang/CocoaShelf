@@ -4,14 +4,13 @@ import time
 
 from cocoa.extensions import db
 from cocoa.helpers.sql import JSONEncodedDictText
-from ..book.models import Book
 
 TOP_COUNT = 10  # 保存相似度最高的10本图书
 
-class SimilarityBooks(db.Model):
+class SimilarBooks(db.Model):
     """相似图书数据表"""
 
-    __tablename__ = 'rec_similarity_books'
+    __tablename__ = 'rec_similar_books'
 
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
         primary_key=True)
@@ -26,6 +25,7 @@ class SimilarityBooks(db.Model):
         self.book = book
 
 def book_similarity(book_id=None):
+    from ..book.models import Book
 
     time_start = time.time()
 
@@ -47,6 +47,9 @@ def book_similarity(book_id=None):
             similar_book_ids = [b.id for b in tag.books if b.id != id]
 
             for sb_id in similar_book_ids:
+                if sb_id in [x[0] for x in topN]:
+                    continue
+
                 sb = Book.query.get(sb_id)
                 sb_tag_set = {}
                 for x in sb.book_tags:

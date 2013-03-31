@@ -1,0 +1,38 @@
+{% extends 'layout/single_column.html' %}
+
+{% block css %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1><small>{{ _('Book index') }}</small></h1>
+</div>
+
+<div id="books">
+    <ul class="unstyled">
+    {% for book in books %}
+        <li>
+            {% include 'book/list_item.html' %}
+        </li>
+        <hr class="dashed-hr">
+    {% endfor %}
+    </ul>
+</div>
+
+<hr>
+
+<div class="pagination">
+    <ul class="unstyled">
+    </ul>
+</div>
+
+<script type="text/javascript" src="/static/js/paginate.js"></script>
+<script type="text/javascript">
+$(function() {
+    paginate({{ paginate|safe }}, '/book/all/')
+});
+</script>
+
+{% endblock %}

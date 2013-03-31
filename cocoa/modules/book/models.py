@@ -10,6 +10,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from flask import current_app, url_for
 from flask.ext.babel import gettext as _
 from flask.ext.login import current_user
+from flask.ext.sqlalchemy import BaseQuery
 
 from cocoa.extensions import db
 from cocoa.helpers.sql import JSONEncodedDict
@@ -19,6 +20,7 @@ from .consts import Currency, Binding, Language
 from .helpers import isbn10_to_13, isbn13_to_10
 from ..tag.models import Tag, BookTags
 from ..bookrate.models import BookRate, BookRateDetail
+from ..recsys.book import SimilarBooks
 
 class BookExtra(db.Model):
     """内容简介，作者简介"""
@@ -52,9 +54,17 @@ class BookExtra(db.Model):
         return self.summary
 
 
+class BookQuery(BaseQuery):
+
+    def get_recent_books(self, num=10):
+        return self.order_by(Book.pubdate.desc()).limit(num).all()
+
+
 class Book(db.Model):
 
     __tablename__ = 'book'
+
+    query_class = BookQuery
 
     id = db.Column(db.Integer, primary_key=True)
     isbn10 = db.Column(db.String(30), unique=True)
@@ -278,3 +288,9 @@ class Book(db.Model):
     def how_many_like(self):
         from ..shelf.models import ColumnLike
         return ColumnLike.how_many_like(self.id)
+
+    def get_similar_books(self):
+        books = []
+        for x in self.similar_books.similarity:
+            books.append(Book.query.get(x[0]))
+        return books

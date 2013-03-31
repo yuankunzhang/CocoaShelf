@@ -1,65 +1,127 @@
-{% extends 'layout/double_columns.html' %}
+{% extends 'base.html' %}
 
 {% block css %}
 {{ super() }}
+<link rel="stylesheet" href="/static/css/layout/double_columns.css">
+<link rel="stylesheet" type="text/css" href="/static/css/book/book.css">
 <link rel="stylesheet" type="text/css" href="/static/css/frontend/frontend.css">
+<link rel="stylesheet" type="text/css" href="/static/css/bootstrap/carousel.css">
 {% endblock %}
 
-{% block left_col %}
+{% block content %}
 
-<div class="page-header">
-    <h1><small>主页</small></h1>
+<div id="index-carousel" class="carousel slide">
+    <ol class="carousel-indicators">
+        <li data-target="#index-carousel" data-slide-to="0" class="active"></li>
+        <li data-target="#index-carousel" data-slide-to="1"></li>
+        <li data-target="#index-carousel" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="item active"><h1>Slide One</h1></div>
+        <div class="item"><h1>Slide Two</h1></div>
+        <div class="item"><h1>Slide Three</h1></div>
+    </div>
+
+    <a class="carousel-control left" href="#index-carousel" data-slide="prev">&lsaquo;</a>
+    <a class="carousel-control right" href="#index-carousel" data-slide="next">&rsaquo;</a>
 </div>
 
-<div id="popular-books" class="book-list clearfix">
-    <h2><small>好评图书</small></h2>
-    <ul class="unstyled inline">
-    {% for book in books_top_10 %}
-        <li>
-            <a href="{{ url_for('book.item', book_id=book.id) }}">
-                <img src="/static/upload/cover/{{ book.cover }}" width=100 height=140>
-            </a>
-            <p class="ellipsis"><a title="{{ book.title }}" href="{{ url_for('book.item', book_id=book.id) }}">{{ book.title }}</a></p>
-        </li>
-    {% endfor %}
-    </ul>
+<div class="row-fluid">
+    <div class="left-col span8">
+        <div id="recommended-posts">
+            <h2><small>推荐文章</small></h2>
+            <ul class="unstyled">
+            {% for post in recommended_posts %}
+                <li>
+                    <h2><small><a href="{{ post.url }}">{{ post.title }}</a></small></h2>
+                    <div class="post-meta">
+                        <a href="{{ url_for('blog.item', user_id=post.author.id) }}">{{ post.author.get_display_name() }}</a>
+                        &nbsp;&nbsp;|&nbsp;&nbsp; {{ post.timestamp|dt }}
+                    </div>
+                    <div class="post-thumbnail">
+                        {{ post.thumbnail|markdown|nl2br }}
+                    </div>
+                    <a href="{{ post.url }}">阅读全文&rarr;</a>
+                </li>
+                <hr class="dashed-hr">
+            {% endfor %}
+            </ul>
+        </div>
+
+        <div id="popular-books" class="book-list clearfix">
+            <h2><small>好评图书</small></h2>
+            <ul class="unstyled inline">
+            {% for book in books_top_10 %}
+                <li>
+                    <a href="{{ url_for('book.item', book_id=book.id) }}">
+                        <img src="{{ book.cover_path }}" width=100 height=140>
+                    </a>
+                    <p class="ellipsis"><a title="{{ book.title }}" href="{{ url_for('book.item', book_id=book.id) }}">{{ book.title }}</a></p>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <hr>
+
+        <div id="popular-tags" class="clearfix">
+            <h2><small>热门标签</small></h2>
+            <ul class="nav nav-pills inline">
+            {% for tag in tags_top_20 %}
+                <li><a href="{{ url_for('tag.item', tag_id=tag.id) }}">{{ tag.name }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <hr>
+
+        <div id="popular-colists">
+            <h2><small>新书单</small></h2>
+            <ul class="unstyled">
+            {% for colist in new_colists %}
+                <li>
+                    <a href="{{ url_for('colist.item', colist_id=colist.id) }}">{{ colist.name }}</a> --
+                    <div class="well well-small">{{ colist.intro }}</div>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <hr>
+
+        {% if current_user.is_authenticated() %}
+        <div id="sugguests">
+            <h2><small>你可能喜欢</small></h2>
+        </div>
+        <hr>
+        {% endif %}
+    </div>
+
+    <div class="right-col span4">
+        <div id="amount">
+            <h2><small>这里有：</small></h2>
+            <ul class="unstyled">
+                <li><a href="{{ url_for('book.all') }}">{{ amount['book'] }}本</a>图书</li>
+                <li><a href="#">{{ amount['shelf'] }}个</a>书架</li>
+                <li><a href="#">{{ amount['colist'] }}</a>个书单</li>
+                <li><a href="#">{{ amount['tag'] }}个</a>标签</li>
+            </ul>
+        </div>
+    </div>
 </div>
 
-<div id="popular-tags" class="clearfix">
-    <h2><small>热门标签</small></h2>
-    <ul class="nav nav-pills inline">
-    {% for tag in tags_top_20 %}
-        <li><a href="{{ url_for('tag.item', tag_id=tag.id) }}">{{ tag.name }}</a></li>
-    {% endfor %}
-    </ul>
-</div>
-
-<div id="popular-colists">
-    <h2><small>新书单</small></h2>
-    <ul class="unstyled">
-    {% for colist in new_colists %}
-        <li>
-            <a href="{{ url_for('colist.item', colist_id=colist.id) }}">{{ colist.name }}</a> --
-            <div class="well well-small">{{ colist.intro }}</div>
-        </li>
-    {% endfor %}
-    </ul>
-</div>
-
-{% if current_user.is_authenticated() %}
-<div id="sugguests">
-    <h2><small>你可能喜欢</small></h2>
-</div>
-{% endif %}
-
+<script type="text/javascript" src="/static/js/bootstrap/carousel.js"></script>
 <script type="text/javascript" src="/static/js/jquery/jquery.ellipsis.js"></script>
 <script type="text/javascript">
 $(function() {
+    // ellipsis
     $('.ellipsis').ellipsis();
+
+    // carousel
+    $('#index-carousel').carousel({
+        interval: false
+    });
 });
 </script>
 
-{% endblock %}
-
-{% block right_col %}
 {% endblock %}

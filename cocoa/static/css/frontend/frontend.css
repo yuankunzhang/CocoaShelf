@@ -1,22 +1,18 @@
-#popular-books ul li {
-    float: left;
-    width: 100px;
-    height: 170px;
-    overflow: hidden;
-    margin-right: 6px;
-    margin-bottom: 20px;
-    position: relative;
+#index-carousel {
+    height: 200px;
+    border: 1px solid #eee;
+    padding: 20px;
+
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
 }
 
-#popular-books ul li p {
-    text-align: center;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    margin-bottom: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 100px;
-    text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
+#index-carousel .carousel-indicators li {
+    background: #ccc;
+    cursor: pointer;
+}
+
+#index-carousel .carousel-indicators li.active {
+    background: #c8dcbe;
 }

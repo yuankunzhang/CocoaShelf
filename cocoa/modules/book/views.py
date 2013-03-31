@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import math
+
 import flask_sijax
 from flask import Blueprint, request, render_template, g, \
     redirect, url_for, flash
@@ -19,14 +21,32 @@ mod = Blueprint('book', __name__)
 @mod.route('/')
 def home():
 
-    return 'book index page.'
+    recent_books = Book.query.get_recent_books()
+    popular_books = BookRate.top_list(10)
+
+    return render_template('book/index.html',
+                            recent_books=recent_books,
+                            popular_books=popular_books)
 
 
-@mod.route('/list/')
-def list():
+BOOKS_PER_PAGE = 10
 
-    books = Book.query.order_by(Book.pubdate.desc()).all()
-    return render_template('book/list.html', books=books)
+
+@mod.route('/all/')
+@mod.route('/all/<int:page>')
+def all(page=1):
+
+    total = Book.query.count()
+
+    books = Book.query.paginate(page, BOOKS_PER_PAGE, False).items
+
+    paginate = {
+        'total':    int(math.ceil(float(total) / BOOKS_PER_PAGE)),
+        'current':  page,
+    }
+
+    return render_template('book/all.html', books=books,
+                            paginate=paginate)
 
 
 @mod.route('/categoryview/')

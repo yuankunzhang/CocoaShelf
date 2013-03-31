@@ -3,10 +3,10 @@ from cocoa.extensions import db
 from cocoa.helpers.sql import JSONEncodedDictText
 from ..tag.models import Tag
 
-class SimilarityTags(db.Model):
+class SimilarTags(db.Model):
     """相似标签数据表"""
 
-    __tablename__ = 'rec_similarity_tags'
+    __tablename__ = 'rec_similar_tags'
 
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'),
         primary_key=True)

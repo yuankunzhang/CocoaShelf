@@ -401,15 +401,37 @@ $(function() {
     {% for shelf in book.who_like(10) %}
         <li>
             <div class="media">
-                <a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='have') }}" class="pull-left">
+                <a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='like') }}" class="pull-left">
                     <img src="/static/upload/avatar/{{ shelf.user.get_thumbnail() }}" width=50 height=50>
                 </a>
 
                 <ul class="unstyled">
-                    <li><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='have') }}">{{ shelf.user.get_display_name() }}</a></li>
+                    <li><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='like') }}">{{ shelf.user.get_display_name() }}</a></li>
                 </ul>
             </div>
         </li>
+    {% endfor %}
+    </ul>
+</div>
+
+<hr>
+
+<div id="similar-books">
+    <h3><small>相似图书</small></h3>
+    <ul class="unstyled nav-list">
+    {% for similar_book in book.get_similar_books() %}
+        <li>
+            <div class="media">
+                <a href="{{ url_for('book.item', book_id=similar_book.id) }}" class="pull-left"><img src="{{ similar_book.cover_path }}" width=56 height=80></a>
+                <div class="media-body">
+                    <ul class="unstyled">
+                        <li>{{ similar_book.title }}</li>
+                        <li>作者：{{ similar_book.author|join(', ') }}</li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        <li class="divider"></li>
     {% endfor %}
     </ul>
 </div>
