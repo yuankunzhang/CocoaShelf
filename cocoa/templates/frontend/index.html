@@ -36,7 +36,7 @@
                     <h2><small><a href="{{ post.url }}">{{ post.title }}</a></small></h2>
                     <div class="post-meta">
                         <a href="{{ url_for('blog.item', user_id=post.author.id) }}">{{ post.author.get_display_name() }}</a>
-                        &nbsp;&nbsp;|&nbsp;&nbsp; {{ post.timestamp|dt }}
+                        <span class="vertical-divider">|</span>{{ post.timestamp|dt }}
                     </div>
                     <div class="post-thumbnail">
                         {{ post.thumbnail|markdown|nl2br }}
@@ -101,13 +101,15 @@
         <div id="amount">
             <h2><small>这里有：</small></h2>
             <ul class="unstyled">
-                <li><a href="{{ url_for('book.all') }}">{{ amount['book'] }}本</a>图书</li>
-                <li><a href="#">{{ amount['shelf'] }}个</a>书架</li>
-                <li><a href="#">{{ amount['colist'] }}</a>个书单</li>
-                <li><a href="#">{{ amount['tag'] }}个</a>标签</li>
+                <li><a href="{{ url_for('book.all') }}">{{ amount['book'] }}本</a> 图书</li>
+                <li><a href="{{ url_for('shelf.all') }}">{{ amount['shelf'] }}个</a> 书架</li>
+                <li><a href="{{ url_for('colist.all') }}">{{ amount['colist'] }}个</a> 书单</li>
+                <li><a href="#">{{ amount['tag'] }}个</a> 标签</li>
             </ul>
-        </div>
-    </div>
+        </div><!-- end #amount -->
+        
+        <hr >
+    </div><!-- end .right-col -->
 </div>
 
 <script type="text/javascript" src="/static/js/bootstrap/carousel.js"></script>

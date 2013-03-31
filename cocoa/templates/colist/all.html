@@ -7,14 +7,14 @@
 {% block content %}
 
 <div class="page-header">
-    <h1><small>图书列表</small></h1>
+    <h1><small>书单列表</small></h1>
 </div>
 
-<div id="books">
+<div id="shelves">
     <ul class="unstyled">
-    {% for book in books %}
+    {% for colist in colists %}
         <li>
-            {% include 'book/list_item.html' %}
+            {% include 'colist/list_item.html' %}
         </li>
         <hr class="dashed-hr">
     {% endfor %}
@@ -31,7 +31,7 @@
 <script type="text/javascript" src="/static/js/paginate.js"></script>
 <script type="text/javascript">
 $(function() {
-    paginate({{ paginate|safe }}, '/book/all/')
+    paginate({{ paginate|safe }}, '/shelf/all/')
 });
 </script>
 

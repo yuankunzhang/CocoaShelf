@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import math
+
 from flask import Blueprint, request, render_template, \
     redirect, url_for
 from flask.ext.login import current_user, login_required
@@ -12,6 +14,26 @@ mod = Blueprint('colist', __name__)
 def home():
 
     return 'Colist index page.'
+
+
+COLISTS_PER_PAGE = 10
+
+@mod.route('/all/')
+@mod.route('/all/<int:page>/')
+def all(page=1):
+
+    total = Colist.query.count()
+
+    colists = Colist.query.order_by(Colist.timestamp.desc()).\
+              paginate(page, COLISTS_PER_PAGE, False).items
+
+    paginate = {
+        'total':    int(math.ceil(float(total) / COLISTS_PER_PAGE)),
+        'current':  page,
+    }
+
+    return render_template('colist/all.html', colists=colists,
+                            paginate=paginate)
 
 
 @mod.route('/new/', methods=['GET', 'POST'])

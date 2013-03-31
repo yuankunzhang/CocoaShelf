@@ -3,6 +3,9 @@ from time import time
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
+from werkzeug import cached_property
+
+from flask import url_for
 from flask.ext.login import current_user
 
 from cocoa.extensions import db
@@ -64,3 +67,7 @@ class Colist(db.Model):
                 self.books.append(book)
 
         db.session.commit()
+
+    @cached_property
+    def url(self):
+        return url_for('colist.item', colist_id=self.id)

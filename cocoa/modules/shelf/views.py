@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import math
 from datetime import datetime
 
 import flask_sijax
@@ -7,6 +8,7 @@ from flask import Blueprint, request, render_template, \
 from flask.ext.login import current_user, login_required
 from flask.ext.babel import gettext as _
 
+from cocoa.extensions import cache
 from .models import Shelf, ColumnReading
 from .consts import ColumnType
 from .ajax import AjaxActions
@@ -40,7 +42,28 @@ def home():
                             add_book_events=add_book_events)
 
 
+SHELF_PER_PAGE = 10
+
+
+@mod.route('/all/')
+@mod.route('/all/<int:page>/')
+def all(page=1):
+
+    total = Shelf.query.count()
+
+    shelves = Shelf.query.paginate(page, SHELF_PER_PAGE, False).items
+
+    paginate = {
+        'total':    int(math.ceil(float(total) / SHELF_PER_PAGE)),
+        'current':  page,
+    }
+
+    return render_template('shelf/all.html', shelves=shelves,
+                            paginate=paginate)
+
+
 @flask_sijax.route(mod, '/<int:shelf_id>/')
+@cache.cached(timeout=60)
 def item(shelf_id):
     """某用户的书架"""
 

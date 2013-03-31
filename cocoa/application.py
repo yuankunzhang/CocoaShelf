@@ -149,6 +149,7 @@ def configure_extensions(app):
     sijax.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = 'account.signin'
+    cache.init_app(app)
     Misaka(app)
 
     admin.init_app(app)

@@ -14,7 +14,6 @@ from flask.ext.babel import Babel
 
 __all__ = ['db', 'sijax', 'login_manager', 'cache', 'babel', 'misaka']
 
-
 db = SQLAlchemy()
 sijax = flask_sijax.Sijax()
 login_manager = LoginManager()

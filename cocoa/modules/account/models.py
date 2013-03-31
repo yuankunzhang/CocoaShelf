@@ -146,7 +146,16 @@ class User(db.Model):
             self.password = generate_password_hash(new)
             db.session.commit()
 
+    # Deprecated.
+    # use (property) self.display_name instead.
     def get_display_name(self):
+        if self.penname is not None:
+            return self.penname
+        else:
+            return self.username
+
+    @cached_property
+    def display_name(self):
         if self.penname is not None:
             return self.penname
         else:
@@ -198,7 +207,6 @@ class User(db.Model):
     def set_thumbnail_box(self, box):
         self.thumbnail_box = dict(zip(('x1', 'y1', 'x2', 'y2'), box))
 
-    @property
     @cached_property
     def thumbnail(self):
         if self.avatar is None:
@@ -208,7 +216,7 @@ class User(db.Model):
             return slices[0] + '_t.' + slices[1]
 
     # Deprecated.
-    # user (property) self.thumbnail instead.
+    # use (property) self.thumbnail instead.
     def get_thumbnail(self):
         if self.avatar is None:
             return 'default_t.jpg'

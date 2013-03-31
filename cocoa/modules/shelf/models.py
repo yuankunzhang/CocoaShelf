@@ -4,6 +4,9 @@ from time import time
 
 from sqlalchemy import func
 
+from werkzeug import cached_property
+
+from flask import url_for
 from flask.ext.babel import gettext as _
 
 from cocoa.extensions import db
@@ -251,6 +254,10 @@ class Shelf(db.Model):
     def get_tag_books(self, tag_id):
         return Book.query.outerjoin(UserBookTags).outerjoin(Tag).\
                filter(UserBookTags.user==self.user, Tag.id==tag_id).all()
+
+    @cached_property
+    def url(self):
+        return url_for('shelf.item', shelf_id=self.id)
 
     @staticmethod
     def get_by_uid(user_id):
