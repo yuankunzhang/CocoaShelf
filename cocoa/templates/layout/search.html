@@ -1,0 +1,24 @@
+{% extends 'layout/single_column.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1><small>搜索结果: {{ q }}</small></h1>
+    {% block search_header %}
+    {% endblock %}
+</div>
+
+<div id="search-results">
+{% block search_result %}
+{% endblock %}
+</div>
+
+<script type="text/javascript" src="/static/js/jquery/jquery.highlight.js"></script>
+<script type="text/javascript">
+$(function() {
+    var q = '{{ q }}';
+
+    $('#search-results').highlight(q);
+    $('.highlight').css('backgroundColor', '#ffff88');
+});
+</script>
+{% endblock %}

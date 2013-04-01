@@ -5,6 +5,8 @@ from time import time
 from datetime import datetime
 from PIL import Image
 
+from werkzeug import cached_property
+
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from flask import current_app, url_for
@@ -58,6 +60,13 @@ class BookQuery(BaseQuery):
 
     def get_recent_books(self, num=10):
         return self.order_by(Book.pubdate.desc()).limit(num).all()
+
+    def search(self, q):
+        return self.filter(
+                    (Book.title.like(q)  | \
+                     Book.author.like(q) | \
+                     Book.translator.like(q))
+               ).all()
 
 
 class Book(db.Model):
@@ -206,11 +215,11 @@ class Book(db.Model):
         if m is not None:
             self.pages = m.group(1)
 
-    @property
+    @cached_property
     def url(self):
         return url_for('book.item', book_id=self.id)
 
-    @property
+    @cached_property
     def cover_path(self):
         if self.cover:
             return current_app.config['COVER_STATIC_PATH'] + self.cover

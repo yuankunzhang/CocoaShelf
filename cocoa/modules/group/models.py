@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from time import time
 
+from werkzeug import cached_property
+
+from sqlalchemy import func
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from flask import current_app, abort
+from flask import current_app, abort, url_for
 from flask.ext.sqlalchemy import BaseQuery
 from flask.ext.login import current_user
 from flask.ext.babel import gettext as _
@@ -86,6 +89,11 @@ class GroupQuery(BaseQuery):
                 filter(GroupUsers.user_id==user_id).\
                 filter(Group.user_id!=user_id).all()
 
+    def active_groups(self, num=10):
+        return Group.query.outerjoin(GroupUsers).\
+               order_by(func.count(GroupUsers.user_id).desc()).\
+               group_by(Group.id).all()
+
 
 class Group(db.Model):
 
@@ -124,6 +132,10 @@ class Group(db.Model):
     def permissions(self):
         return self._Permissions(self)
 
+    @cached_property
+    def url(self):
+        return url_for('group.item', group_id=self.id)
+
     def save(self):
         group = Group.query.filter_by(name=self.name).first()
         if group is not None:
@@ -160,11 +172,18 @@ class Group(db.Model):
         self.topics.append(topic)
         db.session.commit()
 
+    @cached_property
+    def totem_path(self):
+        if self.totem:
+            return current_app.config['TOTEM_STATIC_PATH'] + self.totem
+        else:
+            return ''
+
     def get_totem_path(self):
         if self.totem:
             return current_app.config['TOTEM_STATIC_PATH'] + self.totem
         else:
-            return None
+            return ''
 
 
 class GroupApplicant(db.Model):

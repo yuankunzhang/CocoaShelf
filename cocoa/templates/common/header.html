@@ -6,7 +6,7 @@
         </div>
 
         <div class="search-box">
-            <form class="navbar-form form-inline">
+            <form action="{{ url_for('frontend.search') }}" method="post" class="navbar-form form-inline">
                 <div class="input-append">
                     <input type="text" name="q" placeholder="搜索你感兴趣的内容">
                     <button class="btn" type="submit"><i class="icon-search"></i></button>

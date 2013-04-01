@@ -64,17 +64,6 @@
 
         <hr>
 
-        <div id="popular-tags" class="clearfix">
-            <h2><small>热门标签</small></h2>
-            <ul class="nav nav-pills inline">
-            {% for tag in tags_top_20 %}
-                <li><a href="{{ url_for('tag.item', tag_id=tag.id) }}">{{ tag.name }}</a></li>
-            {% endfor %}
-            </ul>
-        </div>
-
-        <hr>
-
         <div id="popular-colists">
             <h2><small>新书单</small></h2>
             <ul class="unstyled">
@@ -95,7 +84,7 @@
         </div>
         <hr>
         {% endif %}
-    </div>
+    </div><!-- end .left-col -->
 
     <div class="right-col span4">
         <div id="amount">
@@ -104,11 +93,45 @@
                 <li><a href="{{ url_for('book.all') }}">{{ amount['book'] }}本</a> 图书</li>
                 <li><a href="{{ url_for('shelf.all') }}">{{ amount['shelf'] }}个</a> 书架</li>
                 <li><a href="{{ url_for('colist.all') }}">{{ amount['colist'] }}个</a> 书单</li>
-                <li><a href="#">{{ amount['tag'] }}个</a> 标签</li>
             </ul>
         </div><!-- end #amount -->
         
         <hr >
+
+        <div id="popular-tags" class="clearfix">
+            <h2><small>热门标签</small></h2>
+            <ul class="nav nav-pills inline">
+            {% for tag in tags_top_20 %}
+                <li><a href="{{ url_for('tag.item', tag_id=tag.id) }}">{{ tag.name }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <hr>
+
+        <div id="active-groups" class=clearfix">
+            <h2><small>热门小组</small></h2>
+            {% for group in active_groups %}
+            {% include 'group/list_item.html' %}
+            {% endfor %}
+        </div>
+
+        <hr>
+
+        <div id="active-users" class="clearfix">
+            <h2><small>活跃成员</small></h2>
+            {% for user in active_users %}
+            <div class="media">
+                <a href="{{ url_for('shelf.item', shelf_id=user.shelf.id) }}" class="pull-left">
+                    <img src="/static/upload/avatar/{{ user.thumbnail }}" width=50 height=50>
+                </a>
+
+                <ul class="unstyled">
+                    <li><a href="{{ url_for('shelf.item', shelf_id=user.shelf.id) }}">{{ user.display_name }}</a></li>
+                </ul>
+            </div>
+            {% endfor %}
+        </div><!-- end .active-users -->
     </div><!-- end .right-col -->
 </div>
 

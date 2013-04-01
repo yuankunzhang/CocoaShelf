@@ -24,6 +24,7 @@ from cocoa.modules.group.models import Group, GroupUsers, \
         GroupTopics, GroupTopicReplies, GroupApplicant
 from cocoa.modules.recsys.tag import SimilarTags
 from cocoa.modules.recsys.book import SimilarBooks
+from cocoa.modules.vitality.models import UserVitality
 
 manager = Manager(create_app())
 

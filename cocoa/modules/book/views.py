@@ -8,7 +8,6 @@ from flask.ext.login import current_user, login_required
 from flask.ext.principal import Permission
 
 from cocoa.permissions import moderator
-from cocoa.extensions import cache
 from .models import Book
 from .ajax import AjaxActions
 from ..tag.models import BookTags
@@ -66,7 +65,6 @@ def category_view(category_id=None):
 
 
 @flask_sijax.route(mod, '/<int:book_id>/')
-@cache.cached(timeout=60)
 def item(book_id):
 
     if g.sijax.is_sijax_request:

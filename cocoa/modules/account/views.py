@@ -18,6 +18,7 @@ from .forms import SigninForm, SignupForm, SettingsForm, \
         PasswordChangeForm
 from .helpers import save_avatar, update_thumbnail
 from .ajax import AjaxActions
+from ..vitality.consts import VitalityTable
 
 mod = Blueprint('account', __name__)
 
@@ -64,6 +65,7 @@ def signin(next=None):
 
         if ok:
             login_user(user, form.remember.data)
+            user.vitality.update(VitalityTable['SIGNIN'])
             # Tell flask-principal the identity changed
             identity_changed.send(current_app._get_current_object(),
                                   identity=Identity(user.id))

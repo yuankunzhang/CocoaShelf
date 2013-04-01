@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+    图书模块操作脚本
+"""
 import re
 import requests
 import time

@@ -15,6 +15,7 @@ from .query import ShelfQuery
 from ..book.models import Book, BookExtra
 from ..event.models import AddBookToShelfEvent
 from ..tag.models import Tag, UserBookTags
+from ..vitality.consts import VitalityTable
 
 class ColumnBase(object):
 
@@ -225,6 +226,8 @@ class Shelf(db.Model):
 
             if column is not None:
                 column.add_book(self, book)
+                self.user.vitality.update(
+                    VitalityTable['ADD_BOOK_TO_SHELF'])
                 event = AddBookToShelfEvent(
                     self.user.id,
                     column_name,

@@ -24,7 +24,7 @@ from .admin import admin
 from .helpers.common import timesince as _timesince
 from .modules import frontend, location, account, book, shelf, \
       category, blog, colist, group, bookstore, mail, tag, \
-      recsys
+      recsys, vitality
 
 __all__ = ['create_app']
 
@@ -44,6 +44,7 @@ DEFAULT_MODULES = (
     (mail.mod, '/mail'),
     (tag.mod, '/tag'),
     (recsys.mod, '/recsys'),
+    (vitality.mod, '/vitality'),
 )
 
 def create_app(config=None, app_name=None, modules=None):
@@ -84,7 +85,9 @@ def configure_modules(app, modules):
 
     if app.debug:
         from cocoa.utils.book import mod as bookutils
+        from cocoa.utils.db import mod as dbutils
         app.register_blueprint(bookutils, url_prefix='/bookutils')
+        app.register_blueprint(dbutils, url_prefix='/dbutils')
 
 
 def configure_template_filters(app):

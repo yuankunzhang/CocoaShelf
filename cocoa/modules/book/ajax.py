@@ -14,8 +14,6 @@ class AjaxActions(object):
                      str_tags=None, short_review=None):
         """添加图书到书架"""
 
-        from ..colist.models import Colist
-
         book = Book.query.get_or_404(book_id)
 
         current_user.shelf.add_book(book, column_names) 
