@@ -3,9 +3,10 @@
 {% block content %}
 <div class="page-header">
     <h1><small>搜索结果: {{ q }}</small></h1>
-    {% block search_header %}
-    {% endblock %}
+    <a href="{{ url_for('frontend.search') }}">&larr;到搜索主页</a>
 </div>
+
+{% include 'frontend/search_header.html' %}
 
 <div id="search-results">
 {% block search_result %}

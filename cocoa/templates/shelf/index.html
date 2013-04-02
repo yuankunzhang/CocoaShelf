@@ -29,7 +29,7 @@
                 <div class="media-body">
                     {{ link_to('shelf.item', e.shelf.user.get_display_name(), shelf_id=e.shelf.id) }}添加了
                     {{ link_to('book.item', e.book.title, book_id=e.book.id) }}到书架/
-                    {{ link_to('shelf.column', e.column.text(), shelf_id=e.shelf.id, column_name=e.column_name) }}
+                    {{ link_to('shelf.column', e.column.text, shelf_id=e.shelf.id, column_name=e.column_name) }}
                     ({{ e.timestamp|timesince }})
                 </div>
             </div>

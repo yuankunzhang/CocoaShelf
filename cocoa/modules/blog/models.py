@@ -87,6 +87,9 @@ class PostQuery(BaseQuery):
         return self.filter_by(recommended=True).\
                order_by(Post.timestamp.desc()).all()
 
+    def search(self, q):
+        return self.filter(Post.title.like(q)).all()
+
 
 class Post(db.Model):
 

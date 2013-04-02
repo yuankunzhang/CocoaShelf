@@ -1,0 +1,11 @@
+<div class="media">
+    <a href="{{ user.url }}" class="pull-left">
+        <img src="/static/upload/avatar/{{ user.thumbnail }}" width=60 height=60>
+    </a>
+    <div class="media-body">
+        <ul class="unstyled">
+            <li><a href="{{ user.url }}">{{ user.display_name }}</a></li>
+            <li>所在地：{{ user.location }}</li>
+        </ul>
+    </div>
+</div>

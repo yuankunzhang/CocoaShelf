@@ -2,6 +2,7 @@
 from flask import Blueprint, render_template, request
 from flask.ext.babel import gettext as _
 
+from ..account.models import User
 from ..bookrate.models import BookRate
 from ..tag.models import Tag
 from ..colist.models import Colist
@@ -42,8 +43,12 @@ def home():
                             amount=amount)
 
 
-@mod.route('/search/', methods=['POST'])
+@mod.route('/search/', methods=['GET', 'POST'])
 def search():
+
+    if request.method == 'GET':
+        return render_template('frontend/search.html',
+                                SearchType=SearchType)
 
     q = request.form['q'].strip()
     if q == '':
@@ -62,5 +67,20 @@ def search():
     if type == SearchType.BOOK:
         results = Book.query.search(q_str)
         template = 'search_book.html'
+    elif type == SearchType.USER:
+        results = User.query.search(q_str)
+        template = 'search_user.html'
+    elif type == SearchType.GROUP:
+        results = Group.query.search(q_str)
+        template = 'search_group.html'
+    elif type == SearchType.COLIST:
+        results = Colist.query.search(q_str)
+        template = 'search_colist.html'
+    elif type == SearchType.POST:
+        results = Post.query.search(q_str)
+        template = 'search_post.html'
 
-    return render_template('frontend/'+template, results=results, q=q)
+    return render_template('frontend/'+template,
+                            results=results, q=q,
+                            type=type,
+                            SearchType=SearchType)

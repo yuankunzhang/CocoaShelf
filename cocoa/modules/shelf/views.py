@@ -25,12 +25,12 @@ mod = Blueprint('shelf', __name__)
 def home():
 
     new_shelves_records = EventRecord.\
-        get_records(EventType.SIGN_UP.value())
+        get_records(EventType.SIGN_UP.value)
     new_shelves = [Shelf.get_by_uid(r.get_event().user_id) \
                   for r in new_shelves_records]
 
     add_book_records = EventRecord.\
-        get_records(EventType.ADD_BOOK_TO_SHELF.value())
+        get_records(EventType.ADD_BOOK_TO_SHELF.value)
     add_book_events = [r.get_event() for r in add_book_records]
     for e in add_book_events:
         e.shelf = Shelf.get_by_uid(e.user_id) 

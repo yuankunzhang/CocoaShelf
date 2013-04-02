@@ -44,6 +44,11 @@ class UserQuery(BaseQuery):
 
         return user
 
+    def search(self, q):
+        return self.filter(
+                User.email.like(q) | User.penname.like(q)).\
+               all()
+
 
 class User(db.Model):
     """用户表"""
@@ -195,6 +200,10 @@ class User(db.Model):
     def get_id(self):
         return unicode(self.id)
     # end
+
+    @cached_property
+    def location(self):
+        return self.get_location()['text']
 
     def get_location(self):
         location = {

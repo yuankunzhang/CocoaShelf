@@ -7,6 +7,7 @@ from werkzeug import cached_property
 
 from flask import url_for
 from flask.ext.login import current_user
+from flask.ext.sqlalchemy import BaseQuery
 
 from cocoa.extensions import db
 from ..book.models import Book
@@ -30,9 +31,17 @@ class ColistBooks(db.Model):
         self.colist = colist
 
 
+class ColistQuery(BaseQuery):
+
+    def search(self, q):
+        return self.filter(Colist.name.like(q)).all()
+
+
 class Colist(db.Model):
 
     __tablename__ = 'colist'
+
+    query_class = ColistQuery
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

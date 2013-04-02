@@ -85,14 +85,17 @@ class GroupQuery(BaseQuery):
     def user_joined(self, user_id):
         """给定的用户在哪些小组中"""
 
-        return Group.query.outerjoin(GroupUsers).\
-                filter(GroupUsers.user_id==user_id).\
-                filter(Group.user_id!=user_id).all()
+        return self.outerjoin(GroupUsers).\
+               filter(GroupUsers.user_id==user_id).\
+               filter(Group.user_id!=user_id).all()
 
     def active_groups(self, num=10):
-        return Group.query.outerjoin(GroupUsers).\
+        return self.outerjoin(GroupUsers).\
                order_by(func.count(GroupUsers.user_id).desc()).\
                group_by(Group.id).all()
+
+    def search(self, q):
+        return self.filter(Group.name.like(q)).all()
 
 
 class Group(db.Model):

@@ -1,0 +1,33 @@
+<form id="search-form" action="{{ url_for('frontend.search') }}" method="post" class="hide">
+    <input type="hidden" name="q" value="{{ q }}">
+    <input type="hidden" name="type">
+</form>
+
+<ul id="search-nav" class="nav nav-tabs">
+    <li{% if type==SearchType.BOOK %} class="active"{% endif %}>
+        <a href="#" value="{{ SearchType.BOOK.value }}">图书</a>
+    </li>
+    <li{% if type==SearchType.USER %} class="active"{% endif %}>
+        <a href="#" value="{{ SearchType.USER.value }}">用户</a>
+    </li>
+    <li{% if type==SearchType.GROUP %} class="active"{% endif %}>
+        <a href="#" value="{{ SearchType.GROUP.value }}">小组</a>
+    </li>
+    <li{% if type==SearchType.COLIST %} class="active"{% endif %}>
+        <a href="#" value="{{ SearchType.COLIST.value }}">书单</a>
+    </li>
+    <li{% if type==SearchType.POST %} class="active"{% endif %}>
+        <a href="#" value="{{ SearchType.POST.value }}">文章</a>
+    </li>
+</ul>
+
+<script type="text/javascript">
+$(function() {
+    $('#search-nav li[class!=active] a').click(function() {
+        $('#search-form input[name=type]').val($(this).attr('value'));
+        $('#search-form').submit();
+
+        return false;
+    });
+});
+</script>
