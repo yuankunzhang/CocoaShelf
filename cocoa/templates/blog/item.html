@@ -18,11 +18,11 @@
 {% endblock %}
 
 {% block right_col %}
-{% include 'account/badge.html' %}
+{% include 'account/widgets/badge.html' %}
 <hr>
 
 <div class="nav">
-    <a href="{{ url_for('shelf.item', shelf_id=user.shelf.id) }}">到{% if user==current_user %}我{% else %}{{ user.get_display_name() }}{% endif %}的书架&rarr;</a>
+    <a href="{{ url_for('shelf.item', shelf_id=user.shelf.id) }}">到{% if user==current_user %}我{% else %}{{ user.display_name }}{% endif %}的书架&rarr;</a>
 </div>
 <hr>
 

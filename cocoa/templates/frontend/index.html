@@ -35,7 +35,7 @@
                 <li>
                     <h2><small><a href="{{ post.url }}">{{ post.title }}</a></small></h2>
                     <div class="post-meta">
-                        <a href="{{ url_for('blog.item', user_id=post.author.id) }}">{{ post.author.get_display_name() }}</a>
+                        <a href="{{ url_for('blog.item', user_id=post.author.id) }}">{{ post.author.display_name }}</a>
                         <span class="vertical-divider">|</span>{{ post.timestamp|dt }}
                     </div>
                     <div class="post-thumbnail">
@@ -111,9 +111,8 @@
 
         <div id="active-groups" class=clearfix">
             <h2><small>热门小组</small></h2>
-            {% for group in active_groups %}
-            {% include 'group/list_item.html' %}
-            {% endfor %}
+            {% set groups=active_groups %}
+            {% include 'group/widgets/simple_list.html' %}
         </div>
 
         <hr>
@@ -123,7 +122,7 @@
             {% for user in active_users %}
             <div class="media">
                 <a href="{{ url_for('shelf.item', shelf_id=user.shelf.id) }}" class="pull-left">
-                    <img src="/static/upload/avatar/{{ user.thumbnail }}" width=50 height=50>
+                    <img src="{{ user.thumbnail_path }}" width=50 height=50>
                 </a>
 
                 <ul class="unstyled">

@@ -1,0 +1,10 @@
+<div class="simple-list">
+    <ul class="unstyled">
+    {% for user in users %}
+        <li>
+            {% include 'account/widgets/list_item.html' %}
+        </li>
+        <hr class="dashed-hr">
+    {% endfor %}
+    </ul>
+</div>

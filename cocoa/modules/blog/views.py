@@ -145,7 +145,7 @@ def keyword_posts(user_id):
     posts = [{
                 'id':       p.id,
                 'title':    p.title,
-                'author':   p.author.get_display_name(),
+                'author':   p.author.display_name,
                 'content':  p.content,
                 'keywords': [n.name for n in p.keywords],
                 'timestamp':datetime.fromtimestamp(p.timestamp).\

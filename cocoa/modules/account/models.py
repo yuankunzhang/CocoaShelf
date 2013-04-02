@@ -227,6 +227,10 @@ class User(db.Model):
         self.thumbnail_box = dict(zip(('x1', 'y1', 'x2', 'y2'), box))
 
     @cached_property
+    def thumbnail_path(self):
+        return current_app.config['AVATAR_STATIC_PATH'] + self.thumbnail
+
+    @cached_property
     def thumbnail(self):
         if self.avatar is None:
             return 'default_t.jpg'

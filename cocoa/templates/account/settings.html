@@ -25,7 +25,7 @@
             </div>
             <div class="controls">
                 {% if current_user.avatar %}
-                <img src="/static/upload/avatar/{{ current_user.get_thumbnail() }}">
+                <img src="{{ current_user.thumbnail_path }}">
                 <a href="{{ url_for('account.upload_avatar') }}">更新头像</a>
                 {% else %}
                 <a href="{{ url_for('account.upload_avatar') }}">上传头像</a>

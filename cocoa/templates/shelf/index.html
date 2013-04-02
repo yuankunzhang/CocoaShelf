@@ -27,7 +27,7 @@
                 </a>
                 
                 <div class="media-body">
-                    {{ link_to('shelf.item', e.shelf.user.get_display_name(), shelf_id=e.shelf.id) }}添加了
+                    {{ link_to('shelf.item', e.shelf.user.display_name, shelf_id=e.shelf.id) }}添加了
                     {{ link_to('book.item', e.book.title, book_id=e.book.id) }}到书架/
                     {{ link_to('shelf.column', e.column.text, shelf_id=e.shelf.id, column_name=e.column_name) }}
                     ({{ e.timestamp|timesince }})
@@ -46,11 +46,11 @@
         <li>
             <div class="media">
                 <a class="pull-left" href="{{ url_for('shelf.item', shelf_id=s.id) }}">
-                    <img src="/static/upload/avatar/{{ s.user.get_thumbnail() }}" width=60 height=60>
+                    <img src="{{ s.user.thumbnail_path }}" width=60 height=60>
                 </a>
 
                 <div class="media-body">
-                    {{ s.user.get_display_name() }}的
+                    {{ s.user.display_name }}的
                     {{ link_to('shelf.item', '书架', shelf_id=s.id) }}
                     ({{ s.user.timestamp|timesince }})
                 </div>

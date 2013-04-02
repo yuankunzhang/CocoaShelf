@@ -11,14 +11,7 @@
 </div>
 
 <div id="books">
-    <ul class="unstyled">
-    {% for book in books %}
-        <li>
-            {% include 'book/list_item.html' %}
-        </li>
-        <hr class="dashed-hr">
-    {% endfor %}
-    </ul>
+    {% include 'book/widgets/simple_list.html' %}
 </div>
 
 <hr>

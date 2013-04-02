@@ -5,7 +5,7 @@
             {{ link_to('frontend.home', '可可书架') }}
         </div>
 
-        <div class="search-box">
+        <div id="navbar-search-form" class="search-box">
             <form action="{{ url_for('frontend.search') }}" method="post" class="navbar-form form-inline">
                 <div class="input-append">
                     <input type="text" name="q" placeholder="搜索你感兴趣的内容">
@@ -13,6 +13,19 @@
                 </div>
             </form>
         </div>
+
+<script type="text/javascript">
+$(function() {
+    $('#navbar-search-form button').click(function(e) {
+        if (!$('#navbar-search-form input[name=q]').val()) {
+            e.preventDefault();
+            return false;
+        }
+
+        return true;
+    });
+});
+</script>
 
         <div id="account-nav" class="navbar nav-collapse">
             <ul class="nav">
@@ -22,7 +35,7 @@
             {% else %}
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        {{ current_user.get_display_name() }}的帐号 <b class="caret"></b>
+                        {{ current_user.display_name }}的帐号 <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
                         {{ li_link_to('shelf.item', '我的书架', shelf_id=current_user.shelf.id) }}

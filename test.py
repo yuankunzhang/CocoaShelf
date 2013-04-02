@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from testcases.frontend import TestFrontend
-from testcases.account import TestAccount
-from testcases.book import TestBook
+from asserts.frontend import TestFrontend
+from asserts.account import TestAccount
+from asserts.book import TestBook
 
 if __name__ == '__main__':
     unittest.main()

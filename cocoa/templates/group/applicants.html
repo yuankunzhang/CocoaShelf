@@ -27,7 +27,7 @@
         <tbody>
         {% for applicant in group.untreated_applicants() %}
             <tr value="{{ applicant.id }}">
-                <td>{{ applicant.applier.get_display_name() }}</td>
+                <td>{{ applicant.applier.display_name }}</td>
                 <td>{{ applicant.intro }}</td>
                 <td>{{ applicant.timestamp|dt }}</td>
                 <td>

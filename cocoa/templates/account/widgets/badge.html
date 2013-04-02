@@ -1,0 +1,25 @@
+<link rel="stylesheet" type="text/css" href="/static/css/account/badge.css">
+
+<div class="user-badge well">
+    <div class="media">
+        <a class="pull-left" href="{{ url_for('shelf.item', shelf_id=user.shelf.id) }}">
+            <img width=60 height=60 src="{{ user.thumbnail_path }}">
+        </a>
+
+        <ul class="unstyled">
+            <li>{{ user.display_name }}</li>
+            <li>{{ user.get_location()['text'] }}</li>
+        </ul>
+    </div>
+
+    {% if current_user.is_authenticated() and not current_user == user %}
+    <hr>
+        {% if user not in current_user.followings %}
+    <a href="#" id="follow-btn" class="btn btn-small">+ 关注</a>
+        {% else %}
+    <span>已关注</span>
+    <a href="#" id="unfollow-btn" class="btn btn-small">- 取消关注</a>
+        {% endif %}
+    <a href="{{ url_for('mail.new', to_user_id=user.id) }}" id="mailto-btn" class="btn btn-small">写信</a>
+    {% endif %}
+</div>

@@ -19,9 +19,9 @@
 
     <div class="clearfix">
         <div id="avatar" class="media pull-left">
-            <img class="pull-left" src="/static/upload/avatar/{{ shelf.user.get_thumbnail() }}">
+            <img class="pull-left" src="{{ shelf.user.thumbnail_path }}">
             <div class="media-body">
-                {{ shelf.user.get_display_name() }}
+                {{ shelf.user.display_name }}
             </div>
         </div>
 
@@ -78,10 +78,10 @@
         {% for comment in shelf.comments %}
             <li><div class="media">
                 <a class="pull-left" href="{{ url_for('shelf.item', shelf_id=comment.user.shelf.id) }}">
-                    <img src="/static/upload/avatar/{{ comment.user.get_thumbnail() }}" width=60 height=60>
+                    <img src="{{ comment.user.thumbnail_path }}" width=60 height=60>
                 </a>
                 <div class="media-body">
-                    <h4 class="media-heading"><small><a href="{{ url_for('shelf.item', shelf_id=comment.user.shelf.id) }}">{{ comment.user.get_display_name() }}</a> | {{ comment.user.timestamp|dt }}</small></h4>
+                    <h4 class="media-heading"><small><a href="{{ url_for('shelf.item', shelf_id=comment.user.shelf.id) }}">{{ comment.user.display_name }}</a> | {{ comment.user.timestamp|dt }}</small></h4>
                     {{ comment.content }}
                 </div>
             </div><hr></li>

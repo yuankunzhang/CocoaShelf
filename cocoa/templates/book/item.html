@@ -379,11 +379,11 @@ $(function() {
         <li>
             <div class="media">
                 <a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='have') }}" class="pull-left">
-                    <img src="/static/upload/avatar/{{ shelf.user.get_thumbnail() }}" width=50 height=50>
+                    <img src="{{ shelf.user.thumbnail_path }}" width=50 height=50>
                 </a>
 
                 <ul class="unstyled">
-                    <li><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='have') }}">{{ shelf.user.get_display_name() }}</a></li>
+                    <li><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='have') }}">{{ shelf.user.display_name }}</a></li>
                 </ul>
             </div>
         </li>
@@ -402,11 +402,11 @@ $(function() {
         <li>
             <div class="media">
                 <a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='like') }}" class="pull-left">
-                    <img src="/static/upload/avatar/{{ shelf.user.get_thumbnail() }}" width=50 height=50>
+                    <img src="{{ shelf.user.thumbnail_path }}" width=50 height=50>
                 </a>
 
                 <ul class="unstyled">
-                    <li><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='like') }}">{{ shelf.user.get_display_name() }}</a></li>
+                    <li><a href="{{ url_for('shelf.column', shelf_id=shelf.id, column_name='like') }}">{{ shelf.user.display_name }}</a></li>
                 </ul>
             </div>
         </li>

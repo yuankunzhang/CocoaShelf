@@ -9,7 +9,7 @@
 {% block left_col %}
 
 <div class="page-header">
-    <h1><small>{{ colist.user.get_display_name() }}的书单：{{ colist.name }}</small></h1>
+    <h1><small>{{ colist.user.display_name }}的书单：{{ colist.name }}</small></h1>
     <a id="add-books-btn" href="{{ url_for('colist.add_books', colist_id=colist.id) }}">添加图书</a>
 </div>
 

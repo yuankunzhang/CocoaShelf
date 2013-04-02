@@ -23,7 +23,7 @@
         <tbody>
             {% for m in mail_thumb %}
             <tr value="{{ m.id }}"{% if m.unread %} class="unread"{% endif %}>
-                <td>{{ m.from_user.get_display_name() }}</td>
+                <td>{{ m.from_user.display_name }}</td>
                 <td>{{ m.mail.title }}</td>
                 <td>{{ m.mail.timestamp|dt }}</td>
             </tr>

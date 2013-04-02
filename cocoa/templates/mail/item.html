@@ -4,7 +4,7 @@
 
 <div class="page-header">
     <h1><small>邮件：{{ mail.title }}</small></h1>
-    <p>写信人：{{ mail.from_user.get_display_name() }}</p>
+    <p>写信人：{{ mail.from_user.display_name }}</p>
     <p>时间：{{ mail.timestamp|dt }}</p>
 </div>
 

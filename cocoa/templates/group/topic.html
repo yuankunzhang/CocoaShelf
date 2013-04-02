@@ -12,11 +12,11 @@
         <li>
             <div class="media">
                 <a class="pull-left" href="{{ url_for('shelf.item', shelf_id=reply.user.shelf.id) }}">
-                    <img src="/static/upload/avatar/{{ reply.user.get_thumbnail() }}" width=60 height=60>
+                    <img src="{{ reply.user.thumbnail_path }}" width=60 height=60>
                 </a>
 
                 <div class="media-body">
-                    <h4 class="media-heading"><small><a href="{{ url_for('shelf.item', shelf_id=reply.user.shelf.id) }}">{{ reply.user.get_display_name() }}</a> | {{ reply.timestamp|dt }}</small></h4>
+                    <h4 class="media-heading"><small><a href="{{ url_for('shelf.item', shelf_id=reply.user.shelf.id) }}">{{ reply.user.display_name }}</a> | {{ reply.timestamp|dt }}</small></h4>
                     {{ reply.content }}
                 </div>
             </div>

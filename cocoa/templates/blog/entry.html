@@ -8,7 +8,7 @@
     <h1><small>{{ post.title }}</small></h1>
     <blockquote>
         <div class="post-meta">
-            <span>{{ post.author.get_display_name() }}</span>
+            <span>{{ post.author.display_name }}</span>
             <span class="divider">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
             <span>{{ post.timestamp|dt }}</span>
 
@@ -41,7 +41,7 @@
 <div id="post-content">
     {% if post.ref_books %}
         {% for book in post.get_ref_books() %}
-        {% include 'book/badge.html' %}
+        {% include 'book/widgets/badge.html' %}
         {% endfor %}
         <br>
     {% endif %}

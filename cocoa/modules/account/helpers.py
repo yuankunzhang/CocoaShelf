@@ -46,7 +46,7 @@ def save_avatar(img):
     # delete old avatar
     if current_user.avatar is not None:
         old_avatar = os.path.join(basedir, current_user.avatar)
-        old_thumbnail = os.path.join(basedir, current_user.get_thumbnail())
+        old_thumbnail = os.path.join(basedir, current_user.thumbnail)
 
         if os.path.isfile(old_avatar):
             os.remove(old_avatar)
@@ -67,7 +67,7 @@ def update_thumbnail(thumbnail_box):
         raise ValueError('Action forbidden')
 
     avatar = os.path.join(basedir, current_user.avatar)
-    thumbnail = os.path.join(basedir, current_user.get_thumbnail())
+    thumbnail = os.path.join(basedir, current_user.thumbnail)
 
     img = Image.open(avatar).crop(thumbnail_box)
     _save_thumbnail(img, thumbnail)
