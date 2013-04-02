@@ -1,0 +1,14 @@
+{% extends 'layout/single_column.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1><small>发现书店</small></h1>
+</div>
+
+<div id="location">
+    <div>
+        所在地：{% if city %}{{ city.province.short_name + ' ' + city.name }}{% else %}全国{% endif %}
+        <span><a href="#">可可猜得不对？</a></span>
+    </div>
+</div>
+{% endblock %}

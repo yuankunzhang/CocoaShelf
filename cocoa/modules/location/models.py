@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
 
+from werkzeug import cached_property
+
 from flask.ext.babel import gettext as _
 
 from cocoa.extensions import db
@@ -48,7 +50,10 @@ class Province(db.Model):
 
     def get_short_name(self):
         return province_short_name(self.name)
-        return json.dumps(provinces)
+
+    @cached_property
+    def short_name(self):
+        return province_short_name(self.name)
 
 
 def _str2ip(ip_str):
@@ -58,10 +63,10 @@ def _str2ip(ip_str):
     if len(sections) != 4:
         raise ValueError(_('Not a valid IP address.'))
 
-    return (arr[0] << 24) | \
-           (arr[1] << 16) | \
-           (arr[2] << 8)  | \
-           (arr[3] << 0)
+    return (sections[0] << 24) | \
+           (sections[1] << 16) | \
+           (sections[2] << 8)  | \
+           (sections[3] << 0)
 
 
 def ip2city(ip_str):
