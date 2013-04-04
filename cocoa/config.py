@@ -39,6 +39,9 @@ class DefaultConfig(object):
     CACHE_TYPE = 'simple'
     CACHE_DEFAULT_TIMEOUT = 300
 
+    DOCS_DIR = os.path.join(_basedir, 'docs')
+    DOCS_DATA_DIR = os.path.join(DOCS_DIR, 'data')
+
     # 路径设置
     # 用户头像
     AVATAR_STATIC_PATH = '/static/upload/avatar/'

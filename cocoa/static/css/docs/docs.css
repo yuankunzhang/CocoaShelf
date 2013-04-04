@@ -1,0 +1,49 @@
+div.sphinxsidebar h3,
+div.sphinxsidebar h4 {
+    font-family: 'Garamond', 'Georgia', serif;
+    color: #444;
+    font-size: 1.5em;
+    font-weight: normal;
+    margin: 0 0 5px 0;
+}
+
+div.related,
+p.searchtip {
+    display: none;
+}
+
+a.headerlink {
+    color: #ddd;
+    padding: 0 4px;
+    visibility: hidden;
+}
+
+h1 {
+    font-size: 2em;
+    font-weight: normal;
+    color: #3e4349;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-weight: normal;
+}
+
+p {
+    color: #3e4349;
+}
+
+.doc-body a {
+    color: #004b6b;
+    border-bottom: 1px dotted #004b6b;
+}
+
+.doc-body a:hover {
+    color: #f26a1e;
+    text-decoration: none;
+    border-bottom: 1px solid #f26a1e;
+}
+
+#searchbox input {
+    display: block;
+}

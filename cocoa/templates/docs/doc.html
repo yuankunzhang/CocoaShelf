@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ doc.title }}
+{% endblock %}
+
+{% block css %}
+    {{ super() }}
+    <link rel="stylesheet" href="/static/css/docs/docs.css">
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+    {{ doc.js|safe }}
+{% endblock %}
+
+{% block content %}
+<div class="doc-body">
+    <div class="row-fluid">
+
+        <div class="left-col span4">
+            {{ doc.sidebar|safe }}
+        </div>
+
+        <div class="right-col span8">
+            {{ doc.relbar|safe }}
+            {{ doc.body|safe }}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

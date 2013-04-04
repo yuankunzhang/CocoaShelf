@@ -34,7 +34,8 @@ class City(db.Model):
     province = db.relationship('Province', backref='cities')
 
     def __repr__(self):
-        return '<City %r>' % self.name
+        return self.name
+        #return u'<City %r>' % self.name
 
 
 class Province(db.Model):

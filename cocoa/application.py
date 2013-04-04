@@ -13,7 +13,8 @@ from datetime import datetime
 from logging.handlers import RotatingFileHandler
 
 from jinja2 import evalcontextfilter, Markup, escape
-from flask import Flask, request, jsonify, render_template, g
+from flask import Flask, request, jsonify, render_template, \
+     g, render_template
 from flask.ext.babel import gettext as _
 from flask.ext.misaka import Misaka
 from flask.ext.principal import Principal, identity_loaded
@@ -24,7 +25,7 @@ from .admin import admin
 from .helpers.common import timesince as _timesince
 from .modules import frontend, location, account, book, shelf, \
       category, blog, colist, group, bookstore, mail, tag, \
-      recsys, vitality
+      recsys, vitality, docs
 
 __all__ = ['create_app']
 
@@ -45,6 +46,7 @@ DEFAULT_MODULES = (
     (tag.mod, '/tag'),
     (recsys.mod, '/recsys'),
     (vitality.mod, '/vitality'),
+    (docs.mod, '/docs'),
 )
 
 def create_app(config=None, app_name=None, modules=None):

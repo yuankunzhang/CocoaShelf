@@ -2,6 +2,8 @@
 from flask import current_app
 from flask.ext.script import Manager, prompt_bool
 
+from sphinx.websupport import WebSupport
+
 from cocoa import create_app
 from cocoa.extensions import db
 
@@ -42,6 +44,18 @@ def db_drop_all():
 
     if prompt_book("Are you sure? You will lose all your data!"):
         db.drop_all()
+
+
+@manager.command
+def docs_build():
+    """创建文档"""
+
+    docs_dir = current_app.config['DOCS_DIR']
+    from os.path import join
+    support = WebSupport(srcdir=docs_dir,
+                         builddir=docs_dir,
+                         staticroot='docs/static')
+    support.build()
 
 
 @manager.shell
