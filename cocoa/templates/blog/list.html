@@ -1,5 +1,5 @@
 <div id="posts">
-    {% for post in posts|reverse %}
+    {% for post in posts %}
     <div class="post">
         <div class="post-title clearfix">
             <h4><a href="{{ url_for('blog.entry', user_id=post.author.id, slug=post.slug) }}">{{ post.title }}</a></h4>
@@ -23,7 +23,7 @@
         </blockquote>
 
         <div class="post-content">
-            {{ post.content|markdown|nl2br }}
+            {{ post.content|markdown }}
         </div>
         <blockquote>
             <div class="post-keywords">

@@ -5,13 +5,26 @@
     margin-right: 60px;
 }
 
-#post-new-form textarea {
+#post-new-form #content-textarea {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+#post-new-form #editor {
+    position: relative;
+    width: 600px;
     height: 300px;
+    border: 1px solid #ddd;
+    margin-bottom: 16px;
+
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
 }
 
 #post-new-form .markdown-help {
     float: right;
-    margin-right: 80px;
 }
 
 #post-new-form #ref-books ul li {

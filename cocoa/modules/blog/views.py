@@ -72,6 +72,7 @@ def prepare_ref_books(id_type=None):
 
 @mod.route('/<int:user_id>/')
 def item(user_id):
+    """某用户的部落格"""
 
     user = User.query.get_or_404(user_id)
     posts = Post.query.get_published(user_id)

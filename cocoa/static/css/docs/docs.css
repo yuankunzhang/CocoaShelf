@@ -47,3 +47,7 @@ p {
 #searchbox input {
     display: block;
 }
+
+.left-col {
+    border-right: 1px solid #eee;
+}
