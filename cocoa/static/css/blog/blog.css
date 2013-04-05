@@ -5,6 +5,14 @@
     margin-right: 60px;
 }
 
+#post-new-form .control-label {
+    float: left;
+    width: 60px;
+    padding: 6px 10px 4px 0;
+    text-align: center;
+    background: #eee;
+}
+
 #post-new-form #content-textarea {
     width: 0;
     height: 0;
@@ -17,6 +25,7 @@
     height: 300px;
     border: 1px solid #ddd;
     margin-bottom: 16px;
+    line-height: 20px;
 
     border-radius: 4px;
     -moz-border-radius: 4px;
@@ -36,4 +45,27 @@
     border-radius: 4px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
+}
+
+.post h1, .post h2,
+.post h3, .post h4,
+.post h5, .post h6 {
+    font-weight: 300;
+    color: #333;
+}
+
+.post h1 {
+    font-size: 3em;
+}
+
+.post h2 {
+    font-size: 2em;
+}
+
+.post h3 {
+    font-size: 1.6em;
+}
+
+.post-content hr {
+    border-top: 1px solid #999;
 }

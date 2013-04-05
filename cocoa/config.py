@@ -52,6 +52,9 @@ class DefaultConfig(object):
     # 小组图腾
     TOTEM_STATIC_PATH = '/static/upload/totem/'
     TOTEM_BASE_DIR = os.path.join(_basedir, 'static/upload/totem')
+    # 相册
+    ALBUM_STATIC_PATH = '/static/upload/album/'
+    UPLOADED_ALBUM_DEST = os.path.join(_basedir, 'static/upload/album')
 
     FILES_PER_DIR = 1000
     MAX_CONTENT_LENGTH = 3 * 1024 * 1024

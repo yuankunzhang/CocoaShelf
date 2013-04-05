@@ -8,24 +8,27 @@
 """
 import re
 import logging
+import re
 from datetime import datetime
 
 from logging.handlers import RotatingFileHandler
 
+import markdown as md
+
 from jinja2 import evalcontextfilter, Markup, escape
 from flask import Flask, request, jsonify, render_template, \
-     g, render_template
+     g, render_template, Markup
 from flask.ext.babel import gettext as _
-from flask.ext.misaka import Misaka
 from flask.ext.principal import Principal, identity_loaded
+from flask.ext.uploads import configure_uploads
 
 from .config import DefaultConfig
-from .extensions import db, sijax, login_manager, cache, babel
+from .extensions import db, sijax, login_manager, cache, babel, album
 from .admin import admin
 from .helpers.common import timesince as _timesince
 from .modules import frontend, location, account, book, shelf, \
       category, blog, colist, group, bookstore, mail, tag, \
-      recsys, vitality, docs
+      recsys, vitality, docs, photoalbum
 
 __all__ = ['create_app']
 
@@ -47,6 +50,7 @@ DEFAULT_MODULES = (
     (recsys.mod, '/recsys'),
     (vitality.mod, '/vitality'),
     (docs.mod, '/docs'),
+    (photoalbum.mod, '/photoalbum'),
 )
 
 def create_app(config=None, app_name=None, modules=None):
@@ -117,6 +121,21 @@ def configure_template_filters(app):
         dt = datetime.fromtimestamp(timestamp)
         return dt
 
+    @app.template_filter()
+    def markdown(stream):
+        """
+            处理markdown格式文本
+            img标签：
+                ![Alt](/path/to/img, 'Optional Title')@width
+            或：
+                ![Alt](/path/to/img, 'Optional Title')@width@height
+        """
+
+        result = md.markdown(stream, safe_mode='remove')
+        re_img = r'(<img)(\s[^>]*\ssrc=".*?").*>@(\d+)'
+        result = re.sub(re_img, r'\1 width="\3"\2', result)
+        return Markup(result) 
+
 
 def configure_errorhandlers(app):
 
@@ -155,11 +174,11 @@ def configure_extensions(app):
     login_manager.init_app(app)
     login_manager.login_view = 'account.signin'
     cache.init_app(app)
-    Misaka(app)
 
     admin.init_app(app)
 
     configure_i18n(app)
+    configure_uploads(app, album)
 
 
 def configure_i18n(app):

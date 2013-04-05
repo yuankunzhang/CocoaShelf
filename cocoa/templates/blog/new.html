@@ -3,38 +3,49 @@
 {% block css %}
 {{ super() }}
 <link rel="stylesheet" href="/static/css/blog/blog.css">
-</style>
 {% endblock %}
 
 {% block content %}
 
 <div class="page-header">
     <h1><small>撰写新文章</small></h1>
+    <a href="{{ url_for('blog.item', user_id=current_user.id) }}">&larr;返回我的部落格</a>
 </div>
 
 <div id="post-new-form">
-    {% from 'macros/form.html' import render_field, render_submit %}
+    {% from 'macros/form.html' import render_field %}
     <form method="post" action="{{ url_for('blog.new') }}">
         {{ form.csrf_token }}
         {{ render_field(form.title, class='span5') }}
         {{ render_field(form.type) }}
+
+        <hr>
+
         <div class="control-group">
-            <label>引用图书</label>
             <div id="ref-books"><ul class="unstyled"></ul></div>
-            <a href="#add-ref-books-modal" class="btn" rol="button" data-toggle="modal">+ 添加</a>
+            <a href="#add-ref-books-modal" class="btn btn-small" rol="button" data-toggle="modal">+ 添加引用图书</a>
         </div>
         {{ render_field(form.ref_books) }}
-        {{ render_field(form.keywords, class='span5', placeholder='请使用英文逗号“,”作分隔符') }}
-        <a class="markdown-help" href="{{ url_for('docs.home', docname='markdown') }}" target="_blank">支持markdown格式&rarr;</a>
+
         <div id="content-textarea">
         {{ render_field(form.content, class='span7') }}
         </div>
-        <label>内容：</label>
-        <span id="mode-switch-btn">正常模式</span>
+
+        <hr>
+
+        <select id="mode-switch" class="span2">
+            <option value="windows">默认</option>
+            <option value="vim">Vim</option>
+            <option value="emacs">Emacs</option>
+        </select>
+
+        <a class="markdown-help" href="{{ url_for('docs.home', docname='markdown') }}" target="_blank">支持markdown格式&rarr;</a>
         <div id="editor"></div>
 
+        {{ render_field(form.keywords, class='span5', placeholder='请使用英文逗号“,”作分隔符') }}
+
         <div id="form-submit-btn">
-            {{ render_submit('发表') }}
+            <button type="submit" class="btn btn-primary">发表</button>
         </div>
     </form>
 
@@ -66,13 +77,10 @@ $(function() {
     var textarea = $('textarea');
 
     editor.getSession().setMode('ace/mode/markdown');
+    //editor.setTheme('ace/theme/github');
 
-    $('#mode-switch-btn').toggle(function() {
-        editor.setKeyboardHandler('ace/keyboard/vim');
-        $(this).html('Vim模式');
-    }, function() {
-        editor.setKeyboardHandler('ace/keyboard/windows');
-        $(this).html('正常模式');
+    $('#mode-switch').change(function() {
+        editor.setKeyboardHandler('ace/keyboard/' + $(this).val());
     });
 
     $('#form-submit-btn').click(function() {
