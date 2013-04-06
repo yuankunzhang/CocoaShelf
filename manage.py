@@ -28,6 +28,8 @@ from cocoa.modules.recsys.tag import SimilarTags
 from cocoa.modules.recsys.book import SimilarBooks
 from cocoa.modules.vitality.models import UserVitality
 from cocoa.modules.bookstore.models import Bookstore
+from cocoa.modules.photoalbum.models import PhotoAlbum, \
+     Album, AlbumPhotos
 
 manager = Manager(create_app())
 

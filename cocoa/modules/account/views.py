@@ -125,8 +125,8 @@ def upload_avatar():
 
         file = {
             'files': [{
-                'name':     '1.jpg',
-                'size':     1000,
+                'name':     '1.jpg', # TODO
+                'size':     1000,    # TODO
                 'url':      '/static/upload/avatar/' + current_user.avatar,
                 'delete_url':       '',
                 'delete_type':      'DELETE',

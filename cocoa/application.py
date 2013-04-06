@@ -132,7 +132,7 @@ def configure_template_filters(app):
         """
 
         result = md.markdown(stream, safe_mode='remove')
-        re_img = r'(<img)(\s[^>]*\ssrc=".*?").*>@(\d+)'
+        re_img = r'(<img)(\s[^>]*\ssrc=".*?".*>)@(\d+)'
         result = re.sub(re_img, r'\1 width="\3"\2', result)
         return Markup(result) 
 

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
+import os
+
 from flask import Blueprint, request, jsonify, current_app, \
      render_template
-from flask.ext.login import login_required
+from flask.ext.login import current_user, login_required
 from flask.ext.babel import gettext as _
-from flask.ext.uploads import UploadSet, IMAGES
 
-from cocoa.helpers.upload import mkdir
-from cocoa.extensions import album
+from cocoa.extensions import album as album_set
+from .models import Album
 
 mod = Blueprint('photoalbum', __name__)
 
@@ -23,12 +24,26 @@ def upload():
     if request.method == 'POST':
         if 'photo' not in request.files:
             raise ValueError(_(u'bad request'))
+        file = request.files['photo']
 
-        folder = mkdir(album.config.destination)
+        default_album = Album.query.user_default_album(current_user)
+        folder = default_album.folder
 
-        filename = album.save(request.files['photo'], folder)
-        print filename
+        src = album_set.save(request.files['photo'], folder)
+        filename = src.split('/')[-1]
 
-        return 'Photo upload.'
+        default_album.add_photo(filename)
+
+        file = {
+            'files': [{
+                'name':         filename, # TODO
+                'size':         100,      # TODO
+                'url':          '/static/upload/album/' + src,
+                'delete_url':   '',
+                'delete_type':  'DELETE',
+            }]
+        }
+
+        return jsonify(file)
 
     return render_template('photoalbum/upload.html')

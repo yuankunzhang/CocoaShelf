@@ -1,8 +1,43 @@
 {% extends 'layout/single_column.html' %}
 
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/plugins/fileupload/css/jquery.fileupload-ui.css">
+{% endblock %}
+
 {% block content %}
-<form action="{{ url_for('photoalbum.upload') }}" method="post" enctype="multipart/form-data">
-    <input type="file" name="photo">
-    <input type="submit" value="上传">
+
+<div class="page-header">
+    <h1><small>上传图片</small></h1>
+</div>
+
+<form id="fileupload" action="" method="post" enctype="multipart/form-data">
+    <div class="row fileupload-buttonbar">
+        <div class="span7">
+            <span class="btn btn-success fileinput-button">
+                <i class="icon-plus icon-white"></i>
+                <span>上传头像...</span>
+                <input type="file" name="photo">
+            </span>
+        </div>
+    </div>
 </form>
+
+<script type="text/javascript" src="/static/plugins/fileupload/js/vendor/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.fileupload-fp.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.fileupload-ui.js"></script>
+
+<script type="text/javascript">
+var uploader = $('#fileupload');
+uploader.fileupload({
+    dataType:           'json',
+    autoUpload:         true,
+    fileInput:          uploader.find('input:file'),
+    acceptFileTypes:    /(\.|\/)(gif|jpe?g|png)$/i,
+    maxFileSize:        3 * 1024 * 1024,
+});
+</script>
+
 {% endblock %}

@@ -3,6 +3,7 @@
 {% block css %}
 {{ super() }}
 <link rel="stylesheet" href="/static/css/blog/blog.css">
+<link rel="stylesheet" href="/static/plugins/fileupload/css/jquery.fileupload-ui.css">
 {% endblock %}
 
 {% block content %}
@@ -22,7 +23,7 @@
 
         <div class="control-group">
             <div id="ref-books"><ul class="unstyled"></ul></div>
-            <a href="#add-ref-books-modal" class="btn" rol="button" data-toggle="modal">+ 添加引用图书</a>
+            <a href="#add-ref-books-modal" class="btn btn-small" rol="button" data-toggle="modal">+ 添加引用图书</a>
         </div>
         {{ render_field(form.ref_books) }}
 
@@ -35,6 +36,8 @@
             <option value="vim">Vim</option>
             <option value="emacs">Emacs</option>
         </select>
+
+        <a href="#insert-img-modal" class="btn btn-small" rol="button" data-toggle="modal">+ 插入图片</a>
 
         <a class="markdown-help" href="{{ url_for('docs.home', docname='markdown') }}" target="_blank">支持markdown格式&rarr;</a>
         <div id="editor"></div>
@@ -60,12 +63,53 @@
             <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
             <button class="btn btn-primary">确定</button>
         </div>
-    </div><!-- end .modal -->
+    </div><!-- end #add-ref-books-modal -->
+
+    <div id="insert-img-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-header">
+            <h1><small>插入图片</small></h1>
+        </div>
+
+        <div class="modal-body">
+            <form id="fileupload" action="{{ url_for('photoalbum.upload') }}" method="post" enctype="multipart/form-data">
+                <div class="row fileupload-buttonbar">
+                    <div class="span7">
+                        <span class="btn btn-success fileinput-button">
+                            <i class="icon-plus icon-white"></i>
+                            <span>上传图片...</span>
+                            <input type="file" name="photo">
+                        </span>
+                    </div>
+                </div>
+            </form>
+
+            <div id="target-img"></div>
+            <div id="img-info">
+                <label for="img-width">图片宽度：
+                    <input type="text" id="img-width" class="span2" name="width">
+                </label>
+                <label for="img-alt">替换文字：
+                    <input type="text" id="img-alt" class="span2" name="alt">
+                </label>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-primary">确定</button>
+        </div>
+    </div><!-- end #insert-img-modal -->
 </div>
 
 <script type="text/javascript" src="/static/js/blog/ref_book_input.js"></script>
 <script type="text/javascript" src="/static/js/jquery/jquery.placeholder.min.js"></script>
 <script type="text/javascript" src="/static/js/ace/lib/ace.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/vendor/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.fileupload-fp.js"></script>
+<script type="text/javascript" src="/static/plugins/fileupload/js/jquery.fileupload-ui.js"></script>
+
 <script type="text/javascript">
 $(function() {
     $('input').placeholder();
@@ -83,6 +127,56 @@ $(function() {
 
     $('#form-submit-btn').click(function() {
         textarea.val(editor.getSession().getValue());
+    });
+
+
+    // 插入图片
+    var insert_img_btn = $('#insert-img-modal .btn-primary');
+    var img_info = $('#insert-img-modal #img-info');
+
+    var img_markdown_tag, url, name;
+
+    img_markdown_tag = url = name = '';
+    insert_img_btn.attr('disabled', 'disabled');
+    img_info.hide();
+
+    var uploader = $('#fileupload');
+    uploader.fileupload({
+        dataType:           'json',
+        autoUpload:         true,
+        fileInput:          uploader.find('input:file'),
+        acceptFileTypes:    /(\.|\/)(gif|jpe?g|png)$/i,
+        maxFileSize:        3 * 1024 * 1024,
+        success:            function(data, status) {
+            url = data.files[0].url;
+            name = data.files[0].name.split('.')[0];
+
+            $('#target-img').append('<img src="' + url + '">');
+            insert_img_btn.removeAttr('disabled');
+            img_info.show();
+        }
+    });
+
+    insert_img_btn.click(function() {
+        var width = img_info.find('input[name=width]').val();
+        var alt = img_info.find('input[name=alt]').val();
+        alt = alt || name;
+
+        if (width) {
+            img_markdown_tag = '![' + alt +'](' + url + ')@' + width;
+        } else {
+            img_markdown_tag = '![' + alt +'](' + url + ')';
+        }
+
+        content = editor.getValue() + img_markdown_tag;
+        editor.setValue(content, 1);
+
+        img_markdown_tag = url = name = '';
+        $(this).attr('disabled', 'disabled');
+        $('#target-img').empty();
+        img_info.hide();
+        $('#insert-img-modal').modal('hide');
+        editor.focus();
     });
 });
 </script>

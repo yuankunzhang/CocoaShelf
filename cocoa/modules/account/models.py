@@ -28,6 +28,7 @@ from ..tag.models import Tag, UserBookTags
 from ..shelf.models import Shelf
 from ..comment.models import BookShortReview
 from ..vitality.models import UserVitality
+from ..photoalbum.models import Album
 
 class UserQuery(BaseQuery):
 
@@ -126,13 +127,15 @@ class User(db.Model):
 
             1.初始化用户书架
             2.初始化“用户活跃度”表
-            3.写入“注册”事件
+            3.初始化默认相册
+            4.写入“注册”事件
         """
 
         u = User.query.filter_by(email=self.email).first()
         if u is None:
             self.shelf = Shelf()
             self.vitality = UserVitality()
+            self.albums.append(Album('default', default=True))
             db.session.add(self)
             db.session.commit()
 
