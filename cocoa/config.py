@@ -60,6 +60,11 @@ class DefaultConfig(object):
     MAX_CONTENT_LENGTH = 3 * 1024 * 1024
 
 
+class ProductionConfig(object):
+
+    DEBUG = False
+
+
 class TestConfig(object):
 
     TESTING = True

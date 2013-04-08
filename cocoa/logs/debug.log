@@ -1,2 +1,346 @@
 2013-03-28 11:21:14,060 DEBUG: A value for debugging [in /var/www/cocoa/cocoa/modules/shelf/views.py:47]
 2013-03-28 11:21:40,595 DEBUG: A value for debugging [in /var/www/cocoa/cocoa/modules/shelf/views.py:47]
+2013-04-07 12:03:30,528 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2263, in configure_mappers
+    mapper._post_configure_properties()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 1172, in _post_configure_properties
+    prop.init()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/interfaces.py", line 128, in init
+    self.do_init()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/properties.py", line 911, in do_init
+    self._determine_joins()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/properties.py", line 1048, in _determine_joins
+    % self)
+ArgumentError: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:04:33,560 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:05:35,038 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:05:35,758 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:05:36,214 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:05:36,390 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:05:36,614 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:05:40,120 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:05:40,615 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:05:40,824 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:08:07,214 ERROR: Exception on /book/ [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/book/views.py", line 24, in home
+    recent_books = Book.query.get_recent_books()
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:08:10,528 ERROR: Exception on /book/ [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/book/views.py", line 24, in home
+    recent_books = Book.query.get_recent_books()
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:08:14,923 ERROR: Exception on /book/ [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/book/views.py", line 24, in home
+    recent_books = Book.query.get_recent_books()
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship Mail.from_user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:10:08,785 ERROR: Exception on /book/ [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/book/views.py", line 24, in home
+    recent_books = Book.query.get_recent_books()
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2263, in configure_mappers
+    mapper._post_configure_properties()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 1172, in _post_configure_properties
+    prop.init()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/interfaces.py", line 128, in init
+    self.do_init()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/properties.py", line 911, in do_init
+    self._determine_joins()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/properties.py", line 1048, in _determine_joins
+    % self)
+ArgumentError: Could not determine join condition between parent/child tables on relationship MailInbox.user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:10:14,092 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship MailInbox.user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-07 12:10:17,131 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1358, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1344, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "./cocoa/modules/frontend/views.py", line 21, in home
+    books_top_10 = BookRate.top_list(10)
+  File "./cocoa/modules/bookrate/models.py", line 85, in top_list
+    return Book.query.outerjoin(BookRate).\
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_sqlalchemy.py", line 394, in __get__
+    mapper = orm.class_mapper(type)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/util.py", line 661, in class_mapper
+    mapperlib.configure_mappers()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
+    raise e
+InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship MailInbox.user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.

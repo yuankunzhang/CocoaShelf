@@ -16,8 +16,10 @@ class Follower(db.Model):
     timestamp = db.Column(db.Integer, default=int(time()))
 
     from_user = db.relationship('User', foreign_keys=[from_user_id],
+        primaryjoin='Follower.from_user_id==User.id',
         backref=db.backref('u_followings', cascade='all, delete-orphan'))
     to_user = db.relationship('User', foreign_keys=[to_user_id],
+        primaryjoin='Follower.to_user_id==User.id',
         backref=db.backref('u_followers', cascade='all, delete-orphan'))
     
     def __init__(self, to_user, from_user=None):

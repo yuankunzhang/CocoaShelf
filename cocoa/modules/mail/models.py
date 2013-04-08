@@ -20,8 +20,10 @@ class Mail(db.Model):
     timestamp = db.Column(db.Integer, default=int(time()))
 
     from_user = db.relationship('User', foreign_keys=[from_user_id],
+        primaryjoin='Mail.from_user_id==User.id',
         backref=db.backref('sent_mails', cascade='all, delete-orphan'))
     to_user = db.relationship('User', foreign_keys=[to_user_id],
+        primaryjoin='Mail.to_user_id==User.id',
         backref=db.backref('received_mails', cascade='all, delete-orphan'))
     child_mail = db.relationship('Mail',
         backref=db.backref('parent_mail', remote_side=id))
@@ -55,8 +57,10 @@ class MailInbox(db.Model):
     unread = db.Column(db.Boolean, default=True)
 
     user = db.relationship('User', foreign_keys=[user_id],
+        primaryjoin='MailInbox.user_id==User.id',
         backref=db.backref('inbox', cascade='all, delete-orphan'))
-    from_user = db.relationship('User', foreign_keys=[from_user_id])
+    from_user = db.relationship('User', foreign_keys=[from_user_id],
+        primaryjoin='MailInbox.from_user_id==User.id')
     mail = db.relationship('Mail',
         backref=db.backref('mail_thumb', uselist=False))
 
