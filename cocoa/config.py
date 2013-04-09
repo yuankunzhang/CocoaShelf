@@ -64,6 +64,9 @@ class ProductionConfig(object):
 
     DEBUG = False
 
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:900307@localhost/cocoa'
+    SQLALCHEMY_ECHO = False
+
 
 class TestConfig(object):
 
