@@ -71,17 +71,35 @@
         </div>
 
         <div class="modal-body">
-            <form id="fileupload" action="{{ url_for('photoalbum.upload') }}" method="post" enctype="multipart/form-data">
-                <div class="row fileupload-buttonbar">
-                    <div class="span7">
-                        <span class="btn btn-success fileinput-button">
-                            <i class="icon-plus icon-white"></i>
-                            <span>上传图片...</span>
-                            <input type="file" name="photo">
-                        </span>
-                    </div>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" href="#upload-img">上传一张图片</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#select-img">从相册选择</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="modal-tab-content">
+                <div id="upload-img" class="tab-pane fade active in">
+                    <form id="fileupload" action="{{ url_for('photoalbum.upload') }}" method="post" enctype="multipart/form-data">
+                        <div class="row fileupload-buttonbar">
+                            <div class="span7">
+                                <span class="btn btn-success fileinput-button">
+                                    <i class="icon-plus icon-white"></i>
+                                    <span>上传图片...</span>
+                                    <input type="file" name="photo">
+                                </span>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+
+                <div id="select-img" class="tab-pane fade">
+                    {% set album=default_album %}
+                    {% include 'photoalbum/widgets/photo_list.html' %}
+                </div>
+            </div>
 
             <div id="target-img"></div>
             <div id="img-info">
@@ -95,7 +113,7 @@
         </div>
 
         <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+            <button class="btn btn-cansel" data-dismiss="modal" aria-hidden="true">取消</button>
             <button class="btn btn-primary">确定</button>
         </div>
     </div><!-- end #insert-img-modal -->
@@ -132,13 +150,20 @@ $(function() {
 
     // 插入图片
     var insert_img_btn = $('#insert-img-modal .btn-primary');
+    var cansel_btn = $('#insert-img-modal .btn-cansel');
     var img_info = $('#insert-img-modal #img-info');
 
     var img_markdown_tag, url, name;
 
-    img_markdown_tag = url = name = '';
-    insert_img_btn.attr('disabled', 'disabled');
-    img_info.hide();
+    function init() {
+        img_markdown_tag = url = name = '';
+        insert_img_btn.attr('disabled', 'disabled');
+        $('#target-img').empty();
+        $('#photos').show();
+        img_info.hide();
+    }
+
+    init();
 
     var uploader = $('#fileupload');
     uploader.fileupload({
@@ -157,6 +182,17 @@ $(function() {
         }
     });
 
+    $('#photos li img').click(function() {
+        url = $(this).attr('src');
+        var full_name = url.split('/').slice(-1)[0];
+        name = full_name.split('.')[0];
+
+        $('#photos').slideUp().hide(100);
+        $('#target-img').append('<img src="' + url + '">');
+        insert_img_btn.removeAttr('disabled');
+        img_info.show();
+    });
+
     insert_img_btn.click(function() {
         var width = img_info.find('input[name=width]').val();
         var alt = img_info.find('input[name=alt]').val();
@@ -168,14 +204,16 @@ $(function() {
             img_markdown_tag = '![' + alt +'](' + url + ')';
         }
 
-        content = editor.getValue() + img_markdown_tag;
-        editor.setValue(content, 1);
+        editor.insert(img_markdown_tag);
 
-        img_markdown_tag = url = name = '';
-        $(this).attr('disabled', 'disabled');
-        $('#target-img').empty();
-        img_info.hide();
         $('#insert-img-modal').modal('hide');
+        init();
+        editor.focus();
+    });
+
+    cansel_btn.click(function() {
+        $('#insert-img-modal').modal('hide');
+        init();
         editor.focus();
     });
 });

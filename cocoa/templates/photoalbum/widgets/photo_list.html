@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="/static/css/photoalbum/photo_list.css">
+
+<div id="photos">
+    <ul class="unstyled">
+        <div class="row">
+        {% for photo in album.photos %}
+            <li class="pull-left">
+                <img class="img-polaroid" width=100 src="{{ photo.url }}">
+            </li>
+            {% if loop.index % 5 == 0 %}
+        </div>
+        <div class="row">
+            {% endif %}
+        {% endfor %}
+        </div>
+    </ul>
+</div>

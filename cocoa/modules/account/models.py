@@ -28,7 +28,6 @@ from ..tag.models import Tag, UserBookTags
 from ..shelf.models import Shelf
 from ..comment.models import BookShortReview
 from ..vitality.models import UserVitality
-from ..photoalbum.models import Album
 
 class UserQuery(BaseQuery):
 
@@ -130,6 +129,7 @@ class User(db.Model):
             3.初始化默认相册
             4.写入“注册”事件
         """
+        from ..photoalbum.models import Album
 
         u = User.query.filter_by(email=self.email).first()
         if u is None:

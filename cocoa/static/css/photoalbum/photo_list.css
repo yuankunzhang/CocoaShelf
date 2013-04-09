@@ -1,0 +1,17 @@
+#photos {
+    width: 700px;
+}
+
+#photos .row {
+    margin-bottom: 30px;
+}
+
+#photos .row li {
+    margin-left: 10px;
+    border: 2px solid white;
+    cursor: pointer;
+}
+
+#photos .row li:hover {
+    border: 2px solid #ccc;
+}

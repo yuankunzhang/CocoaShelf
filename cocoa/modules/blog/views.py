@@ -11,6 +11,7 @@ from .models import Post
 from .forms import PostNewForm
 from ..account.models import User
 from ..book.models import Book
+from ..photoalbum.models import Album
 
 mod = Blueprint('blog', __name__)
 
@@ -40,7 +41,10 @@ def new(ref_book_id=None):
         flash(_(u'Published new post.'))
         return redirect(url_for('blog.home'))
 
-    return render_template('blog/new.html', form=form)
+    default_album = Album.query.user_default_album(current_user)
+
+    return render_template('blog/new.html', form=form,
+                            default_album=default_album)
 
 
 @mod.route('/prepare_ref_books/', methods=['POST'])
@@ -123,7 +127,10 @@ def edit(user_id, slug):
         return redirect(url_for('blog.entry', user_id=user_id, slug=slug))
 
     form.keywords.data = [n.name for n in post.keywords]
-    return render_template('blog/edit.html', post=post, form=form)
+    default_album = Album.query.user_default_album(current_user)
+
+    return render_template('blog/edit.html', post=post,
+                            form=form, default_album=default_album)
 
 
 @mod.route('/keywords/<int:user_id>/')

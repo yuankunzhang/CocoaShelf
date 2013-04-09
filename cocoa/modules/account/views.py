@@ -17,7 +17,6 @@ from .models import User
 from .forms import SigninForm, SignupForm, SettingsForm, \
         PasswordChangeForm
 from .helpers import save_avatar, update_thumbnail
-from .ajax import AjaxActions
 from ..vitality.consts import VitalityTable
 
 mod = Blueprint('account', __name__)

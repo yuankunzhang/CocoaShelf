@@ -2,31 +2,12 @@
 import os
 from time import time
 
+from werkzeug import cached_property
+
 from flask.ext.sqlalchemy import BaseQuery
 
 from cocoa.extensions import db, album as album_set
 from cocoa.helpers.upload import mkdir
-
-class PhotoAlbum(db.Model):
-
-    __tablename__ = 'photo_album'
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    photo_src = db.Column(db.String(100))
-    timestamp = db.Column(db.Integer, default=int(time()))
-
-    user = db.relationship('User',
-        backref=db.backref('photo_album', cascade='all, delete-orphan'))
-
-    def __init__(self, photo_src, user=None):
-        self.photo_src = photo_src
-        self.user = user
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
 
 class AlbumPhotos(db.Model):
 
@@ -43,6 +24,10 @@ class AlbumPhotos(db.Model):
     def __init__(self, filename, album=None):
         self.filename = filename
         self.album = album
+
+    @cached_property
+    def url(self):
+        return os.path.join(self.album.path, self.filename)
 
 
 class AlbumQuery(BaseQuery):
@@ -85,3 +70,7 @@ class Album(db.Model):
     def add_photo(self, src):
         self.photos.append(AlbumPhotos(src))
         db.session.commit()
+
+    @cached_property
+    def path(self):
+        return '/static/upload/album/' + self.folder

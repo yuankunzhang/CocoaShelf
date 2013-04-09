@@ -1,0 +1,54 @@
+<a href="#insert-img-modal" class="btn btn-small" rol="button" data-toggle="modal">+ 插入图片</a>
+
+<div id="insert-img-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <h1><small>插入图片</small></h1>
+    </div>
+
+    <div class="modal-body">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#upload-img">上传一张图片</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#select-img">从相册选择</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="modal-tab-content">
+            <div id="upload-img" class="tab-pane fade active in">
+                <form id="fileupload" action="{{ url_for('photoalbum.upload') }}" method="post" enctype="multipart/form-data">
+                    <div class="row fileupload-buttonbar">
+                        <div class="span7">
+                            <span class="btn btn-success fileinput-button">
+                                <i class="icon-plus icon-white"></i>
+                                <span>上传图片...</span>
+                                <input type="file" name="photo">
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div id="select-img" class="tab-pane fade">
+                {% set album=default_album %}
+                {% include 'photoalbum/widgets/photo_list.html' %}
+            </div>
+        </div>
+
+        <div id="target-img"></div>
+        <div id="img-info">
+            <label for="img-width">图片宽度：
+                <input type="text" id="img-width" class="span2" name="width">
+            </label>
+            <label for="img-alt">替换文字：
+                <input type="text" id="img-alt" class="span2" name="alt">
+            </label>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-cansel" data-dismiss="modal" aria-hidden="true">取消</button>
+        <button class="btn btn-primary">确定</button>
+    </div>
+</div><!-- end #insert-img-modal -->

@@ -8,6 +8,7 @@ from flask.ext.babel import gettext as _
 
 from cocoa.extensions import album as album_set
 from .models import Album
+from ..account.models import User
 
 mod = Blueprint('photoalbum', __name__)
 
@@ -15,6 +16,24 @@ mod = Blueprint('photoalbum', __name__)
 def home():
 
     return 'Photo album index.'
+
+
+@mod.route('/<int:user_id>/')
+def user_albums(user_id):
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template('photoalbum/user_albums.html',
+                            albums=user.albums)
+
+
+@mod.route('/item/<int:album_id>/')
+def album_item(album_id):
+
+    album = Album.query.get_or_404(album_id)
+
+    return render_template('photoalbum/album_item.html',
+                            album=album)
 
 
 @mod.route('/upload/', methods=['GET', 'POST'])
