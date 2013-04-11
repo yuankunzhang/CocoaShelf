@@ -89,10 +89,10 @@ def search():
 @mod.route('/about/')
 def page_about():
 
-    return render_template('about.html')
+    return render_template('frontend/about.html')
 
 
 @mod.route('/contact/')
 def page_contact():
 
-    return render_template('contact.html')
+    return render_template('frontend/contact.html')
