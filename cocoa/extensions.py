@@ -11,14 +11,17 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from flask.ext.cache import Cache
 from flask.ext.babel import Babel
+from flask.ext.mail import Mail
 from flask.ext.uploads import UploadSet, IMAGES
 
-__all__ = ['db', 'sijax', 'login_manager', 'cache', 'babel', 'album']
+__all__ = ['db', 'sijax', 'login_manager', 'cache', 'babel', \
+           'sys_mail', 'album']
 
 db = SQLAlchemy()
 sijax = flask_sijax.Sijax()
 login_manager = LoginManager()
 cache = Cache()
 babel = Babel()
+sys_mail = Mail()
 # 用户相册
 album = UploadSet('album', IMAGES)

@@ -23,7 +23,8 @@ from flask.ext.principal import Principal, identity_loaded
 from flask.ext.uploads import configure_uploads
 
 from .config import DefaultConfig
-from .extensions import db, sijax, login_manager, cache, babel, album
+from .extensions import db, sijax, login_manager, cache, babel, \
+      sys_mail, album
 from .admin import admin
 from .helpers.common import timesince as _timesince
 from .modules import frontend, location, account, book, shelf, \
@@ -173,6 +174,7 @@ def configure_extensions(app):
     sijax.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = 'account.signin'
+    sys_mail.init_app(app)
     cache.init_app(app)
 
     admin.init_app(app)

@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 import os
 import time
+from threading import Thread
 
 from PIL import Image
 
-from flask import current_app
+from flask import current_app, url_for
 from flask.ext.login import current_user
+from flask.ext.mail import Message
 
-from cocoa.extensions import db
+from cocoa.extensions import db, sys_mail
 from cocoa.helpers.upload import mkdir
+from .models import SignupConfirm
 
 FORMAT = 'JPEG'
 EXTENSION = '.jpg'
@@ -117,3 +120,21 @@ def _save_thumbnail(img, out):
         save(out, FORMAT, quality=100)
 
     return thumbnail_box
+
+
+def send_confirm_mail(user):
+
+    subject = u'确认你的可可帐号!'
+    msg = Message(subject=subject,
+                  sender=('Cocoa', 'fmcocoa@gmail.com'),
+                  recipients=[user.email])
+
+    confirm = SignupConfirm(user)
+    confirm.save()
+    # 发送确认邮件
+    confirm_url = url_for('account.activate_user',
+        user_id=user.id, hashstr=confirm.hashstr, _external=True)
+    msg.body = u'亲爱的%s, 点击这里确认您的帐号：%s' % \
+        (user.display_name, confirm_url)
+
+    sys_mail.send(msg)

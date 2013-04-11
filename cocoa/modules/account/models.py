@@ -4,7 +4,9 @@
 """
 import os
 import re
+import hashlib
 from time import time
+from datetime import datetime
 from PIL import Image
 
 from werkzeug import generate_password_hash, check_password_hash, \
@@ -22,7 +24,7 @@ from cocoa.extensions import db, login_manager
 from cocoa.permissions import moderator
 from cocoa.helpers.sql import JSONEncodedDict
 from cocoa.helpers.upload import mkdir
-from .consts import Role, Gender
+from .consts import Role, Gender, Status
 from ..event.models import SignUpEvent
 from ..tag.models import Tag, UserBookTags
 from ..shelf.models import Shelf
@@ -49,6 +51,10 @@ class UserQuery(BaseQuery):
                 User.email.like(q) | User.penname.like(q)).\
                all()
 
+    def get(self, id):
+        return self.filter_by(id=id).\
+               filter_by(status=Status.ACTIVATED.value).first()
+
 
 class User(db.Model):
     """用户表"""
@@ -68,7 +74,7 @@ class User(db.Model):
     thumbnail_box = db.Column(JSONEncodedDict(255))
     city_id = db.Column(db.String(20), db.ForeignKey('geo_city.city_id'))
     role = db.Column(db.SmallInteger, default=Role.MEMBER.value)
-    active = db.Column(db.Boolean, default=False)
+    status = db.Column(db.Integer, default=Status.INACTIVE.value)
     timestamp = db.Column(db.Integer, default=int(time()))
 
     city = db.relationship('City', backref='users')
@@ -143,6 +149,19 @@ class User(db.Model):
             e.save()
         else:
             raise ValueError(_('This email has been signed up.'))
+
+    def account_confirm(self, hashstr):
+        """ 帐号确认"""
+
+        confirm = SignupConfirm.query.get(self.id)
+        print confirm.hashstr
+        if confirm is None or confirm.hashstr != hashstr:
+            return False;
+        else:
+            confirm.accepted = True
+            self.status = Status.ACTIVATED.value
+            db.session.commit()
+            return True
     
     def update(self, penname, intro, gender, city_id):
         self.penname = penname
@@ -182,7 +201,7 @@ class User(db.Model):
     @staticmethod
     def authenticate(email, password):
         u = User.query.filter_by(email=email).first()
-        if u is None or \
+        if u is None or u.status != Status.ACTIVATED.value or \
                 not check_password_hash(u.password, password):
             return None, False
         else:
@@ -193,9 +212,7 @@ class User(db.Model):
         return True
 
     def is_active(self):
-        # TODO
-        #return self.active = True
-        return True
+        return self.status == Status.ACTIVATED.value
 
     def is_anonymous(self):
         return False
@@ -290,6 +307,50 @@ class User(db.Model):
         from ..comment.models import BookShortReview
         return BookShortReview.query.filter_by(book_id=book_id).\
                 filter_by(user_id=self.id).first()
+
+
+class SignupConfirmQuery(BaseQuery):
+
+    expiration = 1    # one day
+
+    def get(self, user_id):
+        confirm = self.filter_by(user_id=user_id).\
+                  order_by(SignupConfirm.id.desc()).first()
+        if confirm is None:
+            return None
+
+        diff = datetime.now() - datetime.fromtimestamp(confirm.timestamp)
+        if diff.days < 1:
+            return confirm
+        else:
+            return None
+
+
+class SignupConfirm(db.Model):
+    """注册验证"""
+
+    __tablename__ = 'signup_confirm'
+
+    query_class = SignupConfirmQuery
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    hashstr = db.Column(db.String(255))
+    timestamp = db.Column(db.Integer, default=int(time()))
+    accepted = db.Column(db.Boolean, default=False)
+
+    user = db.relationship('User')
+
+    def __init__(self, user=None):
+        self.user = user
+
+        m = hashlib.md5()
+        m.update(str(int(time())))
+        self.hashstr = m.hexdigest()
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
 
 @login_manager.user_loader

@@ -84,3 +84,15 @@ def search():
                             results=results, q=q,
                             type=type,
                             SearchType=SearchType)
+
+
+@mod.route('/about/')
+def page_about():
+
+    return render_template('about.html')
+
+
+@mod.route('/contact/')
+def page_contact():
+
+    return render_template('contact.html')

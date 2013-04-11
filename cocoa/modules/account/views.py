@@ -5,7 +5,7 @@ from PIL import Image
 
 import flask_sijax
 from flask import Blueprint, request, render_template, session, \
-     redirect, url_for, flash, g, jsonify, current_app
+     redirect, url_for, flash, g, jsonify, current_app, abort
 from flask.ext.login import login_required, login_user, \
      logout_user, current_user
 from flask.ext.babel import gettext as _
@@ -13,10 +13,10 @@ from flask.ext.principal import Identity, AnonymousIdentity, \
      identity_changed
 
 from cocoa.permissions import moderator
-from .models import User
+from .models import User, SignupConfirm
 from .forms import SigninForm, SignupForm, SettingsForm, \
         PasswordChangeForm
-from .helpers import save_avatar, update_thumbnail
+from .helpers import save_avatar, update_thumbnail, send_confirm_mail
 from ..vitality.consts import VitalityTable
 
 mod = Blueprint('account', __name__)
@@ -41,10 +41,11 @@ def signup():
                     form.city_id.data)
 
         user.save()
-        
-        login_user(user)
-        flash(_(u'Successfully signed up.'))
-        return redirect(url_for('account.settings', user_id=user.id))
+        # 发送确认邮件
+        send_confirm_mail()
+        flash(_(u'Confirmation email has been sent,'
+                u'please confirm your account in 24 hours.'))
+        return redirect(url_for('account.activate_user', user_id=user.id))
 
     return render_template('account/signup.html', form=form)
 
@@ -75,6 +76,26 @@ def signin(next=None):
             return redirect(next)
 
     return render_template('account/signin.html', form=form, next=next)
+
+
+@mod.route('/activate/<int:user_id>/')
+@mod.route('/activate/<int:user_id>/<string:hashstr>/')
+def activate_user(user_id, hashstr=None):
+
+    user = User.query.get_or_404(user_id)
+
+    if hashstr is None:
+        confirm = SignupConfirm.query.get(user_id)
+        if confirm is None:
+            abort(404)
+        else:
+            return render_template('account/activate_user.html', user=user)
+    else:
+        if user.account_confirm(hashstr):
+            flash(_(u'Your account has been confirmed, please sign in.'))
+            return redirect(url_for('account.signin'))
+        else:
+            abort(404)
 
 
 @mod.route('/signout/')

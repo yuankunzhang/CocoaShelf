@@ -15,3 +15,6 @@ def deploy():
 
     dist = local('python setup.py --fullname', capture=True).strip()
     put('dist/%s.tar.gz' % dist, '/tmp/cocoa.tar.gz')
+    run('mkdir /tmp/cocoa')
+    with cd('/tmp/cocoa'):
+        run('tar xzf /tmp/cocoa.tar.gz')

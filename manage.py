@@ -8,7 +8,7 @@ from cocoa import create_app
 from cocoa.extensions import db
 
 from cocoa.modules.location.models import IpSection, City, Province
-from cocoa.modules.account.models import User
+from cocoa.modules.account.models import User, SignupConfirm
 from cocoa.modules.book.models import Book, BookExtra
 from cocoa.modules.category.models import Category, BookCategory
 from cocoa.modules.tag.models import Tag, BookTags, UserBookTags

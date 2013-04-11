@@ -39,6 +39,13 @@ class DefaultConfig(object):
     CACHE_TYPE = 'simple'
     CACHE_DEFAULT_TIMEOUT = 300
 
+    # Flask-Mail
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = 'fmcocoa@gmail.com'
+    MAIL_PASSWORD = 'cocoa12345'
+
     DOCS_DIR = os.path.join(_basedir, 'docs')
     DOCS_DATA_DIR = os.path.join(DOCS_DIR, 'data')
 
