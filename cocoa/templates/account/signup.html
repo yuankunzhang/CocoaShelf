@@ -19,37 +19,17 @@
 </div>
 
 <div id="signup-form">
-    {% from 'macros/form.html' import center_form %}
+    {% from 'macros/form.html' import center_form, render_field %}
     {% call center_form('account.signup') %}
         {{ form.csrf_token }}
 
-        <div class="control-group{% if form.email.errors %} error{% endif %}">
-            <div class="controls input-prepend">
-                <span class="add-on"><i class="icon-envelope"></i></span>
-                {{ form.email(placeholder=_('Email')) }}
-            </div>
-            <span class="help-inline">{{ ' '.join(form.email.errors) }}</span>
-        </div>
-
-        <div class="control-group{% if form.password.errors %} error{% endif %}">
-            <div class="controls input-prepend">
-                <span class="add-on"><i class="icon-key"></i></span>
-                {{ form.password(placeholder=_('password')) }}
-            </div>
-            <span class="help-inline">{{ ' '.join(form.password.errors) }}</span>
-        </div>
-
-        <div class="control-group{% if form.confirm.errors %} error{% endif %}">
-            <div class="controls input-prepend">
-                <span class="add-on"><i class="icon-retweet"></i></span>
-                {{ form.confirm(placeholder=_('confirm password')) }}
-            </div>
-            <span class="help-inline">{{ ' '.join(form.confirm.errors) }}</span>
-        </div>
+        {{ render_field(form.email) }}
+        {{ render_field(form.password) }}
+        {{ render_field(form.confirm) }}
 
         <div class="control-group">
+            <label class="control-label">城市</label>
             <div id="location" class="controls">
-                <label>城市</label>
                 {{ form.city_id }}
                 {% include 'account/cityselect.html' %}
             </div>
@@ -58,8 +38,8 @@
         <hr>
 
         <div class="control-group{% if form.recaptcha.errors %} error{% endif %}">
+            <label class="control-label">验证码</label>
             <div id="recaptcha" class="controls">
-                <label>请输入验证码</label>
                 {{ form.recaptcha }}
                 <div>{{ ' '.join(form.recaptcha.errors) }}</div>
             </div>
@@ -73,10 +53,8 @@
     {% endcall %}
 </div>
 
-<script type="text/javascript" src="/static/js/jquery/jquery.placeholder.min.js"></script>
 <script type="text/javascript">
 $('document').ready(function() {
-    $('input').placeholder();
     $('#signup-form').cityselect();
 });
 </script>

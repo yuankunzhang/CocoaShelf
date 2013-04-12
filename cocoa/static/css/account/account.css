@@ -5,9 +5,17 @@
     margin-right: 60px;
 }
 
-#signup-form #location label {
-    width: 50px;
-    float: left;
+#signup-form label,
+#signin-form label {
+    height: 26px;
+    line-height: 26px;
+}
+
+#signup-form input,
+#signin-form #signin-email,
+#signin-form #signin-password {
+    width: 300px;
+    height: 26px;
 }
 
 #settings-form #avatar .controls {

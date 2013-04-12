@@ -21,26 +21,12 @@
 {{ flash_messages() }}
 
 <div id="signin-form">
-    {% from 'macros/form.html' import center_form, render_checkbox %}
+    {% from 'macros/form.html' import center_form, render_field, render_checkbox %}
     {% call center_form('account.signin', next=next) %}
         {{ form.csrf_token }}
 
-        <div class="control-group{% if form.email.errors %} error{% endif %}">
-            <div class="controls input-prepend">
-                <span class="add-on"><i class="icon-envelope"></i></span>
-                {{ form.email(placeholder=_('Email')) }}
-            </div>
-            <span class="help-inline">{{ ' '.join(form.email.errors) }}</span>
-        </div>
-
-        <div class="control-group{% if form.password.errors %} error{% endif %}">
-            <div class="controls input-prepend">
-                <span class="add-on"><i class="icon-key"></i></span>
-                {{ form.password(placeholder=_('password')) }}
-            </div>
-            <span class="help-inline">{{ ' '.join(form.password.errors) }}</span>
-        </div>
-
+        {{ render_field(form.email) }}
+        {{ render_field(form.password) }}
         {{ render_checkbox(form.remember) }}
 
         <div class="control-group">

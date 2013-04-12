@@ -47,7 +47,6 @@ def signup():
         send_confirm_mail(user)
         return redirect(url_for('account.activate_user', user_id=user.id))
 
-    print form.recaptcha.errors
     return render_template('account/signup.html', form=form)
 
 
@@ -72,10 +71,12 @@ def signin(next=None):
             identity_changed.send(current_app._get_current_object(),
                                   identity=Identity(user.id))
 
-            flash('登入成功!')
+            flash(u'登入成功!')
             if next is None:
                 next = url_for('shelf.item', shelf_id=user.shelf.id)
             return redirect(next)
+        else:
+            form.password.errors = (u'密码不正确',)
 
     return render_template('account/signin.html', form=form, next=next)
 
@@ -96,7 +97,7 @@ def activate_user(user_id, hashstr=None):
             return render_template('account/activate_user.html', user=user)
     else:
         if user.account_confirm(hashstr):
-            flash(_(u'您的帐号已经被激活，请从这里登入.'))
+            flash(u'您的帐号已经被激活，请从这里登入.')
             return redirect(url_for('account.signin'))
         else:
             abort(404)
