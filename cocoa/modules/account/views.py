@@ -32,6 +32,7 @@ def signup():
 
     form = SignupForm(request.form)
 
+    # 已登入用户：重定向至首页
     if current_user.is_authenticated():
         return redirect(url_for('frontend.home'))
 
@@ -41,12 +42,12 @@ def signup():
                     form.city_id.data)
 
         user.save()
-        # 发送确认邮件
+
+        # 发送帐号确认邮件
         send_confirm_mail(user)
-        flash(_(u'Confirmation email has been sent,'
-                u'please confirm your account in 24 hours.'))
         return redirect(url_for('account.activate_user', user_id=user.id))
 
+    print form.recaptcha.errors
     return render_template('account/signup.html', form=form)
 
 
@@ -57,6 +58,7 @@ def signin(next=None):
     if request.args.has_key('next'):
         next = request.args['next']
 
+    # 已登入用户：重定向至首页
     if current_user.is_authenticated():
         return redirect(url_for('frontend.home'))
 
@@ -70,7 +72,7 @@ def signin(next=None):
             identity_changed.send(current_app._get_current_object(),
                                   identity=Identity(user.id))
 
-            flash(_('Successfully signed in.'))
+            flash('登入成功!')
             if next is None:
                 next = url_for('shelf.item', shelf_id=user.shelf.id)
             return redirect(next)
@@ -94,7 +96,7 @@ def activate_user(user_id, hashstr=None):
             return render_template('account/activate_user.html', user=user)
     else:
         if user.account_confirm(hashstr):
-            flash(_(u'Your account has been confirmed, please sign in.'))
+            flash(_(u'您的帐号已经被激活，请从这里登入.'))
             return redirect(url_for('account.signin'))
         else:
             abort(404)
@@ -128,7 +130,7 @@ def settings():
                             form.gender.data,
                             form.city_id.data)
 
-        flash(_(u'Settings updated'))
+        flash(u'帐号设置已更新')
         return redirect(url_for('shelf.item',
                                 shelf_id=current_user.shelf.id))
 

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Cocoa Version 0.4\n"
 "Report-Msgid-Bugs-To: feber007@gmail.com\n"
 "POT-Creation-Date: 2013-03-03 00:56+0800\n"
-"PO-Revision-Date: 2013-03-17 13:52+0800\n"
+"PO-Revision-Date: 2013-04-12 11:03+0800\n"
 "Last-Translator: Vincent Zhang <feber007@gmail.com>\n"
 "Language-Team: zh_CN <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=0\n"
@@ -18,31 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: application.py:98
+#: application.py:149
 msgid "404 page not found"
 msgstr "404 未找到页面"
 
-#: application.py:104
+#: application.py:155
 msgid "403 forbidden"
 msgstr "403 访问禁止"
 
-#: application.py:110
+#: application.py:161
 msgid "500 server error"
 msgstr "500 服务器错误"
 
-#: application.py:116
+#: application.py:167
 msgid "401 unauthorized"
 msgstr "401 未授权"
 
-#: helpers/common.py:13
+#: helpers/common.py:17
 msgid "just now"
 msgstr "刚刚"
 
-#: helpers/enum.py:38
+#: helpers/enum.py:41
 msgid "Wrong value"
 msgstr "错误的值"
 
-#: helpers/enum.py:44
+#: helpers/enum.py:47
 msgid "Wrong key"
 msgstr "错误的键"
 
@@ -58,45 +58,54 @@ msgstr "男"
 msgid "Female"
 msgstr "女"
 
-#: modules/account/forms.py:15 modules/account/forms.py:42
-#: templates/account/signin.html:26 templates/account/signup.html:26
+#: modules/account/forms.py:16 modules/account/forms.py:43
+#: templates/account/signin.html:28 templates/account/signup.html:29
 msgid "Email"
 msgstr "邮箱"
 
-#: modules/account/forms.py:16 modules/account/forms.py:21
-#: modules/account/forms.py:43 modules/account/forms.py:49
-#: modules/account/forms.py:54 modules/account/forms.py:64
-#: modules/account/forms.py:106 modules/account/forms.py:113
+#: modules/account/forms.py:17 modules/account/forms.py:22
+#: modules/account/forms.py:44 modules/account/forms.py:50
+#: modules/account/forms.py:55 modules/account/forms.py:65
+#: modules/account/forms.py:108 modules/account/forms.py:114
 #: modules/account/forms.py:119 modules/blog/forms.py:12
 #: modules/colist/forms.py:10 modules/colist/forms.py:14
+#: modules/group/forms.py:24 modules/group/forms.py:29
+#: modules/group/forms.py:39 modules/group/forms.py:46
+#: modules/group/views.py:38 modules/mail/forms.py:13 modules/mail/forms.py:17
+#: modules/shelf/forms.py:10
 msgid "Required"
 msgstr "必填"
 
-#: modules/account/forms.py:17 modules/account/forms.py:44
+#: modules/account/forms.py:18 modules/account/forms.py:45
 msgid "Invalid email address"
 msgstr "错误的邮箱地址"
 
-#: modules/account/forms.py:20 modules/account/forms.py:48
+#: modules/account/forms.py:21 modules/account/forms.py:49
 msgid "Password"
 msgstr "密码"
 
-#: modules/account/forms.py:24
+#: modules/account/forms.py:25
 msgid "Remember me"
 msgstr "记住我"
 
-#: modules/account/forms.py:30
+#: modules/account/forms.py:31
 msgid "This email address has been signed up."
 msgstr "该邮箱已被注册"
 
-#: modules/account/forms.py:53
+#: modules/account/forms.py:51 modules/account/forms.py:66
+#: modules/account/forms.py:109 modules/account/forms.py:115
+msgid "No less than 6 characters"
+msgstr ""
+
+#: modules/account/forms.py:54
 msgid "Confirm Password"
 msgstr "确认密码"
 
-#: modules/account/forms.py:55
+#: modules/account/forms.py:56
 msgid "Doesn't match to your password"
 msgstr "密码不匹配"
 
-#: modules/account/forms.py:63
+#: modules/account/forms.py:64
 msgid "Pen name"
 msgstr "笔名"
 
@@ -108,19 +117,15 @@ msgstr "介绍"
 msgid "Gender"
 msgstr "性别"
 
-#: modules/account/forms.py:86 templates/account/upload_avatar.html:18
-msgid "Upload avatar"
-msgstr "上传头像"
-
-#: modules/account/forms.py:94
+#: modules/account/forms.py:96
 msgid "Wrong password"
 msgstr "密码错误"
 
-#: modules/account/forms.py:105
+#: modules/account/forms.py:107
 msgid "Old password"
 msgstr "旧密码"
 
-#: modules/account/forms.py:112
+#: modules/account/forms.py:113
 msgid "New password"
 msgstr "新密码"
 
@@ -132,35 +137,39 @@ msgstr "确认密码"
 msgid "Not match"
 msgstr "不匹配"
 
-#: modules/account/models.py:75
+#: modules/account/models.py:147
 msgid "This email has been signed up."
 msgstr "该邮箱已经被使用"
 
-#: modules/account/models.py:92
+#: modules/account/models.py:188
 msgid "Wrong previous password."
 msgstr "原密码错误"
 
-#: modules/account/views.py:42
-msgid "Successfully signed up."
-msgstr "注册成功"
+#: modules/account/views.py:46
+msgid "Confirmation email has been sent,please confirm your account in 24 hours."
+msgstr ""
 
-#: modules/account/views.py:65
+#: modules/account/views.py:73
 msgid "Successfully signed in."
 msgstr "登入成功"
 
-#: modules/account/views.py:91
+#: modules/account/views.py:97
+msgid "Your account has been confirmed, please sign in."
+msgstr ""
+
+#: modules/account/views.py:131
 msgid "Settings updated"
 msgstr "更新帐号设置成功"
 
-#: modules/account/views.py:105
-msgid "Avatar uploaded successfully."
-msgstr "头像上传成功"
+#: modules/account/views.py:144 modules/photoalbum/views.py:45
+msgid "bad request"
+msgstr ""
 
-#: modules/account/views.py:122
+#: modules/account/views.py:176
 msgid "Thumbnail updated."
 msgstr "更新缩略图"
 
-#: modules/account/views.py:135
+#: modules/account/views.py:189
 msgid "Password changed"
 msgstr "密码更改"
 
@@ -176,11 +185,11 @@ msgstr "书评"
 msgid "Note"
 msgstr "读书笔记"
 
-#: modules/blog/forms.py:11
+#: modules/blog/forms.py:11 modules/mail/forms.py:12
 msgid "Title"
 msgstr "标题"
 
-#: modules/blog/forms.py:15
+#: modules/blog/forms.py:15 modules/mail/forms.py:16
 msgid "Content"
 msgstr "正文"
 
@@ -192,7 +201,11 @@ msgstr "类型"
 msgid "References"
 msgstr "引用"
 
-#: modules/blog/views.py:34
+#: modules/blog/forms.py:27
+msgid "Keywords"
+msgstr ""
+
+#: modules/blog/views.py:41
 msgid "Published new post."
 msgstr "发表新文章"
 
@@ -200,19 +213,19 @@ msgstr "发表新文章"
 msgid "Added to your shelf!"
 msgstr "添加一本书到您的书架上！"
 
-#: modules/book/ajax.py:36
+#: modules/book/ajax.py:40
 msgid "Successfully added."
 msgstr "添加成功"
 
-#: modules/book/models.py:98
+#: modules/book/models.py:117
 msgid "Invalid isbn number"
 msgstr "ISBN号无效"
 
-#: modules/book/models.py:125
+#: modules/book/models.py:144
 msgid "We've already have this bookin our database"
 msgstr "数据库中已经收录本书"
 
-#: modules/category/views.py:27
+#: modules/category/views.py:30
 msgid "Changed book category"
 msgstr "更改图书分类"
 
@@ -224,13 +237,96 @@ msgstr "书单名称"
 msgid "Colist Introduction"
 msgstr "书单介绍"
 
-#: modules/location/models.py:59
+#: modules/follower/models.py:33
+msgid "You've already followed this user."
+msgstr ""
+
+#: modules/frontend/consts.py:7
+msgid "Book"
+msgstr ""
+
+#: modules/frontend/consts.py:8
+msgid "User"
+msgstr ""
+
+#: modules/frontend/consts.py:9
+msgid "Group"
+msgstr ""
+
+#: modules/frontend/consts.py:10
+msgid "Colist"
+msgstr ""
+
+#: modules/frontend/consts.py:11
+msgid "Post"
+msgstr ""
+
+#: modules/frontend/views.py:55
+msgid "No query string."
+msgstr ""
+
+#: modules/frontend/views.py:63
+msgid "Search type not recognized."
+msgstr ""
+
+#: modules/group/ajax.py:15
+msgid "Your applicant has been sent."
+msgstr ""
+
+#: modules/group/forms.py:11 modules/group/models.py:145
+#, fuzzy
+msgid "This group name has been used."
+msgstr "该邮箱已经被使用"
+
+#: modules/group/forms.py:23
+msgid "Group Name"
+msgstr ""
+
+#: modules/group/forms.py:28
+#, fuzzy
+msgid "Group Introduction"
+msgstr "介绍"
+
+#: modules/group/forms.py:32
+#, fuzzy
+msgid "Totem"
+msgstr "读书笔记"
+
+#: modules/group/forms.py:38
+msgid "Topic title"
+msgstr ""
+
+#: modules/group/forms.py:45
+msgid "Reply"
+msgstr ""
+
+#: modules/group/models.py:154
+msgid "You've already in this group"
+msgstr ""
+
+#: modules/group/models.py:156
+msgid "You've post your applicant"
+msgstr ""
+
+#: modules/group/models.py:168
+msgid "This user is group member"
+msgstr ""
+
+#: modules/group/models.py:220
+msgid "You've already applied to join."
+msgstr ""
+
+#: modules/location/models.py:65
 msgid "Not a valid IP address."
 msgstr "无效的IP地址"
 
-#: modules/shelf/ajax.py:17
+#: modules/shelf/ajax.py:16
 msgid "Finish reading a book."
 msgstr "这本书读完了"
+
+#: modules/shelf/ajax.py:27
+msgid "You followed this user."
+msgstr ""
 
 #: modules/shelf/consts.py:8
 msgid "我有"
@@ -252,43 +348,64 @@ msgstr ""
 msgid "喜欢"
 msgstr ""
 
-#: modules/shelf/models.py:216
+#: modules/shelf/forms.py:9
+msgid "Comment this shelf"
+msgstr ""
+
+#: modules/shelf/models.py:270
 msgid "No such user."
 msgstr "没有该用户"
+
+#: modules/shelf/views.py:91
+msgid "Commented this shelf."
+msgstr ""
+
+#: modules/shelf/views.py:124
+#, fuzzy
+msgid "Added books to shelf."
+msgstr "添加一本书到您的书架上！"
 
 #: templates/account/change_password.html:11
 msgid "Change password"
 msgstr "更改密码"
 
-#: templates/account/settings.html:12
-msgid "Settings"
-msgstr "设置"
-
-#: templates/account/settings.html:55 templates/macros/form.html:47
+#: templates/account/settings.html:55 templates/macros/form.html:56
 msgid "确定"
 msgstr ""
 
-#: templates/account/signin.html:11 templates/account/signin.html:43
+#: templates/account/signin.html:13 templates/account/signin.html:45
 msgid "Sign In"
 msgstr "登入"
 
-#: templates/account/signin.html:34 templates/account/signup.html:34
+#: templates/account/signin.html:36 templates/account/signup.html:37
 msgid "password"
 msgstr "密码"
 
-#: templates/account/signin.html:44
+#: templates/account/signin.html:46
 msgid "Forgot your password?"
 msgstr "忘记密码了？"
 
-#: templates/account/signup.html:42
+#: templates/account/signup.html:45
 msgid "confirm password"
 msgstr "确认密码"
 
-#: templates/account/signup.html:57
+#: templates/account/signup.html:60
 msgid "Sign Up"
 msgstr "注册"
 
-#: templates/book/index.html:10
-msgid "Book index"
-msgstr "图书目录"
+#: templates/account/upload_avatar.html:20
+msgid "Upload avatar"
+msgstr "上传头像"
+
+#~ msgid "Successfully signed up."
+#~ msgstr "注册成功"
+
+#~ msgid "Avatar uploaded successfully."
+#~ msgstr "头像上传成功"
+
+#~ msgid "Settings"
+#~ msgstr "设置"
+
+#~ msgid "Book index"
+#~ msgstr "图书目录"
 

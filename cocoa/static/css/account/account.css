@@ -18,3 +18,8 @@
 #settings-form #password {
     margin-top: 5px;
 }
+
+#recaptcha_table #recaptcha_logo,
+#recaptcha_table #recaptcha_tagline {
+    display: none;
+}

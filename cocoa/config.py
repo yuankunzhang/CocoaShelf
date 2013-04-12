@@ -39,6 +39,11 @@ class DefaultConfig(object):
     CACHE_TYPE = 'simple'
     CACHE_DEFAULT_TIMEOUT = 300
 
+    # Flask-WTF: Recaptcha
+    RECAPTCHA_USE_SSL = False
+    RECAPTCHA_PUBLIC_KEY = '6Lfbw98SAAAAANOlO6u7ZuKsGq-GBu2HUXisehoq'
+    RECAPTCHA_PRIVATE_KEY = '6Lfbw98SAAAAALEJ_c_1CbmnSVLBmNOnOMPkrxt9'
+
     # Flask-Mail
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465

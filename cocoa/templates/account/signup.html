@@ -55,6 +55,16 @@
             </div>
         </div>
 
+        <hr>
+
+        <div class="control-group{% if form.recaptcha.errors %} error{% endif %}">
+            <div id="recaptcha" class="controls">
+                <label>请输入验证码</label>
+                {{ form.recaptcha }}
+                <div>{{ ' '.join(form.recaptcha.errors) }}</div>
+            </div>
+        </div>
+
         <div class="control-group">
             <div class="controls">
                 <button class="btn btn-primary" type="submit">{{ _('Sign Up') }}</button>

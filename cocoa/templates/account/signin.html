@@ -17,6 +17,9 @@
     </div>
 </div>
 
+{% from 'macros/flash.html' import flash_messages %}
+{{ flash_messages() }}
+
 <div id="signin-form">
     {% from 'macros/form.html' import center_form, render_checkbox %}
     {% call center_form('account.signin', next=next) %}

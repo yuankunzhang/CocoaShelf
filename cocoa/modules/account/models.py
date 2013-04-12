@@ -140,9 +140,6 @@ class User(db.Model):
         if u is None:
             db.session.add(self)
             db.session.commit()
-
-            e = SignUpEvent(self.id)
-            e.save()
         else:
             raise ValueError(_('This email has been signed up.'))
 
@@ -168,6 +165,9 @@ class User(db.Model):
             self.vitality = UserVitality()
             self.albums.append(Album('default', default=True))
             db.session.commit()
+
+            e = SignUpEvent(self.id)
+            e.save()
             return True
     
     def update(self, penname, intro, gender, city_id):
@@ -236,7 +236,7 @@ class User(db.Model):
         location = {
             'city_id': None,
             'province_id': None,
-            'text': None,
+            'text': '',
         }
 
         if self.city is None:
