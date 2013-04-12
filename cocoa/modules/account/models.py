@@ -55,6 +55,10 @@ class UserQuery(BaseQuery):
         return self.filter_by(id=id).\
                filter_by(status=Status.ACTIVATED.value).first()
 
+    def get_inactive_user(self, id):
+        return self.filter_by(id=id).\
+               filter_by(status=Status.INACTIVE.value).first()
+
 
 class User(db.Model):
     """用户表"""

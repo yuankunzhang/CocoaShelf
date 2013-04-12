@@ -82,7 +82,9 @@ def signin(next=None):
 @mod.route('/activate/<int:user_id>/<string:hashstr>/')
 def activate_user(user_id, hashstr=None):
 
-    user = User.query.get_or_404(user_id)
+    user = User.query.get_inactive_user(user_id)
+    if user is None:
+        abort(404)
 
     if hashstr is None:
         confirm = SignupConfirm.query.get(user_id)
