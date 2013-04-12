@@ -42,7 +42,7 @@ def signup():
 
         user.save()
         # 发送确认邮件
-        send_confirm_mail()
+        send_confirm_mail(user)
         flash(_(u'Confirmation email has been sent,'
                 u'please confirm your account in 24 hours.'))
         return redirect(url_for('account.activate_user', user_id=user.id))

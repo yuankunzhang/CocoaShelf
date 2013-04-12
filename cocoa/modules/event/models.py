@@ -16,11 +16,10 @@ class EventRecord(db.Model):
     what = db.Column(JSONEncodedDict(255))
     timestamp = db.Column(db.Integer, default=int(time()))
 
-    def __init__(self, type, event, timestamp=None):
+    def __init__(self, type, event):
         self.type = type
         self.who = event.who
         self.what = event.__dict__
-        self.timestamp = timestamp
 
     def save(self):
         db.session.add(self)

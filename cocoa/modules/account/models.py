@@ -128,20 +128,12 @@ class User(db.Model):
 
     def save(self):
         """
-            保存新注册用户
+            保存新注册用户（未激活）
 
-            1.初始化用户书架
-            2.初始化“用户活跃度”表
-            3.初始化默认相册
-            4.写入“注册”事件
         """
-        from ..photoalbum.models import Album
 
         u = User.query.filter_by(email=self.email).first()
         if u is None:
-            self.shelf = Shelf()
-            self.vitality = UserVitality()
-            self.albums.append(Album('default', default=True))
             db.session.add(self)
             db.session.commit()
 
@@ -151,15 +143,26 @@ class User(db.Model):
             raise ValueError(_('This email has been signed up.'))
 
     def account_confirm(self, hashstr):
-        """ 帐号确认"""
+        """
+            帐号确认
+
+            1.初始化用户书架
+            2.初始化“用户活跃度”表
+            3.初始化默认相册
+            4.写入“注册”事件
+        """
+
+        from ..photoalbum.models import Album
 
         confirm = SignupConfirm.query.get(self.id)
-        print confirm.hashstr
         if confirm is None or confirm.hashstr != hashstr:
             return False;
         else:
             confirm.accepted = True
             self.status = Status.ACTIVATED.value
+            self.shelf = Shelf()
+            self.vitality = UserVitality()
+            self.albums.append(Album('default', default=True))
             db.session.commit()
             return True
     

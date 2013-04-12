@@ -344,3 +344,126 @@ Traceback (most recent call last):
   File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/mapper.py", line 2260, in configure_mappers
     raise e
 InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers.  Original exception was: Could not determine join condition between parent/child tables on relationship MailInbox.user.  Specify a 'primaryjoin' expression.  If 'secondary' is present, 'secondaryjoin' is needed as well.
+2013-04-11 23:15:25,406 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1356, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1539, in preprocess_request
+    rv = func()
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_login.py", line 321, in _load_user
+    self.reload_user()
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_login.py", line 350, in reload_user
+    user = self.user_callback(user_id)
+  File "./cocoa/modules/account/models.py", line 359, in load_user
+    return User.query.get(user_id)
+  File "./cocoa/modules/account/models.py", line 56, in get
+    filter_by(status=Status.ACTIVATED.value).first()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2156, in first
+    ret = list(self[0:1])
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2023, in __getitem__
+    return list(res)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2227, in __iter__
+    return self._execute_and_instances(context)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2242, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1449, in execute
+    params)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1584, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1698, in _execute_context
+    context)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1691, in _execute_context
+    context)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/default.py", line 331, in do_execute
+    cursor.execute(statement, parameters)
+  File "/usr/lib/python2.6/site-packages/MySQL_python-1.2.4b4-py2.6-linux-i686.egg/MySQLdb/cursors.py", line 202, in execute
+    self.errorhandler(self, exc, value)
+  File "/usr/lib/python2.6/site-packages/MySQL_python-1.2.4b4-py2.6-linux-i686.egg/MySQLdb/connections.py", line 36, in defaulterrorhandler
+    raise errorclass, errorvalue
+OperationalError: (OperationalError) (1054, "Unknown column 'user.password' in 'field list'") 'SELECT user.id AS user_id, user.email AS user_email, user.password AS user_password, user.username AS user_username, user.penname AS user_penname, user.intro AS user_intro, user.gender AS user_gender, user.avatar AS user_avatar, user.thumbnail_box AS user_thumbnail_box, user.city_id AS user_city_id, user.role AS user_role, user.status AS user_status, user.timestamp AS user_timestamp \nFROM user \nWHERE user.id = %s AND user.status = %s \n LIMIT %s' ('1', 1, 1)
+2013-04-11 23:15:25,702 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1356, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1539, in preprocess_request
+    rv = func()
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_login.py", line 321, in _load_user
+    self.reload_user()
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_login.py", line 350, in reload_user
+    user = self.user_callback(user_id)
+  File "./cocoa/modules/account/models.py", line 359, in load_user
+    return User.query.get(user_id)
+  File "./cocoa/modules/account/models.py", line 56, in get
+    filter_by(status=Status.ACTIVATED.value).first()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2156, in first
+    ret = list(self[0:1])
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2023, in __getitem__
+    return list(res)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2227, in __iter__
+    return self._execute_and_instances(context)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2242, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1449, in execute
+    params)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1584, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1698, in _execute_context
+    context)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1691, in _execute_context
+    context)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/default.py", line 331, in do_execute
+    cursor.execute(statement, parameters)
+  File "/usr/lib/python2.6/site-packages/MySQL_python-1.2.4b4-py2.6-linux-i686.egg/MySQLdb/cursors.py", line 202, in execute
+    self.errorhandler(self, exc, value)
+  File "/usr/lib/python2.6/site-packages/MySQL_python-1.2.4b4-py2.6-linux-i686.egg/MySQLdb/connections.py", line 36, in defaulterrorhandler
+    raise errorclass, errorvalue
+OperationalError: (OperationalError) (1054, "Unknown column 'user.password' in 'field list'") 'SELECT user.id AS user_id, user.email AS user_email, user.password AS user_password, user.username AS user_username, user.penname AS user_penname, user.intro AS user_intro, user.gender AS user_gender, user.avatar AS user_avatar, user.thumbnail_box AS user_thumbnail_box, user.city_id AS user_city_id, user.role AS user_role, user.status AS user_status, user.timestamp AS user_timestamp \nFROM user \nWHERE user.id = %s AND user.status = %s \n LIMIT %s' ('1', 1, 1)
+2013-04-11 23:16:34,541 ERROR: Exception on / [GET] [in /usr/lib/python2.6/site-packages/flask/app.py:1306]
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1687, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1360, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1356, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "/usr/lib/python2.6/site-packages/flask/app.py", line 1539, in preprocess_request
+    rv = func()
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_login.py", line 321, in _load_user
+    self.reload_user()
+  File "/var/www/cocoa/venv/lib/python2.6/site-packages/flask_login.py", line 350, in reload_user
+    user = self.user_callback(user_id)
+  File "./cocoa/modules/account/models.py", line 359, in load_user
+    return User.query.get(user_id)
+  File "./cocoa/modules/account/models.py", line 56, in get
+    filter_by(status=Status.ACTIVATED.value).first()
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2156, in first
+    ret = list(self[0:1])
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2023, in __getitem__
+    return list(res)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2227, in __iter__
+    return self._execute_and_instances(context)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/orm/query.py", line 2242, in _execute_and_instances
+    result = conn.execute(querycontext.statement, self._params)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1449, in execute
+    params)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1584, in _execute_clauseelement
+    compiled_sql, distilled_params
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1698, in _execute_context
+    context)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/base.py", line 1691, in _execute_context
+    context)
+  File "/usr/lib/python2.6/site-packages/sqlalchemy/engine/default.py", line 331, in do_execute
+    cursor.execute(statement, parameters)
+  File "/usr/lib/python2.6/site-packages/MySQL_python-1.2.4b4-py2.6-linux-i686.egg/MySQLdb/cursors.py", line 202, in execute
+    self.errorhandler(self, exc, value)
+  File "/usr/lib/python2.6/site-packages/MySQL_python-1.2.4b4-py2.6-linux-i686.egg/MySQLdb/connections.py", line 36, in defaulterrorhandler
+    raise errorclass, errorvalue
+OperationalError: (OperationalError) (1054, "Unknown column 'user.password' in 'field list'") 'SELECT user.id AS user_id, user.email AS user_email, user.password AS user_password, user.username AS user_username, user.penname AS user_penname, user.intro AS user_intro, user.gender AS user_gender, user.avatar AS user_avatar, user.thumbnail_box AS user_thumbnail_box, user.city_id AS user_city_id, user.role AS user_role, user.status AS user_status, user.timestamp AS user_timestamp \nFROM user \nWHERE user.id = %s AND user.status = %s \n LIMIT %s' ('1', 1, 1)
