@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import math
 
+from PIL import Image
+
 import flask_sijax
 from flask import Blueprint, request, render_template, g, \
     redirect, url_for, flash
@@ -8,8 +10,10 @@ from flask.ext.login import current_user, login_required
 from flask.ext.principal import Permission
 
 from cocoa.permissions import moderator
-from .models import Book
+from .models import Book, BookExtra
+from .forms import BookAddForm
 from .ajax import AjaxActions
+from .helpers import save_cover
 from ..tag.models import BookTags
 from ..shelf.consts import ColumnType
 from ..bookrate.models import BookRate
@@ -27,6 +31,41 @@ def home():
     return render_template('book/index.html',
                             recent_books=recent_books,
                             popular_books=popular_books)
+
+
+@mod.route('/add/', methods=['GET', 'POST'])
+@login_required
+def add():
+
+    form = BookAddForm(request.form)
+
+    if form.validate_on_submit():
+        book = Book(
+            form.isbn.data,
+            form.title.data,
+            form.author.data,
+            form.publisher.data,
+            form.price.data,
+            form.subtitle.data,
+            form.orititle.data,
+            form.translator.data,
+            None,
+            form.pubdate.data,
+            form.currency.data,
+            form.pages.data,
+            form.binding.data
+        )
+
+        book.extra = BookExtra(form.summary.data, form.author_intro.data)
+        book.save()
+
+        # 保存封面图片
+        if 'cover' in request.files:
+            save_cover(Image.open(request.files['cover']), book)
+
+        return redirect(url_for('book.item', book_id=book.id))
+
+    return render_template('book/add.html', form=form)
 
 
 BOOKS_PER_PAGE = 10

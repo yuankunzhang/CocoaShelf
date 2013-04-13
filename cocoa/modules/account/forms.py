@@ -65,8 +65,6 @@ class SignupForm(Form):
 class SettingsForm(Form):
 
     penname = TextField(u'笔名', [
-        Required(message=u'必填'),
-        Length(min=6, message=u'长度不少于6位'),
     ], id=u'settings-penname')
 
     intro = TextAreaField(u'个人简介', [

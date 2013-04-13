@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-from flask.ext.babel import gettext as _
-
 from cocoa.helpers.enum import Enum
 
 Role = Enum('MEMBER', 'MODERATOR', 'ADMIN')
 
 Gender = Enum('SECRET', 'MALE', 'FEMALE')
-Gender.SECRET.set_text(_(u'Secret'))
-Gender.MALE.set_text(_(u'Male'))
-Gender.FEMALE.set_text(_(u'Female'))
+Gender.SECRET.set_text(u'保密')
+Gender.MALE.set_text(u'男')
+Gender.FEMALE.set_text(u'女')
 
 Status = Enum('INACTIVE', 'ACTIVATED', 'DELETED')

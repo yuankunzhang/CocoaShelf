@@ -7,13 +7,15 @@
 </form>
 {% endmacro %}
 
-{% macro render_field(field, placeholder, class=None) %}
+{% macro render_field(field, placeholder, class='') %}
     <div class="control-group">
         {{ field.label(class="control-label") }}
 
         <div class="controls">
         {% if placeholder %}
             {{ field(placeholder=placeholder, class=class) }}
+        {% elif field.description %}
+            {{ field(placeholder=field.description, class=class) }}
         {% else %}
             {{ field(class=class) }}
         {% endif %}
@@ -53,7 +55,7 @@
 {% macro render_submit(label) %}
     <div class="control-group">
         <div class="controls">
-            <button type="submit" class="btn">{% if label %}{{ label }}{% else %}{{ _('确定') }}{% endif %}</button>
+            <button type="submit" class="btn btn-primary">{% if label %}{{ label }}{% else %}{{ _('确定') }}{% endif %}</button>
         </div>
     </div>
 {% endmacro %}

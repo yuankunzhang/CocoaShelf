@@ -1,0 +1,67 @@
+{% extends 'layout/single_column.html' %}
+
+{% block css %}
+{{ super() }}
+<link rel="stylesheet" href="/static/plugins/datepicker/css/datepicker.css">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><small>添加一本图书</small></h1>
+</div>
+
+<div id="book-add-form">
+    {% from 'macros/form.html' import render_field, render_submit %}
+    <form action="{{ url_for('book.add') }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+        {{ form.csrf_token }}
+
+        {{ render_field(form.isbn) }}
+        {{ render_field(form.cover) }}
+        {{ render_field(form.title) }}
+        {{ render_field(form.subtitle) }}
+        {{ render_field(form.orititle) }}
+        <hr>
+        {{ render_field(form.author) }}
+        {{ render_field(form.translator) }}
+        {{ render_field(form.publisher) }}
+        <div class="control-group">
+            <div class="control-label">
+                {{ form.pubdate.label }}
+            </div>
+            <div class="controls">
+                {{ form.pubdate(class='datepicker') }}
+            </div>
+        </div>
+        <hr>
+        <div class="control-group">
+            <div class="control-label">
+                {{ form.price.label }}
+            </div>
+            <div class="controls">
+                {{ form.price(class='span2') }}
+                {{ form.currency(class='span1') }}
+            </div>
+        </div>
+        {{ render_field(form.binding) }}
+        {{ render_field(form.pages) }}
+        <hr>
+        {{ render_field(form.summary) }}
+        {{ render_field(form.author_intro) }}
+        <hr>
+        {{ render_submit('提交') }}
+    </form>
+</div>
+
+<script type="text/javascript" src="/static/plugins/datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/static/js/jquery/jquery.ellipsis.js"></script>
+
+<script type="text/javascript">
+$(function() {
+    $('.ellipsis').ellipsis();
+
+    $('.datepicker').datepicker({
+        format: 'yyyy-mm-dd'
+    });
+});
+</script>
+{% endblock %}

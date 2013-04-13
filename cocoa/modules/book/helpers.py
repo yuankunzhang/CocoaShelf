@@ -1,4 +1,16 @@
 # -*- coding: utf-8 -*-
+import os
+import time
+
+from PIL import Image
+
+from flask import current_app
+
+from cocoa.extensions import db
+from cocoa.helpers.upload import mkdir
+
+FORMAT = 'JPEG'
+EXTENSION = '.jpg'
 
 def isbn10_to_13(isbn10):
 
@@ -15,3 +27,18 @@ def isbn13_to_10(isbn13):
         for i, x in enumerate(isbn10) if i != 9)
     chksum = (11 - r % 11) % 11
     return isbn10 + str(chksum)
+
+
+def save_cover(img, book):
+
+    basedir = current_app.config['COVER_BASE_DIR']
+    folder = mkdir(basedir)
+
+    basename = 'b' + str(book.id) + '_' + str(int(time.time()))
+    cover_name = basename + EXTENSION
+    cover_path = os.path.join(folder, cover_name)
+
+    img.save(os.path.join(basedir, cover_path), FORMAT, quality=100)
+
+    book.cover = cover_path
+    db.session.commit()

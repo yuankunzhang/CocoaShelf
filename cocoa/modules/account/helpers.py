@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import time
-from threading import Thread
 
 from PIL import Image
 

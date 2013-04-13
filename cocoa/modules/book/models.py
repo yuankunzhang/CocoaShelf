@@ -7,6 +7,7 @@ from PIL import Image
 
 from werkzeug import cached_property
 
+from sqlalchemy import or_
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from flask import current_app, url_for
@@ -60,6 +61,10 @@ class BookQuery(BaseQuery):
 
     def get_recent_books(self, num=10):
         return self.order_by(Book.pubdate.desc()).limit(num).all()
+
+    def get_by_isbn(self, isbn):
+        return self.filter(or_(Book.isbn13==isbn,
+            Book.isbn10==isbn)).first()
 
     def search(self, q):
         return self.filter(
@@ -125,13 +130,17 @@ class Book(db.Model):
 
         self.publisher = publisher
         self.size = size
-        self.set_pubdate(pubdate)
+        #self.set_pubdate(pubdate)
+        self.pubdate = pubdate
         
-        self.set_price(price)
+        #self.set_price(price)
+        self.price = price
         self.currency = currency
-        self.set_pages(pages)
-        self.set_binding(binding)
-        self.language = language
+        #self.set_pages(pages)
+        self.pages = pages
+        #self.set_binding(binding)
+        self.binding = binding
+        self.language = language or Language.CHINESE.value
 
         #self.creator = current_user.id
 
@@ -159,6 +168,7 @@ class Book(db.Model):
                 self.tags.append(tag)
                 db.session.commit()
 
+    # Deprecated
     def set_pubdate(self, pubdate):
         if pubdate is None or pubdate == '': return
 
@@ -167,9 +177,9 @@ class Book(db.Model):
             return
         
         patterns = {
-            '%Y-%m-%d': '^(\d{4}-\d{1,2}-\d{1,2})',     # 年月日
-            '%Y-%m':    '^(\d{4}-\d{1,2})',             # 年月
-            '%Y':       '^(\d{4})',                     # 年
+            '%Y-%m-%d': r'^(\d{4}-\d{1,2}-\d{1,2})$',     # 年月日
+            '%Y-%m':    r'^(\d{4}-\d{1,2})$',             # 年月
+            '%Y':       r'^(\d{4})$',                     # 年
         }
 
         for k in patterns.keys():
@@ -183,6 +193,7 @@ class Book(db.Model):
             return None
         return str(self.price) + u'元'
 
+    # Deprecated
     def set_price(self, price):
         if price is None or price == '': return
 
@@ -195,14 +206,22 @@ class Book(db.Model):
         if m is not None:
             self.price = float(m.group(1))
 
+    # Deprecated
     def set_binding(self, binding):
-        if binding is None or binding == '': return
+        if binding is None or binding == '':
+            self.binding = Binding.PAPERBACK.value
+            return
+
+        if isinstance(binding, (int, long)):
+            self.binding = binding
+            return
 
         try:
             self.binding = Binding.from_text(binding)
         except ValueError:
             return
 
+    # Deprecated
     def set_pages(self, pages):
         if pages is None or pages == '': return
 
@@ -300,6 +319,7 @@ class Book(db.Model):
 
     def get_similar_books(self):
         books = []
-        for x in self.similar_books.similarity:
-            books.append(Book.query.get(x[0]))
+        # TODO
+        #for x in self.similar_books.similarity:
+        #    books.append(Book.query.get(x[0]))
         return books
