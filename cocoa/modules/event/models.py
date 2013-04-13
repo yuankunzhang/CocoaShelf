@@ -14,12 +14,13 @@ class EventRecord(db.Model):
     type = db.Column(db.SmallInteger)
     who = db.Column(db.Integer, db.ForeignKey('user.id'))
     what = db.Column(JSONEncodedDict(255))
-    timestamp = db.Column(db.Integer, default=int(time()))
+    timestamp = db.Column(db.Integer)
 
     def __init__(self, type, event):
         self.type = type
         self.who = event.who
         self.what = event.__dict__
+        self.timestamp = int(time())
 
     def save(self):
         db.session.add(self)
@@ -60,7 +61,7 @@ class SignUpEvent(Event):
     def __init__(self, user_id, timestamp=None):
         self.user_id = user_id
         self.who = user_id
-        self.timestamp=timestamp
+        self.timestamp=timestamp or int(time())
 
 
 class AddBookToShelfEvent(Event):
@@ -72,4 +73,4 @@ class AddBookToShelfEvent(Event):
         self.who = user_id
         self.column_name = column_name
         self.book_id = book_id
-        self.timestamp=timestamp
+        self.timestamp=timestamp or int(time())
